@@ -1,3 +1,7 @@
+window.NovaHorizon = {
+  basePath: '/horizon',
+}
+
 Nova.booting((Vue, router, store) => {
   router.addRoutes([
     {

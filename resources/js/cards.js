@@ -1,3 +1,7 @@
+window.NovaHorizon = {
+  basePath: '/horizon',
+}
+
 Nova.booting((Vue, router, store) => {
   Vue.component('nova-horizon-card-stats', require('./components/Cards/Stats'));
   Vue.component('nova-horizon-card-workload', require('./components/Cards/Workload'));

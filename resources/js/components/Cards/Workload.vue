@@ -40,13 +40,7 @@
 </template>
 
 <script>
-import HandlesDates from '../../mixins/HandlesDates';
-
 export default {
-    mixins: [
-        HandlesDates
-    ],
-
     data() {
         return {
             ready: false,

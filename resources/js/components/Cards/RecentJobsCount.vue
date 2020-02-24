@@ -12,20 +12,21 @@
 
 <script>
 import StatsCard from '../../templates/StatsCard';
-import HandlesDates from '../../mixins/HandlesDates';
 
 export default {
     extends: StatsCard,
-
-    mixins: [
-        HandlesDates,
-    ],
 
     computed: {
         recentJobsPeriod() {
             return this.ready && this.stats.periods
                 ? `Past ${this.determinePeriod(this.stats.periods.recentJobs)}`
                 : 'Past hour';
+        },
+
+        determinePeriod(minutes) {
+            return moment.duration(
+                moment().diff(moment().subtract(minutes, "minutes"))
+            ).humanize().replace(/^An?/i, '');
         },
     }
 }

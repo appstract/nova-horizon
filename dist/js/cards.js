@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -244,48 +244,6 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-    methods: {
-        /**
-         * Human time.
-         */
-        humanTime: function humanTime(time) {
-            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
-                return $1.toUpperCase();
-            });
-        },
-
-
-        /**
-         * Determine the time period.
-         */
-        determinePeriod: function determinePeriod(minutes) {
-            return moment.duration(moment().diff(moment().subtract(minutes, "minutes"))).humanize().replace(/^An?/i, '');
-        },
-
-
-        /**
-         * Format the given date with respect to timezone.
-         */
-        formatDate: function formatDate(unixTime) {
-            return moment(unixTime * 1000).add(new Date().getTimezoneOffset() / 60);
-        },
-
-
-        /**
-         * Convert to human readable timestamp.
-         */
-        readableTimestamp: function readableTimestamp(timestamp) {
-            return this.formatDate(timestamp).format('YYYY-MM-DD HH:mm:ss');
-        }
-    }
-});
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports) {
 
 /*
@@ -367,7 +325,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -386,7 +344,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(5)
+var listToStyles = __webpack_require__(4)
 
 /*
 type StyleObject = {
@@ -595,7 +553,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports) {
 
 /**
@@ -628,98 +586,48 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(6);
+__webpack_require__(47);
+module.exports = __webpack_require__(48);
+
+
+/***/ }),
 /* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-    methods: {
-        /**
-         * Extract the job base name.
-         */
-        prettyJobName: function prettyJobName(name) {
-            if (!name.includes('\\')) {
-                return name;
-            }
+window.NovaHorizon = {
+  basePath: '/horizon'
+};
 
-            var parts = name.split('\\');
+Nova.booting(function (Vue, router, store) {
+  Vue.component('nova-horizon-card-stats', __webpack_require__(7));
+  Vue.component('nova-horizon-card-workload', __webpack_require__(10));
+  Vue.component('nova-horizon-card-recent-jobs', __webpack_require__(15));
+  Vue.component('nova-horizon-card-failed-jobs', __webpack_require__(20));
 
-            return parts[parts.length - 1];
-        }
-    }
+  Vue.component('nova-horizon-card-jobs-per-minute', __webpack_require__(23));
+  Vue.component('nova-horizon-card-recent-jobs-count', __webpack_require__(26));
+  Vue.component('nova-horizon-card-failed-jobs-count', __webpack_require__(29));
+  Vue.component('nova-horizon-card-status', __webpack_require__(32));
+  Vue.component('nova-horizon-card-total-processes', __webpack_require__(35));
+  Vue.component('nova-horizon-card-max-wait-time', __webpack_require__(38));
+  Vue.component('nova-horizon-card-max-runtime', __webpack_require__(41));
+  Vue.component('nova-horizon-card-max-throughput', __webpack_require__(44));
 });
 
 /***/ }),
 /* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony default export */ var _unused_webpack_default_export = ({
-    methods: {
-        /**
-         * Load the jobs for the previous page.
-         */
-        previousPage: function previousPage() {
-            this.fetchRecentJobs((this.page - 2) * this.perPage);
-
-            this.page -= 1;
-
-            this.hasNewEntries = false;
-        },
-
-
-        /**
-         * Load the jobs for the next page.
-         */
-        nextPage: function nextPage() {
-            this.fetchRecentJobs(this.page * this.perPage);
-
-            this.page += 1;
-
-            this.hasNewEntries = false;
-        }
-    }
-});
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(9);
-__webpack_require__(53);
-module.exports = __webpack_require__(54);
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-Nova.booting(function (Vue, router, store) {
-  Vue.component('nova-horizon-card-stats', __webpack_require__(10));
-  Vue.component('nova-horizon-card-workload', __webpack_require__(13));
-  Vue.component('nova-horizon-card-recent-jobs', __webpack_require__(18));
-  Vue.component('nova-horizon-card-failed-jobs', __webpack_require__(24));
-
-  Vue.component('nova-horizon-card-jobs-per-minute', __webpack_require__(29));
-  Vue.component('nova-horizon-card-recent-jobs-count', __webpack_require__(32));
-  Vue.component('nova-horizon-card-failed-jobs-count', __webpack_require__(35));
-  Vue.component('nova-horizon-card-status', __webpack_require__(38));
-  Vue.component('nova-horizon-card-total-processes', __webpack_require__(41));
-  Vue.component('nova-horizon-card-max-wait-time', __webpack_require__(44));
-  Vue.component('nova-horizon-card-max-runtime', __webpack_require__(47));
-  Vue.component('nova-horizon-card-max-throughput', __webpack_require__(50));
-});
-
-/***/ }),
-/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(11)
+var __vue_script__ = __webpack_require__(8)
 /* template */
-var __vue_template__ = __webpack_require__(12)
+var __vue_template__ = __webpack_require__(9)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -758,13 +666,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 11 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_HandlesDates__ = __webpack_require__(2);
 //
 //
 //
@@ -866,14 +773,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */],
-
-    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_HandlesDates__["a" /* default */]],
 
     computed: {
         recentJobsPeriod: function recentJobsPeriod() {
@@ -881,12 +785,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         failedJobsPeriod: function failedJobsPeriod() {
             return this.ready && this.stats.periods ? 'Past ' + this.determinePeriod(this.stats.periods.failedJobs) : 'Past 7 days';
+        },
+        determinePeriod: function determinePeriod(minutes) {
+            return moment.duration(moment().diff(moment().subtract(minutes, "minutes"))).humanize().replace(/^An?/i, '');
+        },
+        humanTime: function humanTime(time) {
+            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
+                return $1.toUpperCase();
+            });
         }
     }
 });
 
 /***/ }),
-/* 12 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1147,19 +1059,19 @@ if (false) {
 }
 
 /***/ }),
-/* 13 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(14)
+  __webpack_require__(11)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(16)
+var __vue_script__ = __webpack_require__(13)
 /* template */
-var __vue_template__ = __webpack_require__(17)
+var __vue_template__ = __webpack_require__(14)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1198,17 +1110,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 14 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(15);
+var content = __webpack_require__(12);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("a571a426", content, false, {});
+var update = __webpack_require__(3)("a571a426", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -1224,10 +1136,10 @@ if(false) {
 }
 
 /***/ }),
-/* 15 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(false);
+exports = module.exports = __webpack_require__(2)(false);
 // imports
 
 
@@ -1238,12 +1150,11 @@ exports.push([module.i, "\n.w-25[data-v-36c92b24]{ width: 25%;\n}\n.bg-gray-100[
 
 
 /***/ }),
-/* 16 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_HandlesDates__ = __webpack_require__(2);
 //
 //
 //
@@ -1285,12 +1196,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_HandlesDates__["a" /* default */]],
-
     data: function data() {
         return {
             ready: false,
@@ -1338,7 +1245,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 17 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1440,19 +1347,19 @@ if (false) {
 }
 
 /***/ }),
-/* 18 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(66)
+  __webpack_require__(16)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(19)
+var __vue_script__ = __webpack_require__(18)
 /* template */
-var __vue_template__ = __webpack_require__(68)
+var __vue_template__ = __webpack_require__(19)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1491,7 +1398,47 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 19 */
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(17);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("00245c2a", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d19270f0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./RecentJobs.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d19270f0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./RecentJobs.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.bg-gray-100[data-v-d19270f0]{ background: #f7fafc;\n}\n.border-gray-300[data-v-d19270f0]{ border-color: #e2e8f0;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1508,29 +1455,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("card", { staticClass: "p-8 text-center bg-gray-100" }, [
+    _vm._v("\n    Coming soon.\n")
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-d19270f0", module.exports)
+  }
+}
+
+/***/ }),
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(25)
-}
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(27)
+var __vue_script__ = __webpack_require__(21)
 /* template */
-var __vue_template__ = __webpack_require__(28)
+var __vue_template__ = __webpack_require__(22)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
-var __vue_scopeId__ = "data-v-a757d92c"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -1563,169 +1524,21 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(26);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("33c66800", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a757d92c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FailedJobs.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a757d92c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FailedJobs.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.w-25[data-v-a757d92c]{ width: 25%;\n}\n.bg-gray-100[data-v-a757d92c]{ background: #f7fafc;\n}\n.border-gray-300[data-v-a757d92c]{ border-color: #e2e8f0;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 27 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_HandlesJobs__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_HandlesDates__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_HandlesPages__ = __webpack_require__(7);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_HandlesJobs__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1__mixins_HandlesDates__["a" /* default */]],
-
+    /**
+     * The component's data.
+     */
     data: function data() {
         return {
-            ready: false,
             searchQuery: '',
             searchTimeout: null,
+            ready: false,
             loadingNewEntries: false,
             hasNewEntries: false,
             page: 1,
@@ -1738,17 +1551,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     /**
-     * Mounted.
+     * Prepare the component.
      */
     mounted: function mounted() {
-        this.fetchRecentJobs();
+        this.loadJobs();
 
-        this.refreshRecentJobsPeriodically();
+        this.refreshJobsPeriodically();
     },
 
 
     /**
-     * Destroyed.
+     * Clean after the component is destroyed.
      */
     destroyed: function destroyed() {
         clearInterval(this.interval);
@@ -1756,9 +1569,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     /**
-     * Watch.
+     * Watch these properties for changes.
      */
     watch: {
+        '$route': function $route() {
+            this.page = 1;
+
+            this.loadJobs();
+        },
         searchQuery: function searchQuery() {
             var _this = this;
 
@@ -1766,8 +1584,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             clearInterval(this.interval);
 
             this.searchTimeout = setTimeout(function () {
-                _this.fetchRecentJobs();
-                _this.refreshRecentJobsPeriodically();
+                _this.loadJobs();
+                _this.refreshJobsPeriodically();
             }, 500);
         }
     },
@@ -1776,7 +1594,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         /**
          * Load the jobs of the given tag.
          */
-        fetchRecentJobs: function fetchRecentJobs() {
+        loadJobs: function loadJobs() {
             var _this2 = this;
 
             var starting = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
@@ -1788,10 +1606,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var tagQuery = this.searchQuery ? 'tag=' + this.searchQuery + '&' : '';
 
-            var queryParams = tagQuery + 'starting_at=' + starting + '&limit=' + this.perPage;
+            Nova.request().get(NovaHorizon.basePath + '/api/jobs/failed?' + tagQuery + 'starting_at=' + starting).then(function (response) {
+                if (!_this2.$root.autoLoadsNewEntries && refreshing && !response.data.jobs.length) {
+                    return;
+                }
 
-            Nova.request().get('/horizon/api/jobs/failed?' + queryParams).then(function (response) {
-                if (refreshing && _this2.jobs.length && _.first(response.data.jobs).id !== _.first(_this2.jobs).id) {
+                if (!_this2.$root.autoLoadsNewEntries && refreshing && _this2.jobs.length && _.first(response.data.jobs).id !== _.first(_this2.jobs).id) {
                     _this2.hasNewEntries = true;
                 } else {
                     _this2.jobs = response.data.jobs;
@@ -1802,27 +1622,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.ready = true;
             });
         },
-
-
-        /**
-         * Refresh the jobs every period of time.
-         */
-        refreshRecentJobsPeriodically: function refreshRecentJobsPeriodically() {
-            var _this3 = this;
-
-            this.interval = setInterval(function () {
-                _this3.fetchRecentJobs((_this3.page - 1) * _this3.perPage, true);
-            }, 3000);
-        },
-
-
-        /**
-         * Load new entries.
-         */
         loadNewEntries: function loadNewEntries() {
             this.jobs = [];
 
-            this.fetchRecentJobs(0, false);
+            this.loadJobs(0, false);
 
             this.hasNewEntries = false;
         },
@@ -1832,7 +1635,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
          * Retry the given failed job.
          */
         retry: function retry(id) {
-            var _this4 = this;
+            var _this3 = this;
 
             if (this.isRetrying(id)) {
                 return;
@@ -1840,12 +1643,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.retryingJobs.push(id);
 
-            Nova.request().post('/horizon/api/jobs/retry/' + id).then(function (response) {
+            Nova.request().get(NovaHorizon.basePath + '/api/jobs/retry/' + id).then(function (response) {
                 setTimeout(function () {
-                    _this4.retryingJobs = _.reject(_this4.retryingJobs, function (job) {
+                    _this3.retryingJobs = _.reject(_this3.retryingJobs, function (job) {
                         return job == id;
                     });
-                }, 10000);
+                }, 5000);
             });
         },
 
@@ -1865,12 +1668,76 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return _.find(job.retried_by, function (retry) {
                 return retry.status == 'completed';
             });
+        },
+
+
+        /**
+         * Refresh the jobs every period of time.
+         */
+        refreshJobsPeriodically: function refreshJobsPeriodically() {
+            var _this4 = this;
+
+            this.interval = setInterval(function () {
+                _this4.loadJobs((_this4.page - 1) * _this4.perPage, true);
+            }, 3000);
+        },
+
+
+        /**
+         * Extract the job base name.
+         */
+        jobBaseName: function jobBaseName(name) {
+            if (!name.includes('\\')) return name;
+
+            var parts = name.split('\\');
+
+            return parts[parts.length - 1];
+        },
+
+
+        /**
+         * Format the given date with respect to timezone.
+         */
+        formatDate: function formatDate(unixTime) {
+            return moment(unixTime * 1000).add(new Date().getTimezoneOffset() / 60);
+        },
+
+
+        /**
+         * Convert to human readable timestamp.
+         */
+        readableTimestamp: function readableTimestamp(timestamp) {
+            return this.formatDate(timestamp).format('YYYY-MM-DD HH:mm:ss');
+        },
+
+
+        /**
+         * Load the jobs for the previous page.
+         */
+        previous: function previous() {
+            this.loadJobs((this.page - 2) * this.perPage);
+
+            this.page -= 1;
+
+            this.hasNewEntries = false;
+        },
+
+
+        /**
+         * Load the jobs for the next page.
+         */
+        next: function next() {
+            this.loadJobs(this.page * this.perPage);
+
+            this.page += 1;
+
+            this.hasNewEntries = false;
         }
     }
 });
 
 /***/ }),
-/* 28 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1907,6 +1774,49 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
+    !_vm.ready
+      ? _c(
+          "div",
+          {
+            staticClass:
+              "d-flex align-items-center justify-content-center card-bg-secondary p-5 bottom-radius"
+          },
+          [
+            _c(
+              "svg",
+              {
+                staticClass: "icon spin mr-2 fill-text-color",
+                attrs: {
+                  xmlns: "http://www.w3.org/2000/svg",
+                  viewBox: "0 0 20 20"
+                }
+              },
+              [
+                _c("path", {
+                  attrs: {
+                    d:
+                      "M12 10a2 2 0 0 1-3.41 1.41A2 2 0 0 1 10 8V0a9.97 9.97 0 0 1 10 10h-8zm7.9 1.41A10 10 0 1 1 8.59.1v2.03a8 8 0 1 0 9.29 9.29h2.02zm-4.07 0a6 6 0 1 1-7.25-7.25v2.1a3.99 3.99 0 0 0-1.4 6.57 4 4 0 0 0 6.56-1.42h2.1z"
+                  }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("span", [_vm._v("Loading...")])
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.ready && _vm.jobs.length == 0
+      ? _c(
+          "div",
+          {
+            staticClass:
+              "d-flex flex-column align-items-center justify-content-center card-bg-secondary p-5 bottom-radius"
+          },
+          [_c("span", [_vm._v("There aren't any failed jobs.")])]
+        )
+      : _vm._e(),
+    _vm._v(" "),
     _vm.jobs.length
       ? _c("div", { staticClass: "overflow-hidden overflow-x-auto relative" }, [
           _c("table", { staticClass: "table w-full" }, [
@@ -1926,38 +1836,42 @@ var render = function() {
               "tbody",
               [
                 _vm.hasNewEntries
-                  ? _c("tr", { staticClass: "bg-gray-100" }, [
-                      _c(
-                        "td",
-                        {
-                          staticClass: "text-center p-8",
-                          attrs: { colspan: "100" }
-                        },
-                        [
-                          !_vm.loadingNewEntries
-                            ? _c(
-                                "a",
-                                {
-                                  staticClass:
-                                    "no-underline dim text-primary font-bold",
-                                  attrs: { href: "#" },
-                                  on: {
-                                    click: function($event) {
-                                      $event.preventDefault()
-                                      return _vm.loadNewEntries($event)
-                                    }
-                                  }
-                                },
-                                [_vm._v("Load New Entries")]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.loadingNewEntries
-                            ? _c("small", [_vm._v("Loading...")])
-                            : _vm._e()
-                        ]
-                      )
-                    ])
+                  ? _c(
+                      "tr",
+                      { key: "newEntries", staticClass: "dontanimate" },
+                      [
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-center card-bg-secondary py-1",
+                            attrs: { colspan: "100" }
+                          },
+                          [
+                            _c("small", [
+                              !_vm.loadingNewEntries
+                                ? _c(
+                                    "a",
+                                    {
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function($event) {
+                                          $event.preventDefault()
+                                          return _vm.loadNewEntries($event)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Load New Entries")]
+                                  )
+                                : _vm._e()
+                            ]),
+                            _vm._v(" "),
+                            _vm.loadingNewEntries
+                              ? _c("small", [_vm._v("Loading...")])
+                              : _vm._e()
+                          ]
+                        )
+                      ]
+                    )
                   : _vm._e(),
                 _vm._v(" "),
                 _vm._l(_vm.jobs, function(job) {
@@ -1965,34 +1879,43 @@ var render = function() {
                     _c(
                       "td",
                       [
-                        _c(
-                          "router-link",
-                          {
-                            staticClass:
-                              "no-underline dim text-primary font-bold",
-                            attrs: {
-                              title: job.name,
-                              to: {
-                                name: "failed-jobs-preview",
-                                params: { jobId: job.id }
-                              }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(_vm.prettyJobName(job.name)) +
-                                "\n                        "
+                        job.status != "failed"
+                          ? _c("span", { attrs: { title: job.name } }, [
+                              _vm._v(_vm._s(_vm.jobBaseName(job.name)))
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        job.status === "failed"
+                          ? _c(
+                              "router-link",
+                              {
+                                attrs: {
+                                  title: job.name,
+                                  to: {
+                                    name: "failed-jobs-preview",
+                                    params: { jobId: job.id }
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(_vm.jobBaseName(job.name)) +
+                                    "\n                        "
+                                )
+                              ]
                             )
-                          ]
-                        ),
+                          : _vm._e(),
                         _vm._v(" "),
                         _c("br"),
                         _vm._v(" "),
-                        _c("small", [
-                          _c("span", [_vm._v("Queue: " + _vm._s(job.queue))]),
-                          _vm._v(" "),
-                          job.payload.tags.length
+                        _c("small", { staticClass: "text-muted" }, [
+                          _vm._v(
+                            "\n                            Queue: " +
+                              _vm._s(job.queue) +
+                              "\n                            "
+                          ),
+                          job.payload && job.payload.tags.length
                             ? _c("span", [
                                 _vm._v(
                                   "\n                                | Tags: " +
@@ -2011,7 +1934,7 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("td", [
+                    _c("td", { staticClass: "table-fit" }, [
                       _c("span", [
                         _vm._v(
                           _vm._s(
@@ -2025,7 +1948,7 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _c("td", [
+                    _c("td", { staticClass: "table-fit" }, [
                       _vm._v(
                         "\n                        " +
                           _vm._s(_vm.readableTimestamp(job.failed_at)) +
@@ -2033,7 +1956,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("td", { staticClass: "text-right" }, [
+                    _c("td", { staticClass: "text-right table-fit" }, [
                       !_vm.hasCompleted(job)
                         ? _c(
                             "a",
@@ -2076,40 +1999,33 @@ var render = function() {
               ],
               2
             )
-          ]),
-          _vm._v(" "),
-          _vm.ready && _vm.jobs.length
-            ? _c("div", { staticClass: "flex justify-between p-3" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { disabled: _vm.page == 1 },
-                    on: { click: _vm.previousPage }
-                  },
-                  [_vm._v("Previous")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { disabled: _vm.page >= _vm.totalPages },
-                    on: { click: _vm.nextPage }
-                  },
-                  [_vm._v("Next")]
-                )
-              ])
-            : _vm._e()
+          ])
         ])
-      : _c(
-          "div",
-          {
-            staticClass:
-              "p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100"
-          },
-          [_vm._v("\n        No failed jobs found.\n    ")]
-        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.ready && _vm.jobs.length
+      ? _c("div", { staticClass: "flex justify-between p-3" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-secondary btn-md",
+              attrs: { disabled: _vm.page == 1 },
+              on: { click: _vm.previous }
+            },
+            [_vm._v("Previous")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-secondary btn-md",
+              attrs: { disabled: _vm.page >= _vm.totalPages },
+              on: { click: _vm.next }
+            },
+            [_vm._v("Next")]
+          )
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -2123,15 +2039,15 @@ if (false) {
 }
 
 /***/ }),
-/* 29 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(30)
+var __vue_script__ = __webpack_require__(24)
 /* template */
-var __vue_template__ = __webpack_require__(31)
+var __vue_template__ = __webpack_require__(25)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2170,7 +2086,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 30 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2198,7 +2114,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 31 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2238,15 +2154,15 @@ if (false) {
 }
 
 /***/ }),
-/* 32 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(33)
+var __vue_script__ = __webpack_require__(27)
 /* template */
-var __vue_template__ = __webpack_require__(34)
+var __vue_template__ = __webpack_require__(28)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2285,13 +2201,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 33 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_HandlesDates__ = __webpack_require__(2);
 //
 //
 //
@@ -2304,24 +2219,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */],
 
-    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_HandlesDates__["a" /* default */]],
-
     computed: {
         recentJobsPeriod: function recentJobsPeriod() {
             return this.ready && this.stats.periods ? 'Past ' + this.determinePeriod(this.stats.periods.recentJobs) : 'Past hour';
+        },
+        determinePeriod: function determinePeriod(minutes) {
+            return moment.duration(moment().diff(moment().subtract(minutes, "minutes"))).humanize().replace(/^An?/i, '');
         }
     }
 });
 
 /***/ }),
-/* 34 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2360,15 +2275,15 @@ if (false) {
 }
 
 /***/ }),
-/* 35 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(36)
+var __vue_script__ = __webpack_require__(30)
 /* template */
-var __vue_template__ = __webpack_require__(37)
+var __vue_template__ = __webpack_require__(31)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2407,13 +2322,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 36 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_HandlesDates__ = __webpack_require__(2);
 //
 //
 //
@@ -2426,24 +2340,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */],
 
-    mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_HandlesDates__["a" /* default */]],
-
     computed: {
         failedJobsPeriod: function failedJobsPeriod() {
             return this.ready && this.stats.periods ? 'Past ' + this.determinePeriod(this.stats.periods.failedJobs) : 'Past 7 days';
+        },
+        determinePeriod: function determinePeriod(minutes) {
+            return moment.duration(moment().diff(moment().subtract(minutes, "minutes"))).humanize().replace(/^An?/i, '');
         }
     }
 });
 
 /***/ }),
-/* 37 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2482,15 +2396,15 @@ if (false) {
 }
 
 /***/ }),
-/* 38 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(39)
+var __vue_script__ = __webpack_require__(33)
 /* template */
-var __vue_template__ = __webpack_require__(40)
+var __vue_template__ = __webpack_require__(34)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2529,7 +2443,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 39 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2571,7 +2485,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 40 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2668,15 +2582,15 @@ if (false) {
 }
 
 /***/ }),
-/* 41 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(42)
+var __vue_script__ = __webpack_require__(36)
 /* template */
-var __vue_template__ = __webpack_require__(43)
+var __vue_template__ = __webpack_require__(37)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2705,6 +2619,226 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-4fb1d730", Component.options)
   } else {
     hotAPI.reload("data-v-4fb1d730", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__ = __webpack_require__(1);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */]
+});
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("card", { staticClass: "px-6 py-6" }, [
+    _c("h3", { staticClass: "mr-3 mb-3 text-base text-80 font-bold" }, [
+      _vm._v("Total Processes")
+    ]),
+    _vm._v(" "),
+    _c("p", { staticClass: "text-4xl mb-3" }, [
+      _vm._v(
+        "\n        " +
+          _vm._s(
+            _vm.stats.processes ? _vm.stats.processes.toLocaleString() : 0
+          ) +
+          "\n    "
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4fb1d730", module.exports)
+  }
+}
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(39)
+/* template */
+var __vue_template__ = __webpack_require__(40)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Cards/MaxWaitTime.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-32d64a82", Component.options)
+  } else {
+    hotAPI.reload("data-v-32d64a82", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__ = __webpack_require__(1);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */],
+
+    methods: {
+        humanTime: function humanTime(time) {
+            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
+                return $1.toUpperCase();
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("card", { staticClass: "px-6 py-6" }, [
+    _c("h3", { staticClass: "mr-3 mb-3 text-base text-80 font-bold" }, [
+      _vm._v("Max Wait Time")
+    ]),
+    _vm._v(" "),
+    _c("p", { staticClass: "text-4xl mb-3" }, [
+      _vm._v(
+        "\n        " +
+          _vm._s(
+            _vm.stats.max_wait_time
+              ? _vm.humanTime(_vm.stats.max_wait_time)
+              : "-"
+          ) +
+          "\n    "
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-32d64a82", module.exports)
+  }
+}
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(42)
+/* template */
+var __vue_template__ = __webpack_require__(43)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Cards/maxRuntime.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-581bba6b", Component.options)
+  } else {
+    hotAPI.reload("data-v-581bba6b", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -2748,14 +2882,14 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("card", { staticClass: "px-6 py-6" }, [
     _c("h3", { staticClass: "mr-3 mb-3 text-base text-80 font-bold" }, [
-      _vm._v("Total Processes")
+      _vm._v("Max Runtime")
     ]),
     _vm._v(" "),
     _c("p", { staticClass: "text-4xl mb-3" }, [
       _vm._v(
         "\n        " +
           _vm._s(
-            _vm.stats.processes ? _vm.stats.processes.toLocaleString() : 0
+            _vm.stats.queueWithMaxRuntime ? _vm.stats.queueWithMaxRuntime : "-"
           ) +
           "\n    "
       )
@@ -2768,7 +2902,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4fb1d730", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-581bba6b", module.exports)
   }
 }
 
@@ -2798,7 +2932,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/components/Cards/MaxWaitTime.vue"
+Component.options.__file = "resources/js/components/Cards/MaxThroughput.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -2807,9 +2941,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-32d64a82", Component.options)
+    hotAPI.createRecord("data-v-4434cc72", Component.options)
   } else {
-    hotAPI.reload("data-v-32d64a82", Component.options)
+    hotAPI.reload("data-v-4434cc72", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -2853,218 +2987,6 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("card", { staticClass: "px-6 py-6" }, [
     _c("h3", { staticClass: "mr-3 mb-3 text-base text-80 font-bold" }, [
-      _vm._v("Max Wait Time")
-    ]),
-    _vm._v(" "),
-    _c("p", { staticClass: "text-4xl mb-3" }, [
-      _vm._v(
-        "\n        " +
-          _vm._s(
-            _vm.stats.max_wait_time
-              ? _vm.humanTime(_vm.stats.max_wait_time)
-              : "-"
-          ) +
-          "\n    "
-      )
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-32d64a82", module.exports)
-  }
-}
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(48)
-/* template */
-var __vue_template__ = __webpack_require__(49)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Cards/maxRuntime.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-581bba6b", Component.options)
-  } else {
-    hotAPI.reload("data-v-581bba6b", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 48 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__ = __webpack_require__(1);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */]
-});
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("card", { staticClass: "px-6 py-6" }, [
-    _c("h3", { staticClass: "mr-3 mb-3 text-base text-80 font-bold" }, [
-      _vm._v("Max Runtime")
-    ]),
-    _vm._v(" "),
-    _c("p", { staticClass: "text-4xl mb-3" }, [
-      _vm._v(
-        "\n        " +
-          _vm._s(
-            _vm.stats.queueWithMaxRuntime ? _vm.stats.queueWithMaxRuntime : "-"
-          ) +
-          "\n    "
-      )
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-581bba6b", module.exports)
-  }
-}
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(51)
-/* template */
-var __vue_template__ = __webpack_require__(52)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Cards/MaxThroughput.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4434cc72", Component.options)
-  } else {
-    hotAPI.reload("data-v-4434cc72", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 51 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__ = __webpack_require__(1);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */]
-});
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("card", { staticClass: "px-6 py-6" }, [
-    _c("h3", { staticClass: "mr-3 mb-3 text-base text-80 font-bold" }, [
       _vm._v("Max Throughput")
     ]),
     _vm._v(" "),
@@ -3092,89 +3014,16 @@ if (false) {
 }
 
 /***/ }),
-/* 53 */
+/* 47 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 54 */
+/* 48 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(67);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("00245c2a", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d19270f0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./RecentJobs.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d19270f0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./RecentJobs.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.bg-gray-100[data-v-d19270f0]{ background: #f7fafc;\n}\n.border-gray-300[data-v-d19270f0]{ border-color: #e2e8f0;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("card", { staticClass: "p-8 text-center bg-gray-100" }, [
-    _vm._v("\n    Coming soon.\n")
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-d19270f0", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);
