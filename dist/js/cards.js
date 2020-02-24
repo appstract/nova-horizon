@@ -1455,6 +1455,61 @@ exports.push([module.i, "\n.p-8[data-v-d19270f0]{ padding: 2rem;\n}\n.bg-gray-10
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__RecentJobs_JobRow__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__RecentJobs_JobRow___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__RecentJobs_JobRow__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1547,7 +1602,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
 
                 _this2.loadJobs(-1, true);
-            }, 3000);
+            }, 5000);
         },
 
 
@@ -1631,6 +1686,12 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phpunserialize__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phpunserialize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_phpunserialize__);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2047,16 +2108,17 @@ var render = function() {
     _c(
       "td",
       [
-        _vm.job.status != "failed"
-          ? _c("span", { attrs: { title: _vm.job.name } }, [
-              _vm._v(_vm._s(_vm.jobBaseName(_vm.job.name)))
-            ])
-          : _vm._e(),
+        _c(
+          "span",
+          { staticClass: "font-bold", attrs: { title: _vm.job.name } },
+          [_vm._v(_vm._s(_vm.jobBaseName(_vm.job.name)))]
+        ),
         _vm._v(" "),
         _vm.job.status === "failed"
           ? _c(
               "router-link",
               {
+                staticClass: "hidden",
                 attrs: {
                   title: _vm.job.name,
                   to: {
@@ -2074,7 +2136,7 @@ var render = function() {
               ]
             )
           : _vm._e(),
-        _vm._v("\n\n        " + _vm._s(_vm.job.id) + "\n\n        "),
+        _vm._v("\n\n        (#" + _vm._s(_vm.job.id) + ")\n\n        "),
         _vm.delayed &&
         (_vm.job.status == "reserved" || _vm.job.status == "pending")
           ? _c(
@@ -2089,7 +2151,7 @@ var render = function() {
                     arg: "top"
                   }
                 ],
-                staticClass: "badge badge-secondary badge-sm"
+                staticClass: "p-2 fill-info"
               },
               [_vm._v("\n            Delayed\n        ")]
             )
@@ -2104,6 +2166,7 @@ var render = function() {
             _c(
               "router-link",
               {
+                staticClass: "hidden",
                 attrs: {
                   to: {
                     name: "recent-jobs-preview",
@@ -2111,10 +2174,10 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("View detail")]
+              [_vm._v("\n                View detail |\n            ")]
             ),
             _vm._v(
-              " |\n\n            Queue: " +
+              "\n\n            Queue: " +
                 _vm._s(_vm.job.queue) +
                 "\n\n            "
             ),
@@ -2146,7 +2209,7 @@ var render = function() {
       1
     ),
     _vm._v(" "),
-    _c("td", { staticClass: "table-fit" }, [
+    _c("td", [
       _vm._v(
         "\n        " +
           _vm._s(_vm.readableTimestamp(_vm.job.payload.pushedAt)) +
@@ -2154,19 +2217,21 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("td", { staticClass: "table-fit" }, [
+    _c("td", [
       _c("span", [
         _vm._v(
-          _vm._s(
-            _vm.job.completed_at
-              ? (_vm.job.completed_at - _vm.job.reserved_at).toFixed(2) + "s"
-              : "-"
-          )
+          "\n            " +
+            _vm._s(
+              _vm.job.completed_at
+                ? (_vm.job.completed_at - _vm.job.reserved_at).toFixed(2) + "s"
+                : "-"
+            ) +
+            "\n        "
         )
       ])
     ]),
     _vm._v(" "),
-    _c("td", { staticClass: "text-right table-fit" }, [
+    _c("td", { staticClass: "text-right" }, [
       _vm.job.status == "completed"
         ? _c(
             "svg",
@@ -2244,101 +2309,107 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "card" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      !_vm.ready
-        ? _c(
-            "div",
-            {
-              staticClass:
-                "d-flex align-items-center justify-content-center card-bg-secondary p-5 bottom-radius"
-            },
-            [
-              _c(
-                "svg",
-                {
-                  staticClass: "icon spin mr-2 fill-text-color",
+  return _c("card", [
+    _c("div", { staticClass: "flex items-center justify-between p-3" }, [
+      _c("h5", { staticClass: "text-base text-80 font-bold" }, [
+        _vm._v("Recent Jobs")
+      ])
+    ]),
+    _vm._v(" "),
+    !_vm.ready
+      ? _c(
+          "div",
+          {
+            staticClass:
+              "p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100 flex items-center justify-center"
+          },
+          [
+            _c(
+              "svg",
+              {
+                staticClass: "spin mr-2 w-8 fill-primary",
+                attrs: {
+                  xmlns: "http://www.w3.org/2000/svg",
+                  viewBox: "0 0 20 20"
+                }
+              },
+              [
+                _c("path", {
                   attrs: {
-                    xmlns: "http://www.w3.org/2000/svg",
-                    viewBox: "0 0 20 20"
+                    d:
+                      "M12 10a2 2 0 0 1-3.41 1.41A2 2 0 0 1 10 8V0a9.97 9.97 0 0 1 10 10h-8zm7.9 1.41A10 10 0 1 1 8.59.1v2.03a8 8 0 1 0 9.29 9.29h2.02zm-4.07 0a6 6 0 1 1-7.25-7.25v2.1a3.99 3.99 0 0 0-1.4 6.57 4 4 0 0 0 6.56-1.42h2.1z"
                   }
-                },
-                [
-                  _c("path", {
-                    attrs: {
-                      d:
-                        "M12 10a2 2 0 0 1-3.41 1.41A2 2 0 0 1 10 8V0a9.97 9.97 0 0 1 10 10h-8zm7.9 1.41A10 10 0 1 1 8.59.1v2.03a8 8 0 1 0 9.29 9.29h2.02zm-4.07 0a6 6 0 1 1-7.25-7.25v2.1a3.99 3.99 0 0 0-1.4 6.57 4 4 0 0 0 6.56-1.42h2.1z"
-                    }
-                  })
-                ]
-              ),
-              _vm._v(" "),
-              _c("span", [_vm._v("Loading...")])
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.ready && _vm.jobs.length == 0
-        ? _c(
-            "div",
-            {
-              staticClass:
-                "d-flex flex-column align-items-center justify-content-center card-bg-secondary p-5 bottom-radius"
-            },
-            [_c("span", [_vm._v("There aren't any jobs.")])]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.ready && _vm.jobs.length > 0
-        ? _c("table", { staticClass: "table table-hover table-sm mb-0" }, [
-            _vm._m(1),
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("span", [_vm._v("Loading...")])
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.ready && _vm.jobs.length == 0
+      ? _c(
+          "div",
+          {
+            staticClass:
+              "p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100"
+          },
+          [_c("span", [_vm._v("No recent jobs found.")])]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.ready && _vm.jobs.length > 0
+      ? _c("div", { staticClass: "overflow-hidden overflow-x-auto relative" }, [
+          _c("table", { staticClass: "table w-full" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", { staticClass: "text-left" }, [_vm._v("Job")]),
+                _vm._v(" "),
+                _c("th", { staticClass: "text-left" }, [_vm._v("Queued At")]),
+                _vm._v(" "),
+                _c("th", { staticClass: "text-left" }, [_vm._v("Runtime")]),
+                _vm._v(" "),
+                _c("th", { staticClass: "text-right" }, [_vm._v("Status")])
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "tbody",
               [
                 _vm.hasNewEntries
-                  ? _c(
-                      "tr",
-                      { key: "newEntries", staticClass: "dontanimate" },
-                      [
-                        _c(
-                          "td",
-                          {
-                            staticClass: "text-center card-bg-secondary py-1",
-                            attrs: { colspan: "100" }
-                          },
-                          [
-                            _c("small", [
-                              !_vm.loadingNewEntries
-                                ? _c(
-                                    "a",
-                                    {
-                                      attrs: { href: "#" },
-                                      on: {
-                                        click: function($event) {
-                                          $event.preventDefault()
-                                          return _vm.loadNewEntries($event)
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _vm._v(
-                                        "Load New\n                            Entries"
-                                      )
-                                    ]
-                                  )
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _vm.loadingNewEntries
-                              ? _c("small", [_vm._v("Loading...")])
-                              : _vm._e()
-                          ]
-                        )
-                      ]
-                    )
+                  ? _c("tr", { key: "newEntries" }, [
+                      _c(
+                        "td",
+                        {
+                          staticClass: "text-center bg-gray-100 p-8",
+                          attrs: { colspan: "100" }
+                        },
+                        [
+                          !_vm.loadingNewEntries
+                            ? _c(
+                                "a",
+                                {
+                                  staticClass:
+                                    "no-underline dim text-primary font-bold",
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.loadNewEntries($event)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Load New Entries")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.loadingNewEntries
+                            ? _c("small", [_vm._v("Loading...")])
+                            : _vm._e()
+                        ]
+                      )
+                    ])
                   : _vm._e(),
                 _vm._v(" "),
                 _vm._l(_vm.jobs, function(job) {
@@ -2352,69 +2423,35 @@ var render = function() {
               2
             )
           ])
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.ready && _vm.jobs.length
-        ? _c(
-            "div",
-            { staticClass: "p-3 d-flex justify-content-between border-top" },
-            [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary btn-md",
-                  attrs: { disabled: _vm.page == 1 },
-                  on: { click: _vm.previous }
-                },
-                [_vm._v("Previous")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary btn-md",
-                  attrs: { disabled: _vm.page >= _vm.totalPages },
-                  on: { click: _vm.next }
-                },
-                [_vm._v("Next")]
-              )
-            ]
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.ready && _vm.jobs.length
+      ? _c("div", { staticClass: "p-3 flex justify-between" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-secondary btn-md",
+              attrs: { disabled: _vm.page == 1 },
+              on: { click: _vm.previous }
+            },
+            [_vm._v("Previous")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-secondary btn-md",
+              attrs: { disabled: _vm.page >= _vm.totalPages },
+              on: { click: _vm.next }
+            },
+            [_vm._v("Next")]
           )
-        : _vm._e()
-    ])
+        ])
+      : _vm._e()
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "card-header d-flex align-items-center justify-content-between"
-      },
-      [_c("h5", [_vm._v("Recent Jobs")])]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Job")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Queued At")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Runtime")]),
-        _vm._v(" "),
-        _c("th", { staticClass: "text-right" }, [_vm._v("Status")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -2521,6 +2558,102 @@ exports.push([module.i, "\n.p-8[data-v-a757d92c]{ padding: 2rem;\n}\n.bg-gray-10
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     /**
@@ -2640,7 +2773,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this3.retryingJobs = _.reject(_this3.retryingJobs, function (job) {
                         return job == id;
                     });
-                }, 5000);
+                }, 10000);
             });
         },
 

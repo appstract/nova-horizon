@@ -13,5 +13,5 @@ export default {
 </script>
 
 <style>
-/* Scoped Styles */
+    /* Scoped Styles */
 </style>

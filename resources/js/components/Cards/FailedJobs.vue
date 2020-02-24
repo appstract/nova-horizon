@@ -1,193 +1,3 @@
-<script>
-    export default {
-        /**
-         * The component's data.
-         */
-        data() {
-            return {
-                searchQuery: '',
-                searchTimeout: null,
-                ready: false,
-                loadingNewEntries: false,
-                hasNewEntries: false,
-                page: 1,
-                perPage: 50,
-                totalPages: 1,
-                jobs: [],
-                retryingJobs: [],
-            };
-        },
-
-        /**
-         * Prepare the component.
-         */
-        mounted() {
-            this.loadJobs();
-
-            this.refreshJobsPeriodically();
-        },
-
-        /**
-         * Clean after the component is destroyed.
-         */
-        destroyed() {
-            clearInterval(this.interval);
-        },
-
-        /**
-         * Watch these properties for changes.
-         */
-        watch: {
-            '$route'() {
-                this.page = 1;
-
-                this.loadJobs();
-            },
-
-            searchQuery() {
-                clearTimeout(this.searchTimeout);
-                clearInterval(this.interval);
-
-                this.searchTimeout = setTimeout(() => {
-                    this.loadJobs();
-                    this.refreshJobsPeriodically();
-                }, 500);
-            }
-        },
-
-        methods: {
-            /**
-             * Load the jobs of the given tag.
-             */
-            loadJobs(starting = 0, refreshing = false) {
-                if (! refreshing) {
-                    this.ready = false;
-                }
-
-                var tagQuery = this.searchQuery ? 'tag=' + this.searchQuery + '&' : '';
-
-                Nova.request().get(NovaHorizon.basePath + '/api/jobs/failed?' + tagQuery + 'starting_at=' + starting)
-                    .then(response => {
-                        if (! this.$root.autoLoadsNewEntries && refreshing && ! response.data.jobs.length) {
-                            return;
-                        }
-
-
-                        if (! this.$root.autoLoadsNewEntries && refreshing && this.jobs.length && _.first(response.data.jobs).id !== _.first(this.jobs).id) {
-                            this.hasNewEntries = true;
-                        } else {
-                            this.jobs = response.data.jobs;
-
-                            this.totalPages = Math.ceil(response.data.total / this.perPage);
-                        }
-
-                        this.ready = true;
-                    });
-            },
-
-            loadNewEntries() {
-                this.jobs = [];
-
-                this.loadJobs(0, false);
-
-                this.hasNewEntries = false;
-            },
-
-            /**
-             * Retry the given failed job.
-             */
-            retry(id) {
-                if (this.isRetrying(id)) {
-                    return;
-                }
-
-                this.retryingJobs.push(id);
-
-                Nova.request().post(NovaHorizon.basePath + '/api/jobs/retry/' + id)
-                    .then((response) => {
-                        setTimeout(() => {
-                            this.retryingJobs = _.reject(this.retryingJobs, job => job == id);
-                        }, 5000);
-                    });
-            },
-
-            /**
-             * Determine if the given job is currently retrying.
-             */
-            isRetrying(id) {
-                return _.includes(this.retryingJobs, id);
-            },
-
-            /**
-             * Determine if the given job has completed.
-             */
-            hasCompleted(job) {
-                return _.find(job.retried_by, retry => retry.status == 'completed');
-            },
-
-            /**
-             * Refresh the jobs every period of time.
-             */
-            refreshJobsPeriodically() {
-                this.interval = setInterval(() => {
-                    this.loadJobs((this.page - 1) * this.perPage, true);
-                }, 3000);
-            },
-
-            /**
-             * Extract the job base name.
-             */
-            jobBaseName(name) {
-                if (! name.includes('\\')) return name;
-
-                var parts = name.split('\\');
-
-                return parts[parts.length - 1];
-            },
-
-            /**
-             * Format the given date with respect to timezone.
-             */
-            formatDate(unixTime) {
-                return moment(unixTime * 1000).add(new Date().getTimezoneOffset() / 60);
-            },
-
-            /**
-             * Convert to human readable timestamp.
-             */
-            readableTimestamp(timestamp) {
-                return this.formatDate(timestamp).format('YYYY-MM-DD HH:mm:ss');
-            },
-
-            /**
-             * Load the jobs for the previous page.
-             */
-            previous() {
-                this.loadJobs(
-                    (this.page - 2) * this.perPage
-                );
-
-                this.page -= 1;
-
-                this.hasNewEntries = false;
-            },
-
-            /**
-             * Load the jobs for the next page.
-             */
-            next() {
-                this.loadJobs(
-                    this.page * this.perPage
-                );
-
-                this.page += 1;
-
-                this.hasNewEntries = false;
-            }
-        }
-    }
-</script>
-
 <template>
     <card>
         <div class="flex items-center justify-between p-3">
@@ -283,6 +93,196 @@
         </div>
     </card>
 </template>
+
+<script>
+export default {
+    /**
+     * The component's data.
+     */
+    data() {
+        return {
+            searchQuery: '',
+            searchTimeout: null,
+            ready: false,
+            loadingNewEntries: false,
+            hasNewEntries: false,
+            page: 1,
+            perPage: 50,
+            totalPages: 1,
+            jobs: [],
+            retryingJobs: [],
+        };
+    },
+
+    /**
+     * Prepare the component.
+     */
+    mounted() {
+        this.loadJobs();
+
+        this.refreshJobsPeriodically();
+    },
+
+    /**
+     * Clean after the component is destroyed.
+     */
+    destroyed() {
+        clearInterval(this.interval);
+    },
+
+    /**
+     * Watch these properties for changes.
+     */
+    watch: {
+        '$route'() {
+            this.page = 1;
+
+            this.loadJobs();
+        },
+
+        searchQuery() {
+            clearTimeout(this.searchTimeout);
+            clearInterval(this.interval);
+
+            this.searchTimeout = setTimeout(() => {
+                this.loadJobs();
+                this.refreshJobsPeriodically();
+            }, 500);
+        }
+    },
+
+    methods: {
+        /**
+         * Load the jobs of the given tag.
+         */
+        loadJobs(starting = 0, refreshing = false) {
+            if (! refreshing) {
+                this.ready = false;
+            }
+
+            var tagQuery = this.searchQuery ? 'tag=' + this.searchQuery + '&' : '';
+
+            Nova.request().get(NovaHorizon.basePath + '/api/jobs/failed?' + tagQuery + 'starting_at=' + starting)
+                .then(response => {
+                    if (! this.$root.autoLoadsNewEntries && refreshing && ! response.data.jobs.length) {
+                        return;
+                    }
+
+
+                    if (! this.$root.autoLoadsNewEntries && refreshing && this.jobs.length && _.first(response.data.jobs).id !== _.first(this.jobs).id) {
+                        this.hasNewEntries = true;
+                    } else {
+                        this.jobs = response.data.jobs;
+
+                        this.totalPages = Math.ceil(response.data.total / this.perPage);
+                    }
+
+                    this.ready = true;
+                });
+        },
+
+        loadNewEntries() {
+            this.jobs = [];
+
+            this.loadJobs(0, false);
+
+            this.hasNewEntries = false;
+        },
+
+        /**
+         * Retry the given failed job.
+         */
+        retry(id) {
+            if (this.isRetrying(id)) {
+                return;
+            }
+
+            this.retryingJobs.push(id);
+
+            Nova.request().post(NovaHorizon.basePath + '/api/jobs/retry/' + id)
+                .then((response) => {
+                    setTimeout(() => {
+                        this.retryingJobs = _.reject(this.retryingJobs, job => job == id);
+                    }, 10000);
+                });
+        },
+
+        /**
+         * Determine if the given job is currently retrying.
+         */
+        isRetrying(id) {
+            return _.includes(this.retryingJobs, id);
+        },
+
+        /**
+         * Determine if the given job has completed.
+         */
+        hasCompleted(job) {
+            return _.find(job.retried_by, retry => retry.status == 'completed');
+        },
+
+        /**
+         * Refresh the jobs every period of time.
+         */
+        refreshJobsPeriodically() {
+            this.interval = setInterval(() => {
+                this.loadJobs((this.page - 1) * this.perPage, true);
+            }, 3000);
+        },
+
+        /**
+         * Extract the job base name.
+         */
+        jobBaseName(name) {
+            if (! name.includes('\\')) return name;
+
+            var parts = name.split('\\');
+
+            return parts[parts.length - 1];
+        },
+
+        /**
+         * Format the given date with respect to timezone.
+         */
+        formatDate(unixTime) {
+            return moment(unixTime * 1000).add(new Date().getTimezoneOffset() / 60);
+        },
+
+        /**
+         * Convert to human readable timestamp.
+         */
+        readableTimestamp(timestamp) {
+            return this.formatDate(timestamp).format('YYYY-MM-DD HH:mm:ss');
+        },
+
+        /**
+         * Load the jobs for the previous page.
+         */
+        previous() {
+            this.loadJobs(
+                (this.page - 2) * this.perPage
+            );
+
+            this.page -= 1;
+
+            this.hasNewEntries = false;
+        },
+
+        /**
+         * Load the jobs for the next page.
+         */
+        next() {
+            this.loadJobs(
+                this.page * this.perPage
+            );
+
+            this.page += 1;
+
+            this.hasNewEntries = false;
+        }
+    }
+}
+</script>
 
 <style scoped>
     .p-8{ padding: 2rem; }
