@@ -590,8 +590,8 @@ module.exports = function listToStyles (parentId, list) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
-__webpack_require__(47);
-module.exports = __webpack_require__(48);
+__webpack_require__(53);
+module.exports = __webpack_require__(54);
 
 
 /***/ }),
@@ -606,16 +606,16 @@ Nova.booting(function (Vue, router, store) {
   Vue.component('nova-horizon-card-stats', __webpack_require__(7));
   Vue.component('nova-horizon-card-workload', __webpack_require__(10));
   Vue.component('nova-horizon-card-recent-jobs', __webpack_require__(15));
-  Vue.component('nova-horizon-card-failed-jobs', __webpack_require__(20));
+  Vue.component('nova-horizon-card-failed-jobs', __webpack_require__(24));
 
-  Vue.component('nova-horizon-card-jobs-per-minute', __webpack_require__(23));
-  Vue.component('nova-horizon-card-recent-jobs-count', __webpack_require__(26));
-  Vue.component('nova-horizon-card-failed-jobs-count', __webpack_require__(29));
-  Vue.component('nova-horizon-card-status', __webpack_require__(32));
-  Vue.component('nova-horizon-card-total-processes', __webpack_require__(35));
-  Vue.component('nova-horizon-card-max-wait-time', __webpack_require__(38));
-  Vue.component('nova-horizon-card-max-runtime', __webpack_require__(41));
-  Vue.component('nova-horizon-card-max-throughput', __webpack_require__(44));
+  Vue.component('nova-horizon-card-jobs-per-minute', __webpack_require__(29));
+  Vue.component('nova-horizon-card-recent-jobs-count', __webpack_require__(32));
+  Vue.component('nova-horizon-card-failed-jobs-count', __webpack_require__(35));
+  Vue.component('nova-horizon-card-status', __webpack_require__(38));
+  Vue.component('nova-horizon-card-total-processes', __webpack_require__(41));
+  Vue.component('nova-horizon-card-max-wait-time', __webpack_require__(44));
+  Vue.component('nova-horizon-card-max-runtime', __webpack_require__(47));
+  Vue.component('nova-horizon-card-max-throughput', __webpack_require__(50));
 });
 
 /***/ }),
@@ -779,13 +779,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */],
 
-    computed: {
-        recentJobsPeriod: function recentJobsPeriod() {
-            return this.ready && this.stats.periods ? 'Past ' + this.determinePeriod(this.stats.periods.recentJobs) : 'Past hour';
-        },
-        failedJobsPeriod: function failedJobsPeriod() {
-            return this.ready && this.stats.periods ? 'Past ' + this.determinePeriod(this.stats.periods.failedJobs) : 'Past 7 days';
-        },
+    methods: {
         determinePeriod: function determinePeriod(minutes) {
             return moment.duration(moment().diff(moment().subtract(minutes, "minutes"))).humanize().replace(/^An?/i, '');
         },
@@ -793,6 +787,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
                 return $1.toUpperCase();
             });
+        }
+    },
+
+    computed: {
+        recentJobsPeriod: function recentJobsPeriod() {
+            return this.ready && this.stats.periods ? 'Past ' + this.determinePeriod(this.stats.periods.recentJobs) : 'Past hour';
+        },
+        failedJobsPeriod: function failedJobsPeriod() {
+            return this.ready && this.stats.periods ? 'Past ' + this.determinePeriod(this.stats.periods.failedJobs) : 'Past 7 days';
         }
     }
 });
@@ -1215,6 +1218,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
+        humanTime: function humanTime(time) {
+            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
+                return $1.toUpperCase();
+            });
+        },
+
+
         /**
          * Fetch stats from horizon.
          */
@@ -1359,7 +1369,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(18)
 /* template */
-var __vue_template__ = __webpack_require__(19)
+var __vue_template__ = __webpack_require__(23)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -1432,7 +1442,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n.bg-gray-100[data-v-d19270f0]{ background: #f7fafc;\n}\n.border-gray-300[data-v-d19270f0]{ border-color: #e2e8f0;\n}\n", ""]);
+exports.push([module.i, "\n.p-8[data-v-d19270f0]{ padding: 2rem;\n}\n.bg-gray-100[data-v-d19270f0]{ background: #f7fafc;\n}\n.border-gray-300[data-v-d19270f0]{ border-color: #e2e8f0;\n}\n", ""]);
 
 // exports
 
@@ -1443,30 +1453,968 @@ exports.push([module.i, "\n.bg-gray-100[data-v-d19270f0]{ background: #f7fafc;\n
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__RecentJobs_JobRow__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__RecentJobs_JobRow___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__RecentJobs_JobRow__);
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    //
+    /**
+     * The component's data.
+     */
+    data: function data() {
+        return {
+            ready: false,
+            loadingNewEntries: false,
+            hasNewEntries: false,
+            page: 1,
+            perPage: 50,
+            totalPages: 1,
+            jobs: []
+        };
+    },
+
+
+    /**
+     * Components
+     */
+    components: {
+        JobRow: __WEBPACK_IMPORTED_MODULE_0__RecentJobs_JobRow___default.a
+    },
+
+    /**
+     * Prepare the component.
+     */
+    mounted: function mounted() {
+        this.loadJobs();
+
+        this.refreshJobsPeriodically();
+    },
+
+
+    /**
+     * Clean after the component is destroyed.
+     */
+    destroyed: function destroyed() {
+        clearInterval(this.interval);
+    },
+
+
+    methods: {
+        /**
+         * Load the jobs of the given tag.
+         */
+        loadJobs: function loadJobs() {
+            var _this = this;
+
+            var starting = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : -1;
+            var refreshing = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+            if (!refreshing) {
+                this.ready = false;
+            }
+
+            Nova.request().get(NovaHorizon.basePath + '/api/jobs/recent?starting_at=' + starting + '&limit=' + this.perPage).then(function (response) {
+                if (!_this.$root.autoLoadsNewEntries && refreshing && _this.jobs.length && _.first(response.data.jobs).id !== _.first(_this.jobs).id) {
+                    _this.hasNewEntries = true;
+                } else {
+                    _this.jobs = response.data.jobs;
+
+                    _this.totalPages = Math.ceil(response.data.total / _this.perPage);
+                }
+
+                _this.ready = true;
+            });
+        },
+        loadNewEntries: function loadNewEntries() {
+            this.jobs = [];
+
+            this.loadJobs(-1, false);
+
+            this.hasNewEntries = false;
+        },
+
+
+        /**
+         * Refresh the jobs every period of time.
+         */
+        refreshJobsPeriodically: function refreshJobsPeriodically() {
+            var _this2 = this;
+
+            this.interval = setInterval(function () {
+                if (_this2.page != 1) {
+                    return;
+                }
+
+                _this2.loadJobs(-1, true);
+            }, 3000);
+        },
+
+
+        /**
+         * Load the jobs for the previous page.
+         */
+        previous: function previous() {
+            this.loadJobs((this.page - 2) * this.perPage);
+
+            this.page -= 1;
+
+            this.hasNewEntries = false;
+        },
+
+
+        /**
+         * Load the jobs for the next page.
+         */
+        next: function next() {
+            this.loadJobs(this.page * this.perPage);
+
+            this.page += 1;
+
+            this.hasNewEntries = false;
+        }
+    }
 });
 
 /***/ }),
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(20)
+/* template */
+var __vue_template__ = __webpack_require__(22)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Cards/RecentJobs/JobRow.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-534250d8", Component.options)
+  } else {
+    hotAPI.reload("data-v-534250d8", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phpunserialize__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phpunserialize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_phpunserialize__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        job: {
+            type: Object,
+            required: true
+        }
+    },
+
+    methods: {
+        /**
+         * Extract the job base name.
+         */
+        jobBaseName: function jobBaseName(name) {
+            if (!name.includes('\\')) return name;
+
+            var parts = name.split('\\');
+
+            return parts[parts.length - 1];
+        },
+
+
+        /**
+         * Format the given date with respect to timezone.
+         */
+        formatDate: function formatDate(unixTime) {
+            return moment(unixTime * 1000).add(new Date().getTimezoneOffset() / 60);
+        },
+
+
+        /**
+         * Convert to human readable timestamp.
+         */
+        readableTimestamp: function readableTimestamp(timestamp) {
+            return this.formatDate(timestamp).format('YYYY-MM-DD HH:mm:ss');
+        }
+    },
+
+    computed: {
+        unserialized: function unserialized() {
+            return __WEBPACK_IMPORTED_MODULE_0_phpunserialize___default()(this.job.payload.data.command);
+        },
+        delayed: function delayed() {
+            if (this.unserialized && this.unserialized.delay) {
+                return moment.utc(this.unserialized.delay.date).fromNow(true);
+            }
+
+            return null;
+        }
+    }
+});
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * php-unserialize-js JavaScript Library
+ * https://github.com/bd808/php-unserialize-js
+ *
+ * Copyright 2013 Bryan Davis and contributors
+ * Released under the MIT license
+ * http://www.opensource.org/licenses/MIT
+ */
+
+(function (root, factory) {
+  /*global define, exports, module */
+  "use strict";
+
+  if (true) {
+    // AMD. Register as an anonymous module.
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  } else {
+    // Browser globals (root is window)
+    root.phpUnserialize = factory();
+  }
+}(this, function () {
+  "use strict";
+
+  /**
+   * Parse php serialized data into js objects.
+   *
+   * @param {String} phpstr Php serialized string to parse
+   * @return {mixed} Parsed result
+   */
+  return function (phpstr) {
+    var idx = 0
+      , refStack = []
+      , ridx = 0
+      , parseNext // forward declaraton for "use strict"
+
+      , readLength = function () {
+          var del = phpstr.indexOf(':', idx)
+            , val = phpstr.substring(idx, del);
+          idx = del + 2;
+          return parseInt(val, 10);
+        } //end readLength
+
+      , readInt = function () {
+          var del = phpstr.indexOf(';', idx)
+            , val = phpstr.substring(idx, del);
+          idx = del + 1;
+          return parseInt(val, 10);
+        } //end readInt
+
+      , parseAsInt = function () {
+          var val = readInt();
+          refStack[ridx++] = val;
+          return val;
+        } //end parseAsInt
+
+      , parseAsFloat = function () {
+          var del = phpstr.indexOf(';', idx)
+            , val = phpstr.substring(idx, del);
+          idx = del + 1;
+          val = parseFloat(val);
+          refStack[ridx++] = val;
+          return val;
+        } //end parseAsFloat
+
+      , parseAsBoolean = function () {
+          var del = phpstr.indexOf(';', idx)
+            , val = phpstr.substring(idx, del);
+          idx = del + 1;
+          val = ("1" === val)? true: false;
+          refStack[ridx++] = val;
+          return val;
+        } //end parseAsBoolean
+
+      , readString = function () {
+          var len = readLength()
+            , utfLen = 0
+            , bytes = 0
+            , ch
+            , val;
+          while (bytes < len) {
+            ch = phpstr.charCodeAt(idx + utfLen++);
+            if (ch <= 0x007F) {
+              bytes++;
+            } else if (ch > 0x07FF) {
+              bytes += 3;
+            } else {
+              bytes += 2;
+            }
+          }
+          val = phpstr.substring(idx, idx + utfLen);
+          idx += utfLen + 2;
+          return val;
+        } //end readString
+
+      , parseAsString = function () {
+          var val = readString();
+          refStack[ridx++] = val;
+          return val;
+        } //end parseAsString
+
+      , readType = function () {
+          var type = phpstr.charAt(idx);
+          idx += 2;
+          return type;
+        } //end readType
+
+      , readKey = function () {
+          var type = readType();
+          switch (type) {
+            case 'i': return readInt();
+            case 's': return readString();
+            default:
+              throw {
+                name: "Parse Error",
+                message: "Unknown key type '" + type + "' at position " +
+                    (idx - 2)
+              };
+          } //end switch
+        }
+
+      , parseAsArray = function () {
+          var len = readLength()
+            , resultArray = []
+            , resultHash = {}
+            , keep = resultArray
+            , lref = ridx++
+            , key
+            , val
+            , i
+            , j
+            , alen;
+
+          refStack[lref] = keep;
+          for (i = 0; i < len; i++) {
+            key = readKey();
+            val = parseNext();
+            if (keep === resultArray && parseInt(key, 10) === i) {
+              // store in array version
+              resultArray.push(val);
+
+            } else {
+              if (keep !== resultHash) {
+                // found first non-sequential numeric key
+                // convert existing data to hash
+                for (j = 0, alen = resultArray.length; j < alen; j++) {
+                  resultHash[j] = resultArray[j];
+                }
+                keep = resultHash;
+                refStack[lref] = keep;
+              }
+              resultHash[key] = val;
+            } //end if
+          } //end for
+
+          idx++;
+          return keep;
+        } //end parseAsArray
+
+      , fixPropertyName = function (parsedName, baseClassName) {
+          var class_name
+            , prop_name
+            , pos;
+          if ("\u0000" === parsedName.charAt(0)) {
+            // "<NUL>*<NUL>property"
+            // "<NUL>class<NUL>property"
+            pos = parsedName.indexOf("\u0000", 1);
+            if (pos > 0) {
+              class_name = parsedName.substring(1, pos);
+              prop_name  = parsedName.substr(pos + 1);
+
+              if ("*" === class_name) {
+                // protected
+                return prop_name;
+              } else if (baseClassName === class_name) {
+                // own private
+                return prop_name;
+              } else {
+                // private of a descendant
+                return class_name + "::" + prop_name;
+
+                // On the one hand, we need to prefix property name with
+                // class name, because parent and child classes both may
+                // have private property with same name. We don't want
+                // just to overwrite it and lose something.
+                //
+                // On the other hand, property name can be "foo::bar"
+                //
+                //     $obj = new stdClass();
+                //     $obj->{"foo::bar"} = 42;
+                //     // any user-defined class can do this by default
+                //
+                // and such property also can overwrite something.
+                //
+                // So, we can to lose something in any way.
+              }
+            }
+          } else {
+            // public "property"
+            return parsedName;
+          }
+        }
+
+      , parseAsObject = function () {
+          var len
+            , obj = {}
+            , lref = ridx++
+            // HACK last char after closing quote is ':',
+            // but not ';' as for normal string
+            , clazzname = readString()
+            , key
+            , val
+            , i;
+
+          refStack[lref] = obj;
+          len = readLength();
+          for (i = 0; i < len; i++) {
+            key = fixPropertyName(readKey(), clazzname);
+            val = parseNext();
+            obj[key] = val;
+          }
+          idx++;
+          return obj;
+        } //end parseAsObject
+
+      , parseAsCustom = function () {
+          var clazzname = readString()
+            , content = readString();
+          return {
+            "__PHP_Incomplete_Class_Name": clazzname,
+            "serialized": content
+          };
+        } //end parseAsCustom
+
+      , parseAsRefValue = function () {
+          var ref = readInt()
+            // php's ref counter is 1-based; our stack is 0-based.
+            , val = refStack[ref - 1];
+          refStack[ridx++] = val;
+          return val;
+        } //end parseAsRefValue
+
+      , parseAsRef = function () {
+          var ref = readInt();
+          // php's ref counter is 1-based; our stack is 0-based.
+          return refStack[ref - 1];
+        } //end parseAsRef
+
+      , parseAsNull = function () {
+          var val = null;
+          refStack[ridx++] = val;
+          return val;
+        }; //end parseAsNull
+
+      parseNext = function () {
+        var type = readType();
+        switch (type) {
+          case 'i': return parseAsInt();
+          case 'd': return parseAsFloat();
+          case 'b': return parseAsBoolean();
+          case 's': return parseAsString();
+          case 'a': return parseAsArray();
+          case 'O': return parseAsObject();
+          case 'C': return parseAsCustom();
+
+          // link to object, which is a value - affects refStack
+          case 'r': return parseAsRefValue();
+
+          // PHP's reference - DOES NOT affect refStack
+          case 'R': return parseAsRef();
+
+          case 'N': return parseAsNull();
+          default:
+            throw {
+              name: "Parse Error",
+              message: "Unknown type '" + type + "' at position " + (idx - 2)
+            };
+        } //end switch
+      }; //end parseNext
+
+      return parseNext();
+  };
+}));
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("card", { staticClass: "p-8 text-center bg-gray-100" }, [
-    _vm._v("\n    Coming soon.\n")
+  return _c("tr", [
+    _c(
+      "td",
+      [
+        _vm.job.status != "failed"
+          ? _c("span", { attrs: { title: _vm.job.name } }, [
+              _vm._v(_vm._s(_vm.jobBaseName(_vm.job.name)))
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.job.status === "failed"
+          ? _c(
+              "router-link",
+              {
+                attrs: {
+                  title: _vm.job.name,
+                  to: {
+                    name: "failed-jobs-preview",
+                    params: { jobId: _vm.job.id }
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n            " +
+                    _vm._s(_vm.jobBaseName(_vm.job.name)) +
+                    "\n        "
+                )
+              ]
+            )
+          : _vm._e(),
+        _vm._v("\n\n        " + _vm._s(_vm.job.id) + "\n\n        "),
+        _vm.delayed &&
+        (_vm.job.status == "reserved" || _vm.job.status == "pending")
+          ? _c(
+              "small",
+              {
+                directives: [
+                  {
+                    name: "tooltip",
+                    rawName: "v-tooltip:top",
+                    value: "Delayed for " + _vm.delayed,
+                    expression: "`Delayed for ${delayed}`",
+                    arg: "top"
+                  }
+                ],
+                staticClass: "badge badge-secondary badge-sm"
+              },
+              [_vm._v("\n            Delayed\n        ")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c(
+          "small",
+          { staticClass: "text-muted" },
+          [
+            _c(
+              "router-link",
+              {
+                attrs: {
+                  to: {
+                    name: "recent-jobs-preview",
+                    params: { jobId: _vm.job.id }
+                  }
+                }
+              },
+              [_vm._v("View detail")]
+            ),
+            _vm._v(
+              " |\n\n            Queue: " +
+                _vm._s(_vm.job.queue) +
+                "\n\n            "
+            ),
+            _vm.job.payload.tags.length
+              ? _c("span", [
+                  _vm._v(
+                    "\n                | Tags: " +
+                      _vm._s(
+                        _vm.job.payload.tags && _vm.job.payload.tags.length
+                          ? _vm.job.payload.tags.slice(0, 3).join(", ")
+                          : ""
+                      )
+                  ),
+                  _vm.job.payload.tags.length > 3
+                    ? _c("span", [
+                        _vm._v(
+                          " (" +
+                            _vm._s(_vm.job.payload.tags.length - 3) +
+                            " more)"
+                        )
+                      ])
+                    : _vm._e()
+                ])
+              : _vm._e()
+          ],
+          1
+        )
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("td", { staticClass: "table-fit" }, [
+      _vm._v(
+        "\n        " +
+          _vm._s(_vm.readableTimestamp(_vm.job.payload.pushedAt)) +
+          "\n    "
+      )
+    ]),
+    _vm._v(" "),
+    _c("td", { staticClass: "table-fit" }, [
+      _c("span", [
+        _vm._v(
+          _vm._s(
+            _vm.job.completed_at
+              ? (_vm.job.completed_at - _vm.job.reserved_at).toFixed(2) + "s"
+              : "-"
+          )
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("td", { staticClass: "text-right table-fit" }, [
+      _vm.job.status == "completed"
+        ? _c(
+            "svg",
+            {
+              staticClass: "fill-success",
+              staticStyle: { width: "1.5rem", height: "1.5rem" },
+              attrs: { viewBox: "0 0 20 20" }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  d:
+                    "M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM6.7 9.29L9 11.6l4.3-4.3 1.4 1.42L9 14.4l-3.7-3.7 1.4-1.42z"
+                }
+              })
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.job.status == "reserved" || _vm.job.status == "pending"
+        ? _c(
+            "svg",
+            {
+              staticClass: "fill-warning",
+              staticStyle: { width: "1.5rem", height: "1.5rem" },
+              attrs: { viewBox: "0 0 20 20" }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  d:
+                    "M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM7 6h2v8H7V6zm4 0h2v8h-2V6z"
+                }
+              })
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.job.status == "failed"
+        ? _c(
+            "svg",
+            {
+              staticClass: "fill-danger",
+              staticStyle: { width: "1.5rem", height: "1.5rem" },
+              attrs: { viewBox: "0 0 20 20" }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  d:
+                    "M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm1.41-1.41A8 8 0 1 0 15.66 4.34 8 8 0 0 0 4.34 15.66zm9.9-8.49L11.41 10l2.83 2.83-1.41 1.41L10 11.41l-2.83 2.83-1.41-1.41L8.59 10 5.76 7.17l1.41-1.41L10 8.59l2.83-2.83 1.41 1.41z"
+                }
+              })
+            ]
+          )
+        : _vm._e()
+    ])
   ])
 }
 var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-534250d8", module.exports)
+  }
+}
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "card" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      !_vm.ready
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "d-flex align-items-center justify-content-center card-bg-secondary p-5 bottom-radius"
+            },
+            [
+              _c(
+                "svg",
+                {
+                  staticClass: "icon spin mr-2 fill-text-color",
+                  attrs: {
+                    xmlns: "http://www.w3.org/2000/svg",
+                    viewBox: "0 0 20 20"
+                  }
+                },
+                [
+                  _c("path", {
+                    attrs: {
+                      d:
+                        "M12 10a2 2 0 0 1-3.41 1.41A2 2 0 0 1 10 8V0a9.97 9.97 0 0 1 10 10h-8zm7.9 1.41A10 10 0 1 1 8.59.1v2.03a8 8 0 1 0 9.29 9.29h2.02zm-4.07 0a6 6 0 1 1-7.25-7.25v2.1a3.99 3.99 0 0 0-1.4 6.57 4 4 0 0 0 6.56-1.42h2.1z"
+                    }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c("span", [_vm._v("Loading...")])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.ready && _vm.jobs.length == 0
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "d-flex flex-column align-items-center justify-content-center card-bg-secondary p-5 bottom-radius"
+            },
+            [_c("span", [_vm._v("There aren't any jobs.")])]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.ready && _vm.jobs.length > 0
+        ? _c("table", { staticClass: "table table-hover table-sm mb-0" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              [
+                _vm.hasNewEntries
+                  ? _c(
+                      "tr",
+                      { key: "newEntries", staticClass: "dontanimate" },
+                      [
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-center card-bg-secondary py-1",
+                            attrs: { colspan: "100" }
+                          },
+                          [
+                            _c("small", [
+                              !_vm.loadingNewEntries
+                                ? _c(
+                                    "a",
+                                    {
+                                      attrs: { href: "#" },
+                                      on: {
+                                        click: function($event) {
+                                          $event.preventDefault()
+                                          return _vm.loadNewEntries($event)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "Load New\n                            Entries"
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
+                            ]),
+                            _vm._v(" "),
+                            _vm.loadingNewEntries
+                              ? _c("small", [_vm._v("Loading...")])
+                              : _vm._e()
+                          ]
+                        )
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._l(_vm.jobs, function(job) {
+                  return _c("job-row", {
+                    key: job.id,
+                    tag: "tr",
+                    attrs: { job: job }
+                  })
+                })
+              ],
+              2
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.ready && _vm.jobs.length
+        ? _c(
+            "div",
+            { staticClass: "p-3 d-flex justify-content-between border-top" },
+            [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary btn-md",
+                  attrs: { disabled: _vm.page == 1 },
+                  on: { click: _vm.previous }
+                },
+                [_vm._v("Previous")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary btn-md",
+                  attrs: { disabled: _vm.page >= _vm.totalPages },
+                  on: { click: _vm.next }
+                },
+                [_vm._v("Next")]
+              )
+            ]
+          )
+        : _vm._e()
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "card-header d-flex align-items-center justify-content-between"
+      },
+      [_c("h5", [_vm._v("Recent Jobs")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Job")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Queued At")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Runtime")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-right" }, [_vm._v("Status")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -1477,21 +2425,25 @@ if (false) {
 }
 
 /***/ }),
-/* 20 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(25)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(21)
+var __vue_script__ = __webpack_require__(27)
 /* template */
-var __vue_template__ = __webpack_require__(22)
+var __vue_template__ = __webpack_require__(28)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-a757d92c"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -1524,7 +2476,47 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 21 */
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(26);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("33c66800", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a757d92c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FailedJobs.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a757d92c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./FailedJobs.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.p-8[data-v-a757d92c]{ padding: 2rem;\n}\n.bg-gray-100[data-v-a757d92c]{ background: #f7fafc;\n}\n.border-gray-300[data-v-a757d92c]{ border-color: #e2e8f0;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1643,7 +2635,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.retryingJobs.push(id);
 
-            Nova.request().get(NovaHorizon.basePath + '/api/jobs/retry/' + id).then(function (response) {
+            Nova.request().post(NovaHorizon.basePath + '/api/jobs/retry/' + id).then(function (response) {
                 setTimeout(function () {
                     _this3.retryingJobs = _.reject(_this3.retryingJobs, function (job) {
                         return job == id;
@@ -1737,7 +2729,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 22 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -1779,13 +2771,13 @@ var render = function() {
           "div",
           {
             staticClass:
-              "d-flex align-items-center justify-content-center card-bg-secondary p-5 bottom-radius"
+              "p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100 flex items-center justify-center"
           },
           [
             _c(
               "svg",
               {
-                staticClass: "icon spin mr-2 fill-text-color",
+                staticClass: "spin mr-2 w-8 fill-primary",
                 attrs: {
                   xmlns: "http://www.w3.org/2000/svg",
                   viewBox: "0 0 20 20"
@@ -1811,9 +2803,9 @@ var render = function() {
           "div",
           {
             staticClass:
-              "d-flex flex-column align-items-center justify-content-center card-bg-secondary p-5 bottom-radius"
+              "p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100"
           },
-          [_c("span", [_vm._v("There aren't any failed jobs.")])]
+          [_c("span", [_vm._v("No failed jobs found.")])]
         )
       : _vm._e(),
     _vm._v(" "),
@@ -1836,42 +2828,38 @@ var render = function() {
               "tbody",
               [
                 _vm.hasNewEntries
-                  ? _c(
-                      "tr",
-                      { key: "newEntries", staticClass: "dontanimate" },
-                      [
-                        _c(
-                          "td",
-                          {
-                            staticClass: "text-center card-bg-secondary py-1",
-                            attrs: { colspan: "100" }
-                          },
-                          [
-                            _c("small", [
-                              !_vm.loadingNewEntries
-                                ? _c(
-                                    "a",
-                                    {
-                                      attrs: { href: "#" },
-                                      on: {
-                                        click: function($event) {
-                                          $event.preventDefault()
-                                          return _vm.loadNewEntries($event)
-                                        }
-                                      }
-                                    },
-                                    [_vm._v("Load New Entries")]
-                                  )
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _vm.loadingNewEntries
-                              ? _c("small", [_vm._v("Loading...")])
-                              : _vm._e()
-                          ]
-                        )
-                      ]
-                    )
+                  ? _c("tr", { key: "newEntries" }, [
+                      _c(
+                        "td",
+                        {
+                          staticClass: "text-center bg-gray-100 p-8",
+                          attrs: { colspan: "100" }
+                        },
+                        [
+                          !_vm.loadingNewEntries
+                            ? _c(
+                                "a",
+                                {
+                                  staticClass:
+                                    "no-underline dim text-primary font-bold",
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.loadNewEntries($event)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Load New Entries")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.loadingNewEntries
+                            ? _c("small", [_vm._v("Loading...")])
+                            : _vm._e()
+                        ]
+                      )
+                    ])
                   : _vm._e(),
                 _vm._v(" "),
                 _vm._l(_vm.jobs, function(job) {
@@ -1879,16 +2867,20 @@ var render = function() {
                     _c(
                       "td",
                       [
-                        job.status != "failed"
-                          ? _c("span", { attrs: { title: job.name } }, [
-                              _vm._v(_vm._s(_vm.jobBaseName(job.name)))
-                            ])
-                          : _vm._e(),
+                        _c(
+                          "span",
+                          {
+                            staticClass: "font-bold",
+                            attrs: { title: job.name }
+                          },
+                          [_vm._v(_vm._s(_vm.jobBaseName(job.name)))]
+                        ),
                         _vm._v(" "),
                         job.status === "failed"
                           ? _c(
                               "router-link",
                               {
+                                staticClass: "hidden",
                                 attrs: {
                                   title: job.name,
                                   to: {
@@ -1909,7 +2901,7 @@ var render = function() {
                         _vm._v(" "),
                         _c("br"),
                         _vm._v(" "),
-                        _c("small", { staticClass: "text-muted" }, [
+                        _c("small", [
                           _vm._v(
                             "\n                            Queue: " +
                               _vm._s(job.queue) +
@@ -1934,7 +2926,7 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("td", { staticClass: "table-fit" }, [
+                    _c("td", [
                       _c("span", [
                         _vm._v(
                           _vm._s(
@@ -1948,7 +2940,7 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _c("td", { staticClass: "table-fit" }, [
+                    _c("td", [
                       _vm._v(
                         "\n                        " +
                           _vm._s(_vm.readableTimestamp(job.failed_at)) +
@@ -1956,7 +2948,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("td", { staticClass: "text-right table-fit" }, [
+                    _c("td", { staticClass: "text-right" }, [
                       !_vm.hasCompleted(job)
                         ? _c(
                             "a",
@@ -2039,15 +3031,15 @@ if (false) {
 }
 
 /***/ }),
-/* 23 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(24)
+var __vue_script__ = __webpack_require__(30)
 /* template */
-var __vue_template__ = __webpack_require__(25)
+var __vue_template__ = __webpack_require__(31)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2086,7 +3078,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 24 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2114,7 +3106,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 25 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2154,15 +3146,15 @@ if (false) {
 }
 
 /***/ }),
-/* 26 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(27)
+var __vue_script__ = __webpack_require__(33)
 /* template */
-var __vue_template__ = __webpack_require__(28)
+var __vue_template__ = __webpack_require__(34)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2201,7 +3193,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 27 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2225,18 +3217,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */],
 
+    methods: {
+        determinePeriod: function determinePeriod(minutes) {
+            return moment.duration(moment().diff(moment().subtract(minutes, "minutes"))).humanize().replace(/^An?/i, '');
+        }
+    },
+
     computed: {
         recentJobsPeriod: function recentJobsPeriod() {
             return this.ready && this.stats.periods ? 'Past ' + this.determinePeriod(this.stats.periods.recentJobs) : 'Past hour';
-        },
-        determinePeriod: function determinePeriod(minutes) {
-            return moment.duration(moment().diff(moment().subtract(minutes, "minutes"))).humanize().replace(/^An?/i, '');
         }
     }
 });
 
 /***/ }),
-/* 28 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2275,15 +3270,15 @@ if (false) {
 }
 
 /***/ }),
-/* 29 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(30)
+var __vue_script__ = __webpack_require__(36)
 /* template */
-var __vue_template__ = __webpack_require__(31)
+var __vue_template__ = __webpack_require__(37)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2322,7 +3317,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 30 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2346,18 +3341,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */],
 
+    methods: {
+        determinePeriod: function determinePeriod(minutes) {
+            return moment.duration(moment().diff(moment().subtract(minutes, "minutes"))).humanize().replace(/^An?/i, '');
+        }
+    },
+
     computed: {
         failedJobsPeriod: function failedJobsPeriod() {
             return this.ready && this.stats.periods ? 'Past ' + this.determinePeriod(this.stats.periods.failedJobs) : 'Past 7 days';
-        },
-        determinePeriod: function determinePeriod(minutes) {
-            return moment.duration(moment().diff(moment().subtract(minutes, "minutes"))).humanize().replace(/^An?/i, '');
         }
     }
 });
 
 /***/ }),
-/* 31 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2396,15 +3394,15 @@ if (false) {
 }
 
 /***/ }),
-/* 32 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(33)
+var __vue_script__ = __webpack_require__(39)
 /* template */
-var __vue_template__ = __webpack_require__(34)
+var __vue_template__ = __webpack_require__(40)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2443,7 +3441,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 33 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2485,7 +3483,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 34 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -2582,15 +3580,15 @@ if (false) {
 }
 
 /***/ }),
-/* 35 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(36)
+var __vue_script__ = __webpack_require__(42)
 /* template */
-var __vue_template__ = __webpack_require__(37)
+var __vue_template__ = __webpack_require__(43)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2619,226 +3617,6 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-4fb1d730", Component.options)
   } else {
     hotAPI.reload("data-v-4fb1d730", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__ = __webpack_require__(1);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */]
-});
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("card", { staticClass: "px-6 py-6" }, [
-    _c("h3", { staticClass: "mr-3 mb-3 text-base text-80 font-bold" }, [
-      _vm._v("Total Processes")
-    ]),
-    _vm._v(" "),
-    _c("p", { staticClass: "text-4xl mb-3" }, [
-      _vm._v(
-        "\n        " +
-          _vm._s(
-            _vm.stats.processes ? _vm.stats.processes.toLocaleString() : 0
-          ) +
-          "\n    "
-      )
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4fb1d730", module.exports)
-  }
-}
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(39)
-/* template */
-var __vue_template__ = __webpack_require__(40)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Cards/MaxWaitTime.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-32d64a82", Component.options)
-  } else {
-    hotAPI.reload("data-v-32d64a82", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__ = __webpack_require__(1);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */],
-
-    methods: {
-        humanTime: function humanTime(time) {
-            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
-                return $1.toUpperCase();
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("card", { staticClass: "px-6 py-6" }, [
-    _c("h3", { staticClass: "mr-3 mb-3 text-base text-80 font-bold" }, [
-      _vm._v("Max Wait Time")
-    ]),
-    _vm._v(" "),
-    _c("p", { staticClass: "text-4xl mb-3" }, [
-      _vm._v(
-        "\n        " +
-          _vm._s(
-            _vm.stats.max_wait_time
-              ? _vm.humanTime(_vm.stats.max_wait_time)
-              : "-"
-          ) +
-          "\n    "
-      )
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-32d64a82", module.exports)
-  }
-}
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(42)
-/* template */
-var __vue_template__ = __webpack_require__(43)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Cards/maxRuntime.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-581bba6b", Component.options)
-  } else {
-    hotAPI.reload("data-v-581bba6b", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -2882,6 +3660,226 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("card", { staticClass: "px-6 py-6" }, [
     _c("h3", { staticClass: "mr-3 mb-3 text-base text-80 font-bold" }, [
+      _vm._v("Total Processes")
+    ]),
+    _vm._v(" "),
+    _c("p", { staticClass: "text-4xl mb-3" }, [
+      _vm._v(
+        "\n        " +
+          _vm._s(
+            _vm.stats.processes ? _vm.stats.processes.toLocaleString() : 0
+          ) +
+          "\n    "
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4fb1d730", module.exports)
+  }
+}
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(45)
+/* template */
+var __vue_template__ = __webpack_require__(46)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Cards/MaxWaitTime.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-32d64a82", Component.options)
+  } else {
+    hotAPI.reload("data-v-32d64a82", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 45 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__ = __webpack_require__(1);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */],
+
+    methods: {
+        humanTime: function humanTime(time) {
+            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
+                return $1.toUpperCase();
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("card", { staticClass: "px-6 py-6" }, [
+    _c("h3", { staticClass: "mr-3 mb-3 text-base text-80 font-bold" }, [
+      _vm._v("Max Wait Time")
+    ]),
+    _vm._v(" "),
+    _c("p", { staticClass: "text-4xl mb-3" }, [
+      _vm._v(
+        "\n        " +
+          _vm._s(
+            _vm.stats.max_wait_time
+              ? _vm.humanTime(_vm.stats.max_wait_time)
+              : "-"
+          ) +
+          "\n    "
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-32d64a82", module.exports)
+  }
+}
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(48)
+/* template */
+var __vue_template__ = __webpack_require__(49)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Cards/maxRuntime.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-581bba6b", Component.options)
+  } else {
+    hotAPI.reload("data-v-581bba6b", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 48 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__ = __webpack_require__(1);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */]
+});
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("card", { staticClass: "px-6 py-6" }, [
+    _c("h3", { staticClass: "mr-3 mb-3 text-base text-80 font-bold" }, [
       _vm._v("Max Runtime")
     ]),
     _vm._v(" "),
@@ -2907,15 +3905,15 @@ if (false) {
 }
 
 /***/ }),
-/* 44 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(45)
+var __vue_script__ = __webpack_require__(51)
 /* template */
-var __vue_template__ = __webpack_require__(46)
+var __vue_template__ = __webpack_require__(52)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -2954,7 +3952,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 45 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2978,7 +3976,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 46 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -3014,13 +4012,13 @@ if (false) {
 }
 
 /***/ }),
-/* 47 */
+/* 53 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 48 */
+/* 54 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

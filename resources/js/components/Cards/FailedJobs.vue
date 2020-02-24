@@ -34,7 +34,6 @@
             clearInterval(this.interval);
         },
 
-
         /**
          * Watch these properties for changes.
          */
@@ -56,13 +55,12 @@
             }
         },
 
-
         methods: {
             /**
              * Load the jobs of the given tag.
              */
             loadJobs(starting = 0, refreshing = false) {
-                if (!refreshing) {
+                if (! refreshing) {
                     this.ready = false;
                 }
 
@@ -70,12 +68,12 @@
 
                 Nova.request().get(NovaHorizon.basePath + '/api/jobs/failed?' + tagQuery + 'starting_at=' + starting)
                     .then(response => {
-                        if (!this.$root.autoLoadsNewEntries && refreshing && !response.data.jobs.length) {
+                        if (! this.$root.autoLoadsNewEntries && refreshing && ! response.data.jobs.length) {
                             return;
                         }
 
 
-                        if (!this.$root.autoLoadsNewEntries && refreshing && this.jobs.length && _.first(response.data.jobs).id !== _.first(this.jobs).id) {
+                        if (! this.$root.autoLoadsNewEntries && refreshing && this.jobs.length && _.first(response.data.jobs).id !== _.first(this.jobs).id) {
                             this.hasNewEntries = true;
                         } else {
                             this.jobs = response.data.jobs;
@@ -87,7 +85,6 @@
                     });
             },
 
-
             loadNewEntries() {
                 this.jobs = [];
 
@@ -95,7 +92,6 @@
 
                 this.hasNewEntries = false;
             },
-
 
             /**
              * Retry the given failed job.
@@ -107,14 +103,13 @@
 
                 this.retryingJobs.push(id);
 
-                Nova.request().get(NovaHorizon.basePath + '/api/jobs/retry/' + id)
+                Nova.request().post(NovaHorizon.basePath + '/api/jobs/retry/' + id)
                     .then((response) => {
                         setTimeout(() => {
                             this.retryingJobs = _.reject(this.retryingJobs, job => job == id);
                         }, 5000);
                     });
             },
-
 
             /**
              * Determine if the given job is currently retrying.
@@ -123,14 +118,12 @@
                 return _.includes(this.retryingJobs, id);
             },
 
-
             /**
              * Determine if the given job has completed.
              */
             hasCompleted(job) {
                 return _.find(job.retried_by, retry => retry.status == 'completed');
             },
-
 
             /**
              * Refresh the jobs every period of time.
@@ -145,7 +138,7 @@
              * Extract the job base name.
              */
             jobBaseName(name) {
-                if (!name.includes('\\')) return name;
+                if (! name.includes('\\')) return name;
 
                 var parts = name.split('\\');
 
@@ -166,7 +159,6 @@
                 return this.formatDate(timestamp).format('YYYY-MM-DD HH:mm:ss');
             },
 
-
             /**
              * Load the jobs for the previous page.
              */
@@ -179,7 +171,6 @@
 
                 this.hasNewEntries = false;
             },
-
 
             /**
              * Load the jobs for the next page.
@@ -210,8 +201,8 @@
             >
         </div>
 
-        <div v-if="!ready" class="d-flex align-items-center justify-content-center card-bg-secondary p-5 bottom-radius">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="icon spin mr-2 fill-text-color">
+        <div v-if="! ready" class="p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="spin mr-2 w-8 fill-primary">
                 <path d="M12 10a2 2 0 0 1-3.41 1.41A2 2 0 0 1 10 8V0a9.97 9.97 0 0 1 10 10h-8zm7.9 1.41A10 10 0 1 1 8.59.1v2.03a8 8 0 1 0 9.29 9.29h2.02zm-4.07 0a6 6 0 1 1-7.25-7.25v2.1a3.99 3.99 0 0 0-1.4 6.57 4 4 0 0 0 6.56-1.42h2.1z"></path>
             </svg>
 
@@ -219,8 +210,8 @@
         </div>
 
 
-        <div v-if="ready && jobs.length == 0" class="d-flex flex-column align-items-center justify-content-center card-bg-secondary p-5 bottom-radius">
-            <span>There aren't any failed jobs.</span>
+        <div v-if="ready && jobs.length == 0" class="p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100">
+            <span>No failed jobs found.</span>
         </div>
 
         <div class="overflow-hidden overflow-x-auto relative" v-if="jobs.length">
@@ -235,9 +226,14 @@
                 </thead>
 
                 <tbody>
-                    <tr v-if="hasNewEntries" key="newEntries" class="dontanimate">
-                        <td colspan="100" class="text-center card-bg-secondary py-1">
-                            <small><a href="#" v-on:click.prevent="loadNewEntries" v-if="!loadingNewEntries">Load New Entries</a></small>
+                    <tr v-if="hasNewEntries" key="newEntries">
+                        <td colspan="100" class="text-center bg-gray-100 p-8">
+                            <a
+                                href="#"
+                                v-on:click.prevent="loadNewEntries"
+                                v-if="! loadingNewEntries"
+                                class="no-underline dim text-primary font-bold"
+                            >Load New Entries</a>
 
                             <small v-if="loadingNewEntries">Loading...</small>
                         </td>
@@ -245,13 +241,15 @@
 
                     <tr v-for="job in jobs" :key="job.id">
                         <td>
-                            <span v-if="job.status != 'failed'" :title="job.name">{{jobBaseName(job.name)}}</span>
-                            <router-link v-if="job.status === 'failed'" :title="job.name" :to="{ name: 'failed-jobs-preview', params: { jobId: job.id }}">
+                            <span class="font-bold" :title="job.name">{{ jobBaseName(job.name) }}</span>
+
+                            <router-link v-if="job.status === 'failed'" :title="job.name" :to="{ name: 'failed-jobs-preview', params: { jobId: job.id }}" class="hidden">
                                 {{ jobBaseName(job.name) }}
                             </router-link>
+
                             <br>
 
-                            <small class="text-muted">
+                            <small>
                                 Queue: {{job.queue}}
                                 <span v-if="job.payload && job.payload.tags.length">
                                     | Tags: {{ job.payload.tags && job.payload.tags.length ? job.payload.tags.join(', ') : '' }}
@@ -259,16 +257,16 @@
                             </small>
                         </td>
 
-                        <td class="table-fit">
+                        <td>
                             <span>{{ job.failed_at ? String((job.failed_at - job.reserved_at).toFixed(2))+'s' : '-' }}</span>
                         </td>
 
-                        <td class="table-fit">
+                        <td>
                             {{ readableTimestamp(job.failed_at) }}
                         </td>
 
-                        <td class="text-right table-fit">
-                            <a href="#" @click.prevent="retry(job.id)" v-if="!hasCompleted(job)">
+                        <td class="text-right">
+                            <a href="#" @click.prevent="retry(job.id)" v-if="! hasCompleted(job)">
                                 <svg class="fill-primary" viewBox="0 0 20 20" style="width: 1.5rem; height: 1.5rem;" :class="{spin: isRetrying(job.id)}">
                                     <path d="M10 3v2a5 5 0 0 0-3.54 8.54l-1.41 1.41A7 7 0 0 1 10 3zm4.95 2.05A7 7 0 0 1 10 17v-2a5 5 0 0 0 3.54-8.54l1.41-1.41zM10 20l-4-4 4-4v8zm0-12V0l4 4-4 4z"/>
                                 </svg>
@@ -285,3 +283,11 @@
         </div>
     </card>
 </template>
+
+<style scoped>
+    .p-8{ padding: 2rem; }
+
+    .bg-gray-100{ background: #f7fafc; }
+
+    .border-gray-300{ border-color: #e2e8f0; }
+</style>
