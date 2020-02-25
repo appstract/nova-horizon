@@ -1738,14 +1738,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -2105,109 +2097,58 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("tr", [
-    _c(
-      "td",
-      [
-        _c(
-          "span",
-          { staticClass: "font-bold", attrs: { title: _vm.job.name } },
-          [_vm._v(_vm._s(_vm.jobBaseName(_vm.job.name)))]
+    _c("td", [
+      _c("span", { staticClass: "font-bold", attrs: { title: _vm.job.name } }, [
+        _vm._v(_vm._s(_vm.jobBaseName(_vm.job.name)))
+      ]),
+      _vm._v("\n\n        (#" + _vm._s(_vm.job.id) + ")\n\n        "),
+      _vm.delayed &&
+      (_vm.job.status == "reserved" || _vm.job.status == "pending")
+        ? _c(
+            "small",
+            {
+              directives: [
+                {
+                  name: "tooltip",
+                  rawName: "v-tooltip:top",
+                  value: "Delayed for " + _vm.delayed,
+                  expression: "`Delayed for ${delayed}`",
+                  arg: "top"
+                }
+              ],
+              staticClass: "p-2 fill-info"
+            },
+            [_vm._v("\n            Delayed\n        ")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("small", { staticClass: "text-muted" }, [
+        _vm._v(
+          "\n            Queue: " + _vm._s(_vm.job.queue) + "\n\n            "
         ),
-        _vm._v(" "),
-        _vm.job.status === "failed"
-          ? _c(
-              "router-link",
-              {
-                staticClass: "hidden",
-                attrs: {
-                  title: _vm.job.name,
-                  to: {
-                    name: "failed-jobs-preview",
-                    params: { jobId: _vm.job.id }
-                  }
-                }
-              },
-              [
-                _vm._v(
-                  "\n            " +
-                    _vm._s(_vm.jobBaseName(_vm.job.name)) +
-                    "\n        "
-                )
-              ]
-            )
-          : _vm._e(),
-        _vm._v("\n\n        (#" + _vm._s(_vm.job.id) + ")\n\n        "),
-        _vm.delayed &&
-        (_vm.job.status == "reserved" || _vm.job.status == "pending")
-          ? _c(
-              "small",
-              {
-                directives: [
-                  {
-                    name: "tooltip",
-                    rawName: "v-tooltip:top",
-                    value: "Delayed for " + _vm.delayed,
-                    expression: "`Delayed for ${delayed}`",
-                    arg: "top"
-                  }
-                ],
-                staticClass: "p-2 fill-info"
-              },
-              [_vm._v("\n            Delayed\n        ")]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c(
-          "small",
-          { staticClass: "text-muted" },
-          [
-            _c(
-              "router-link",
-              {
-                staticClass: "hidden",
-                attrs: {
-                  to: {
-                    name: "recent-jobs-preview",
-                    params: { jobId: _vm.job.id }
-                  }
-                }
-              },
-              [_vm._v("\n                View detail |\n            ")]
-            ),
-            _vm._v(
-              "\n\n            Queue: " +
-                _vm._s(_vm.job.queue) +
-                "\n\n            "
-            ),
-            _vm.job.payload.tags.length
-              ? _c("span", [
-                  _vm._v(
-                    "\n                | Tags: " +
-                      _vm._s(
-                        _vm.job.payload.tags && _vm.job.payload.tags.length
-                          ? _vm.job.payload.tags.slice(0, 3).join(", ")
-                          : ""
-                      )
-                  ),
-                  _vm.job.payload.tags.length > 3
-                    ? _c("span", [
-                        _vm._v(
-                          " (" +
-                            _vm._s(_vm.job.payload.tags.length - 3) +
-                            " more)"
-                        )
-                      ])
-                    : _vm._e()
-                ])
-              : _vm._e()
-          ],
-          1
-        )
-      ],
-      1
-    ),
+        _vm.job.payload.tags.length
+          ? _c("span", [
+              _vm._v(
+                "\n                | Tags: " +
+                  _vm._s(
+                    _vm.job.payload.tags && _vm.job.payload.tags.length
+                      ? _vm.job.payload.tags.slice(0, 3).join(", ")
+                      : ""
+                  )
+              ),
+              _vm.job.payload.tags.length > 3
+                ? _c("span", [
+                    _vm._v(
+                      " (" + _vm._s(_vm.job.payload.tags.length - 3) + " more)"
+                    )
+                  ])
+                : _vm._e()
+            ])
+          : _vm._e()
+      ])
+    ]),
     _vm._v(" "),
     _c("td", [
       _vm._v(
@@ -2652,8 +2593,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     /**
@@ -2997,67 +2936,45 @@ var render = function() {
                 _vm._v(" "),
                 _vm._l(_vm.jobs, function(job) {
                   return _c("tr", { key: job.id }, [
-                    _c(
-                      "td",
-                      [
-                        _c(
-                          "span",
-                          {
-                            staticClass: "font-bold",
-                            attrs: { title: job.name }
-                          },
-                          [_vm._v(_vm._s(_vm.jobBaseName(job.name)))]
-                        ),
-                        _vm._v(" "),
-                        job.status === "failed"
-                          ? _c(
-                              "router-link",
-                              {
-                                staticClass: "hidden",
-                                attrs: {
-                                  title: job.name,
-                                  to: {
-                                    name: "failed-jobs-preview",
-                                    params: { jobId: job.id }
-                                  }
-                                }
-                              },
-                              [
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(_vm.jobBaseName(job.name)) +
-                                    "\n                        "
-                                )
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("small", [
+                    _c("td", [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "font-bold",
+                          attrs: { title: job.name }
+                        },
+                        [
                           _vm._v(
-                            "\n                            Queue: " +
-                              _vm._s(job.queue) +
-                              "\n                            "
-                          ),
-                          job.payload && job.payload.tags.length
-                            ? _c("span", [
-                                _vm._v(
-                                  "\n                                | Tags: " +
-                                    _vm._s(
-                                      job.payload.tags &&
-                                        job.payload.tags.length
-                                        ? job.payload.tags.join(", ")
-                                        : ""
-                                    ) +
-                                    "\n                            "
-                                )
-                              ])
-                            : _vm._e()
-                        ])
-                      ],
-                      1
-                    ),
+                            "\n                            " +
+                              _vm._s(_vm.jobBaseName(job.name)) +
+                              "\n                        "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("small", [
+                        _vm._v(
+                          "\n                            Queue: " +
+                            _vm._s(job.queue) +
+                            "\n                            "
+                        ),
+                        job.payload && job.payload.tags.length
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                                | Tags: " +
+                                  _vm._s(
+                                    job.payload.tags && job.payload.tags.length
+                                      ? job.payload.tags.join(", ")
+                                      : ""
+                                  ) +
+                                  "\n                            "
+                              )
+                            ])
+                          : _vm._e()
+                      ])
+                    ]),
                     _vm._v(" "),
                     _c("td", [
                       _c("span", [

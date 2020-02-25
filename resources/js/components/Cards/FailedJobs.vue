@@ -51,11 +51,9 @@
 
                     <tr v-for="job in jobs" :key="job.id">
                         <td>
-                            <span class="font-bold" :title="job.name">{{ jobBaseName(job.name) }}</span>
-
-                            <router-link v-if="job.status === 'failed'" :title="job.name" :to="{ name: 'failed-jobs-preview', params: { jobId: job.id }}" class="hidden">
+                            <span class="font-bold" :title="job.name">
                                 {{ jobBaseName(job.name) }}
-                            </router-link>
+                            </span>
 
                             <br>
 

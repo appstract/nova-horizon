@@ -3,10 +3,6 @@
         <td>
             <span class="font-bold" :title="job.name">{{ jobBaseName(job.name) }}</span>
 
-            <router-link v-if="job.status === 'failed'" :title="job.name" :to="{ name: 'failed-jobs-preview', params: { jobId: job.id }}" class="hidden">
-                {{ jobBaseName(job.name) }}
-            </router-link>
-
             (#{{ job.id }})
 
             <small
@@ -20,10 +16,6 @@
             <br>
 
             <small class="text-muted">
-                <router-link :to="{name: 'recent-jobs-preview', params: {jobId: job.id}}" class="hidden">
-                    View detail |
-                </router-link>
-
                 Queue: {{job.queue}}
 
                 <span v-if="job.payload.tags.length">
