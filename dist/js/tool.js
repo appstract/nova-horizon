@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 55);
+/******/ 	return __webpack_require__(__webpack_require__.s = 77);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -521,44 +521,44 @@ module.exports = function listToStyles (parentId, list) {
 
 /***/ }),
 
-/***/ 55:
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(56);
+module.exports = __webpack_require__(78);
 
 
 /***/ }),
 
-/***/ 56:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 window.NovaHorizon = {
-  basePath: '/horizon'
+    basePath: '/horizon'
 };
 
 Nova.booting(function (Vue, router, store) {
-  router.addRoutes([{
-    name: 'nova-horizon',
-    path: '/horizon',
-    component: __webpack_require__(57)
-  }]);
+    router.addRoutes([{
+        name: 'nova-horizon',
+        path: '/horizon',
+        component: __webpack_require__(79)
+    }]);
 });
 
 /***/ }),
 
-/***/ 57:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(58)
+  __webpack_require__(80)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(60)
+var __vue_script__ = __webpack_require__(82)
 /* template */
-var __vue_template__ = __webpack_require__(61)
+var __vue_template__ = __webpack_require__(83)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -598,13 +598,13 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 58:
+/***/ 80:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(59);
+var content = __webpack_require__(81);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -625,7 +625,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 59:
+/***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(false);
@@ -640,7 +640,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Scoped Styles */\n", "
 
 /***/ }),
 
-/***/ 60:
+/***/ 82:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -660,7 +660,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 61:
+/***/ 83:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {

@@ -12,7 +12,8 @@
     "devDependencies": {
         "cross-env": "^5.0.0",
         "laravel-mix": "^1.0",
-        "phpunserialize": "^1.0.1"
+        "phpunserialize": "^1.0.1",
+        "vue-json-pretty": "^1.6.3"
     },
     "dependencies": {
         "vue": "^2.5.0"

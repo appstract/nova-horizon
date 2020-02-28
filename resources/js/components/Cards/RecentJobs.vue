@@ -54,23 +54,11 @@
 </template>
 
 <script>
+import JobsCard from '../../templates/JobsCard';
 import JobRow from './RecentJobs/JobRow';
 
 export default {
-    /**
-     * The component's data.
-     */
-    data() {
-        return {
-            ready: false,
-            loadingNewEntries: false,
-            hasNewEntries: false,
-            page: 1,
-            perPage: 50,
-            totalPages: 1,
-            jobs: []
-        };
-    },
+    extends: JobsCard,
 
     /**
      * Components
@@ -86,13 +74,6 @@ export default {
         this.loadJobs();
 
         this.refreshJobsPeriodically();
-    },
-
-    /**
-     * Clean after the component is destroyed.
-     */
-    destroyed() {
-        clearInterval(this.interval);
     },
 
     methods: {
@@ -138,32 +119,6 @@ export default {
                 this.loadJobs(-1, true);
             }, 5000);
         },
-
-        /**
-         * Load the jobs for the previous page.
-         */
-        previous() {
-            this.loadJobs(
-                (this.page - 2) * this.perPage
-            );
-
-            this.page -= 1;
-
-            this.hasNewEntries = false;
-        },
-
-        /**
-         * Load the jobs for the next page.
-         */
-        next() {
-            this.loadJobs(
-                this.page * this.perPage
-            );
-
-            this.page += 1;
-
-            this.hasNewEntries = false;
-        }
     }
 }
 </script>

@@ -19,7 +19,6 @@
             <span>Loading...</span>
         </div>
 
-
         <div v-if="ready && jobs.length == 0" class="p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100">
             <span>No failed jobs found.</span>
         </div>
@@ -51,9 +50,38 @@
 
                     <tr v-for="job in jobs" :key="job.id">
                         <td>
-                            <span class="font-bold" :title="job.name">
+                            <modal v-if="visibleModal(job)">
+                                <div class="bg-white rounded-lg shadow-lg overflow-hidden" style="width: 900px">
+                                    <div class="bg-30 p-4 flex items-center justify-between">
+                                        <div class="font-bold">
+                                            {{ modal.name }} (#{{ modal.id }})
+                                        </div>
+
+                                        <button
+                                            @click.prevent="closeModal"
+                                            class="btn btn-default btn-danger"
+                                        >
+                                            Close
+                                        </button>
+                                    </div>
+
+                                    <div class="p-4">
+                                        <nova-horizon-stack-trace :trace="modal.exception.split('\n')"></nova-horizon-stack-trace>
+                                    </div>
+
+                                    <div class="bg-30 p-4 flex items-center justify-between">
+                                        <span class="font-bold">Data</span>
+                                    </div>
+
+                                    <div class="p-4 bg-black text-white">
+                                        <nova-horizon-json-pretty :data="prettyPrintJob(modal.payload.data)"></nova-horizon-json-pretty>
+                                    </div>
+                                </div>
+                            </modal>
+
+                            <a class="no-underline dim text-primary font-bold" :title="job.name" href="#" @click.prevent="openModal(job)">
                                 {{ jobBaseName(job.name) }}
-                            </span>
+                            </a>
 
                             <br>
 
@@ -93,7 +121,12 @@
 </template>
 
 <script>
+import phpunserialize from 'phpunserialize';
+import JobsCard from '../../templates/JobsCard';
+
 export default {
+    extends: JobsCard,
+
     /**
      * The component's data.
      */
@@ -101,13 +134,6 @@ export default {
         return {
             searchQuery: '',
             searchTimeout: null,
-            ready: false,
-            loadingNewEntries: false,
-            hasNewEntries: false,
-            page: 1,
-            perPage: 50,
-            totalPages: 1,
-            jobs: [],
             retryingJobs: [],
         };
     },
@@ -122,22 +148,9 @@ export default {
     },
 
     /**
-     * Clean after the component is destroyed.
-     */
-    destroyed() {
-        clearInterval(this.interval);
-    },
-
-    /**
      * Watch these properties for changes.
      */
     watch: {
-        '$route'() {
-            this.page = 1;
-
-            this.loadJobs();
-        },
-
         searchQuery() {
             clearTimeout(this.searchTimeout);
             clearInterval(this.interval);
@@ -254,29 +267,15 @@ export default {
         },
 
         /**
-         * Load the jobs for the previous page.
+         * Pretty print serialized job.
+         *
+         * @param data
+         * @returns {string}
          */
-        previous() {
-            this.loadJobs(
-                (this.page - 2) * this.perPage
-            );
-
-            this.page -= 1;
-
-            this.hasNewEntries = false;
-        },
-
-        /**
-         * Load the jobs for the next page.
-         */
-        next() {
-            this.loadJobs(
-                this.page * this.perPage
-            );
-
-            this.page += 1;
-
-            this.hasNewEntries = false;
+        prettyPrintJob(data) {
+            return data.command && ! data.command.includes('CallQueuedClosure')
+                ? phpunserialize(data.command)
+                : data;
         }
     }
 }

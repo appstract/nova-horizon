@@ -1,7 +1,38 @@
 <template>
     <tr>
         <td>
-            <span class="font-bold" :title="job.name">{{ jobBaseName(job.name) }}</span>
+            <modal v-if="visibleModal(job)">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden" style="width: 900px">
+                    <div class="bg-30 p-4 flex items-center justify-between">
+                        <div class="font-bold">
+                            {{ modal.name }} (#{{ modal.id }})
+                        </div>
+
+                        <button
+                            @click.prevent="closeModal"
+                            class="btn btn-default btn-danger"
+                        >
+                            Close
+                        </button>
+                    </div>
+
+                    <div class="p-4" v-if="modal.status == 'failed'">
+                        <nova-horizon-stack-trace :trace="modal.exception.split('\n')"></nova-horizon-stack-trace>
+                    </div>
+
+                    <div class="bg-30 p-4 flex items-center justify-between" v-if="modal.status == 'failed'">
+                        <span class="font-bold">Data</span>
+                    </div>
+
+                    <div class="p-4 bg-black text-white">
+                        <nova-horizon-json-pretty :data="prettyPrintJob(modal.payload.data)"></nova-horizon-json-pretty>
+                    </div>
+                </div>
+            </modal>
+
+            <a class="no-underline dim text-primary font-bold" :title="job.name" href="#" @click.prevent="openModal(job)">
+                {{ jobBaseName(job.name) }}
+            </a>
 
             (#{{ job.id }})
 
@@ -61,6 +92,12 @@
             }
         },
 
+        data: function() {
+            return {
+                modal: true,
+            }
+        },
+
         methods: {
             /**
              * Extract the job base name.
@@ -86,6 +123,39 @@
             readableTimestamp(timestamp) {
                 return this.formatDate(timestamp).format('YYYY-MM-DD HH:mm:ss');
             },
+
+            /**
+             * Checks if a modal needs to be open.
+             */
+            visibleModal(job) {
+                return this.modal && this.modal.id == job.id;
+            },
+
+            /**
+             * Open a modal.
+             */
+            openModal(job) {
+                this.modal = job;
+            },
+
+            /**
+             * Close a modal.
+             */
+            closeModal() {
+                this.modal = null;
+            },
+
+            /**
+             * Pretty print serialized job.
+             *
+             * @param data
+             * @returns {string}
+             */
+            prettyPrintJob(data) {
+                return data.command && ! data.command.includes('CallQueuedClosure')
+                    ? phpunserialize(data.command)
+                    : data;
+            }
         },
 
         computed: {
