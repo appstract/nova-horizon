@@ -105,20 +105,6 @@ import StatsCard from '../../templates/StatsCard';
 export default {
     extends: StatsCard,
 
-    methods: {
-        determinePeriod(minutes) {
-            return moment.duration(
-                moment().diff(moment().subtract(minutes, "minutes"))
-            ).humanize().replace(/^An?/i, '');
-        },
-
-        humanTime(time) {
-            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
-                return $1.toUpperCase();
-            });
-        },
-    },
-
     computed: {
         recentJobsPeriod() {
             return this.ready && this.stats.periods

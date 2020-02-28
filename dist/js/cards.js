@@ -238,6 +238,24 @@ module.exports = function normalizeComponent (
                     _this2.fetchStatsPeriodically();
                 }, 10000);
             });
+        },
+
+
+        /**
+         * Determine the unit for the given timeframe.
+         */
+        determinePeriod: function determinePeriod(minutes) {
+            return moment.duration(moment().diff(moment().subtract(minutes, "minutes"))).humanize().replace(/^An?/i, '');
+        },
+
+
+        /**
+         * @returns {string}
+         */
+        humanTime: function humanTime(time) {
+            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
+                return $1.toUpperCase();
+            });
         }
     }
 });
@@ -590,6 +608,10 @@ module.exports = function listToStyles (parentId, list) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phpunserialize__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phpunserialize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_phpunserialize__);
+
+
 /* harmony default export */ __webpack_exports__["a"] = ({
     /**
      * Data.
@@ -612,7 +634,9 @@ module.exports = function listToStyles (parentId, list) {
      * Mounted.
      */
     mounted: function mounted() {
-        //
+        this.loadJobs();
+
+        this.refreshJobsPeriodically();
     },
 
 
@@ -625,6 +649,29 @@ module.exports = function listToStyles (parentId, list) {
 
 
     methods: {
+        /**
+         * Extract the job base name.
+         */
+        jobBaseName: function jobBaseName(name) {
+            if (!name.includes('\\')) return name;
+
+            var parts = name.split('\\');
+
+            return parts[parts.length - 1];
+        },
+
+
+        /**
+         * Pretty print serialized job.
+         *
+         * @param data
+         * @returns {string}
+         */
+        prettyPrintJob: function prettyPrintJob(data) {
+            return data.command && !data.command.includes('CallQueuedClosure') ? __WEBPACK_IMPORTED_MODULE_0_phpunserialize___default()(data.command) : data;
+        },
+
+
         /**
          * Load the jobs for the previous page.
          */
@@ -670,6 +717,22 @@ module.exports = function listToStyles (parentId, list) {
          */
         closeModal: function closeModal() {
             this.modal = null;
+        },
+
+
+        /**
+         * Format the given date with respect to timezone.
+         */
+        formatDate: function formatDate(unixTime) {
+            return moment(unixTime * 1000).add(new Date().getTimezoneOffset() / 60);
+        },
+
+
+        /**
+         * Convert to human readable timestamp.
+         */
+        readableTimestamp: function readableTimestamp(timestamp) {
+            return this.formatDate(timestamp).format('YYYY-MM-DD HH:mm:ss');
         }
     }
 });
@@ -1191,17 +1254,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */],
 
-    methods: {
-        determinePeriod: function determinePeriod(minutes) {
-            return moment.duration(moment().diff(moment().subtract(minutes, "minutes"))).humanize().replace(/^An?/i, '');
-        },
-        humanTime: function humanTime(time) {
-            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
-                return $1.toUpperCase();
-            });
-        }
-    },
-
     computed: {
         recentJobsPeriod: function recentJobsPeriod() {
             return this.ready && this.stats.periods ? 'Past ' + this.determinePeriod(this.stats.periods.recentJobs) : 'Past hour';
@@ -1630,13 +1682,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
-        humanTime: function humanTime(time) {
-            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
-                return $1.toUpperCase();
-            });
-        },
-
-
         /**
          * Fetch stats from horizon.
          */
@@ -1661,6 +1706,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.timeout = setTimeout(function () {
                     _this2.fetchWorkloadPeriodically();
                 }, 10000);
+            });
+        },
+
+
+        /**
+         * @returns {string}
+         */
+        humanTime: function humanTime(time) {
+            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
+                return $1.toUpperCase();
             });
         }
     }
@@ -1866,8 +1921,6 @@ exports.push([module.i, "\n.p-8[data-v-d19270f0]{ padding: 2rem;\n}\n.bg-gray-10
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__templates_JobsCard__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__RecentJobs_JobRow__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__RecentJobs_JobRow___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__RecentJobs_JobRow__);
 //
 //
 //
@@ -1923,29 +1976,90 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     extends: __WEBPACK_IMPORTED_MODULE_0__templates_JobsCard__["a" /* default */],
-
-    /**
-     * Components
-     */
-    components: {
-        JobRow: __WEBPACK_IMPORTED_MODULE_1__RecentJobs_JobRow___default.a
-    },
-
-    /**
-     * Prepare the component.
-     */
-    mounted: function mounted() {
-        this.loadJobs();
-
-        this.refreshJobsPeriodically();
-    },
-
 
     methods: {
         /**
@@ -1973,6 +2087,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.ready = true;
             });
         },
+
+
+        /**
+         * Load new entries.
+         */
         loadNewEntries: function loadNewEntries() {
             this.jobs = [];
 
@@ -2000,506 +2119,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(24)
-/* template */
-var __vue_template__ = __webpack_require__(25)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Cards/RecentJobs/JobRow.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-534250d8", Component.options)
-  } else {
-    hotAPI.reload("data-v-534250d8", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phpunserialize__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phpunserialize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_phpunserialize__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: {
-        job: {
-            type: Object,
-            required: true
-        }
-    },
-
-    data: function data() {
-        return {
-            modal: true
-        };
-    },
-
-    methods: {
-        /**
-         * Extract the job base name.
-         */
-        jobBaseName: function jobBaseName(name) {
-            if (!name.includes('\\')) return name;
-
-            var parts = name.split('\\');
-
-            return parts[parts.length - 1];
-        },
-
-
-        /**
-         * Format the given date with respect to timezone.
-         */
-        formatDate: function formatDate(unixTime) {
-            return moment(unixTime * 1000).add(new Date().getTimezoneOffset() / 60);
-        },
-
-
-        /**
-         * Convert to human readable timestamp.
-         */
-        readableTimestamp: function readableTimestamp(timestamp) {
-            return this.formatDate(timestamp).format('YYYY-MM-DD HH:mm:ss');
-        },
-
-
-        /**
-         * Checks if a modal needs to be open.
-         */
-        visibleModal: function visibleModal(job) {
-            return this.modal && this.modal.id == job.id;
-        },
-
-
-        /**
-         * Open a modal.
-         */
-        openModal: function openModal(job) {
-            this.modal = job;
-        },
-
-
-        /**
-         * Close a modal.
-         */
-        closeModal: function closeModal() {
-            this.modal = null;
-        },
-
-
-        /**
-         * Pretty print serialized job.
-         *
-         * @param data
-         * @returns {string}
-         */
-        prettyPrintJob: function prettyPrintJob(data) {
-            return data.command && !data.command.includes('CallQueuedClosure') ? __WEBPACK_IMPORTED_MODULE_0_phpunserialize___default()(data.command) : data;
-        }
-    },
-
-    computed: {
-        unserialized: function unserialized() {
-            return __WEBPACK_IMPORTED_MODULE_0_phpunserialize___default()(this.job.payload.data.command);
-        },
-        delayed: function delayed() {
-            if (this.unserialized && this.unserialized.delay) {
-                return moment.utc(this.unserialized.delay.date).fromNow(true);
-            }
-
-            return null;
-        }
-    }
-});
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("tr", [
-    _c(
-      "td",
-      [
-        _vm.visibleModal(_vm.job)
-          ? _c("modal", [
-              _c(
-                "div",
-                {
-                  staticClass: "bg-white rounded-lg shadow-lg overflow-hidden",
-                  staticStyle: { width: "900px" }
-                },
-                [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "bg-30 p-4 flex items-center justify-between"
-                    },
-                    [
-                      _c("div", { staticClass: "font-bold" }, [
-                        _vm._v(
-                          "\n                        " +
-                            _vm._s(_vm.modal.name) +
-                            " (#" +
-                            _vm._s(_vm.modal.id) +
-                            ")\n                    "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-default btn-danger",
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.closeModal($event)
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                        Close\n                    "
-                          )
-                        ]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _vm.modal.status == "failed"
-                    ? _c(
-                        "div",
-                        { staticClass: "p-4" },
-                        [
-                          _c("nova-horizon-stack-trace", {
-                            attrs: { trace: _vm.modal.exception.split("\n") }
-                          })
-                        ],
-                        1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.modal.status == "failed"
-                    ? _c(
-                        "div",
-                        {
-                          staticClass:
-                            "bg-30 p-4 flex items-center justify-between"
-                        },
-                        [
-                          _c("span", { staticClass: "font-bold" }, [
-                            _vm._v("Data")
-                          ])
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "p-4 bg-black text-white" },
-                    [
-                      _c("nova-horizon-json-pretty", {
-                        attrs: {
-                          data: _vm.prettyPrintJob(_vm.modal.payload.data)
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ]
-              )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "no-underline dim text-primary font-bold",
-            attrs: { title: _vm.job.name, href: "#" },
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                return _vm.openModal(_vm.job)
-              }
-            }
-          },
-          [
-            _vm._v(
-              "\n            " +
-                _vm._s(_vm.jobBaseName(_vm.job.name)) +
-                "\n        "
-            )
-          ]
-        ),
-        _vm._v("\n\n        (#" + _vm._s(_vm.job.id) + ")\n\n        "),
-        _vm.delayed &&
-        (_vm.job.status == "reserved" || _vm.job.status == "pending")
-          ? _c(
-              "small",
-              {
-                directives: [
-                  {
-                    name: "tooltip",
-                    rawName: "v-tooltip:top",
-                    value: "Delayed for " + _vm.delayed,
-                    expression: "`Delayed for ${delayed}`",
-                    arg: "top"
-                  }
-                ],
-                staticClass: "p-2 fill-info"
-              },
-              [_vm._v("\n            Delayed\n        ")]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("small", { staticClass: "text-muted" }, [
-          _vm._v(
-            "\n            Queue: " + _vm._s(_vm.job.queue) + "\n\n            "
-          ),
-          _vm.job.payload.tags.length
-            ? _c("span", [
-                _vm._v(
-                  "\n                | Tags: " +
-                    _vm._s(
-                      _vm.job.payload.tags && _vm.job.payload.tags.length
-                        ? _vm.job.payload.tags.slice(0, 3).join(", ")
-                        : ""
-                    )
-                ),
-                _vm.job.payload.tags.length > 3
-                  ? _c("span", [
-                      _vm._v(
-                        " (" +
-                          _vm._s(_vm.job.payload.tags.length - 3) +
-                          " more)"
-                      )
-                    ])
-                  : _vm._e()
-              ])
-            : _vm._e()
-        ])
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("td", [
-      _vm._v(
-        "\n        " +
-          _vm._s(_vm.readableTimestamp(_vm.job.payload.pushedAt)) +
-          "\n    "
-      )
-    ]),
-    _vm._v(" "),
-    _c("td", [
-      _c("span", [
-        _vm._v(
-          "\n            " +
-            _vm._s(
-              _vm.job.completed_at
-                ? (_vm.job.completed_at - _vm.job.reserved_at).toFixed(2) + "s"
-                : "-"
-            ) +
-            "\n        "
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("td", { staticClass: "text-right" }, [
-      _vm.job.status == "completed"
-        ? _c(
-            "svg",
-            {
-              staticClass: "fill-success",
-              staticStyle: { width: "1.5rem", height: "1.5rem" },
-              attrs: { viewBox: "0 0 20 20" }
-            },
-            [
-              _c("path", {
-                attrs: {
-                  d:
-                    "M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM6.7 9.29L9 11.6l4.3-4.3 1.4 1.42L9 14.4l-3.7-3.7 1.4-1.42z"
-                }
-              })
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.job.status == "reserved" || _vm.job.status == "pending"
-        ? _c(
-            "svg",
-            {
-              staticClass: "fill-warning",
-              staticStyle: { width: "1.5rem", height: "1.5rem" },
-              attrs: { viewBox: "0 0 20 20" }
-            },
-            [
-              _c("path", {
-                attrs: {
-                  d:
-                    "M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM7 6h2v8H7V6zm4 0h2v8h-2V6z"
-                }
-              })
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.job.status == "failed"
-        ? _c(
-            "svg",
-            {
-              staticClass: "fill-danger",
-              staticStyle: { width: "1.5rem", height: "1.5rem" },
-              attrs: { viewBox: "0 0 20 20" }
-            },
-            [
-              _c("path", {
-                attrs: {
-                  d:
-                    "M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm1.41-1.41A8 8 0 1 0 15.66 4.34 8 8 0 0 0 4.34 15.66zm9.9-8.49L11.41 10l2.83 2.83-1.41 1.41L10 11.41l-2.83 2.83-1.41-1.41L8.59 10 5.76 7.17l1.41-1.41L10 8.59l2.83-2.83 1.41 1.41z"
-                }
-              })
-            ]
-          )
-        : _vm._e()
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-534250d8", module.exports)
-  }
-}
-
-/***/ }),
+/* 23 */,
+/* 24 */,
+/* 25 */,
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2611,11 +2233,290 @@ var render = function() {
                   : _vm._e(),
                 _vm._v(" "),
                 _vm._l(_vm.jobs, function(job) {
-                  return _c("job-row", {
-                    key: job.id,
-                    tag: "tr",
-                    attrs: { job: job }
-                  })
+                  return _c("tr", { key: job.id, attrs: { job: job } }, [
+                    _c(
+                      "td",
+                      [
+                        _vm.visibleModal(job)
+                          ? _c("modal", [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "bg-white rounded-lg shadow-lg overflow-hidden",
+                                  staticStyle: { width: "900px" }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "bg-30 p-4 flex items-center justify-between"
+                                    },
+                                    [
+                                      _c("div", { staticClass: "font-bold" }, [
+                                        _vm._v(
+                                          "\n                                        " +
+                                            _vm._s(_vm.modal.name) +
+                                            " (#" +
+                                            _vm._s(_vm.modal.id) +
+                                            ")\n                                    "
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "btn btn-default btn-danger",
+                                          on: {
+                                            click: function($event) {
+                                              $event.preventDefault()
+                                              return _vm.closeModal($event)
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                        Close\n                                    "
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm.modal.status == "failed"
+                                    ? _c(
+                                        "div",
+                                        { staticClass: "p-4" },
+                                        [
+                                          _c("nova-horizon-stack-trace", {
+                                            attrs: {
+                                              trace: _vm.modal.exception.split(
+                                                "\n"
+                                              )
+                                            }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _vm.modal.status == "failed"
+                                    ? _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "bg-30 p-4 flex items-center justify-between"
+                                        },
+                                        [
+                                          _c(
+                                            "span",
+                                            { staticClass: "font-bold" },
+                                            [_vm._v("Data")]
+                                          )
+                                        ]
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "p-4 bg-black text-white" },
+                                    [
+                                      _c("nova-horizon-json-pretty", {
+                                        attrs: {
+                                          data: _vm.prettyPrintJob(
+                                            _vm.modal.payload.data
+                                          )
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ]
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c(
+                          "a",
+                          {
+                            staticClass:
+                              "no-underline dim text-primary font-bold",
+                            attrs: { title: job.name, href: "#" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.openModal(job)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(_vm.jobBaseName(job.name)) +
+                                "\n                        "
+                            )
+                          ]
+                        ),
+                        _vm._v(
+                          "\n\n                        (#" +
+                            _vm._s(job.id) +
+                            ")\n\n                        "
+                        ),
+                        _vm.delayed &&
+                        (job.status == "reserved" || job.status == "pending")
+                          ? _c(
+                              "small",
+                              {
+                                directives: [
+                                  {
+                                    name: "tooltip",
+                                    rawName: "v-tooltip:top",
+                                    value: "Delayed for " + _vm.delayed,
+                                    expression: "`Delayed for ${delayed}`",
+                                    arg: "top"
+                                  }
+                                ],
+                                staticClass: "p-2 fill-info"
+                              },
+                              [
+                                _vm._v(
+                                  "\n                            Delayed\n                        "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("small", { staticClass: "text-muted" }, [
+                          _vm._v(
+                            "\n                            Queue: " +
+                              _vm._s(job.queue) +
+                              "\n\n                            "
+                          ),
+                          job.payload.tags.length
+                            ? _c("span", [
+                                _vm._v(
+                                  "\n                                | Tags: " +
+                                    _vm._s(
+                                      job.payload.tags &&
+                                        job.payload.tags.length
+                                        ? job.payload.tags
+                                            .slice(0, 3)
+                                            .join(", ")
+                                        : ""
+                                    )
+                                ),
+                                job.payload.tags.length > 3
+                                  ? _c("span", [
+                                      _vm._v(
+                                        " (" +
+                                          _vm._s(job.payload.tags.length - 3) +
+                                          " more)"
+                                      )
+                                    ])
+                                  : _vm._e()
+                              ])
+                            : _vm._e()
+                        ])
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(_vm.readableTimestamp(job.payload.pushedAt)) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("span", [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(
+                              job.completed_at
+                                ? (job.completed_at - job.reserved_at).toFixed(
+                                    2
+                                  ) + "s"
+                                : "-"
+                            ) +
+                            "\n                        "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-right" }, [
+                      job.status == "completed"
+                        ? _c(
+                            "svg",
+                            {
+                              staticClass: "fill-success",
+                              staticStyle: {
+                                width: "1.5rem",
+                                height: "1.5rem"
+                              },
+                              attrs: { viewBox: "0 0 20 20" }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM6.7 9.29L9 11.6l4.3-4.3 1.4 1.42L9 14.4l-3.7-3.7 1.4-1.42z"
+                                }
+                              })
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      job.status == "reserved" || job.status == "pending"
+                        ? _c(
+                            "svg",
+                            {
+                              staticClass: "fill-warning",
+                              staticStyle: {
+                                width: "1.5rem",
+                                height: "1.5rem"
+                              },
+                              attrs: { viewBox: "0 0 20 20" }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM7 6h2v8H7V6zm4 0h2v8h-2V6z"
+                                }
+                              })
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      job.status == "failed"
+                        ? _c(
+                            "svg",
+                            {
+                              staticClass: "fill-danger",
+                              staticStyle: {
+                                width: "1.5rem",
+                                height: "1.5rem"
+                              },
+                              attrs: { viewBox: "0 0 20 20" }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm1.41-1.41A8 8 0 1 0 15.66 4.34 8 8 0 0 0 4.34 15.66zm9.9-8.49L11.41 10l2.83 2.83-1.41 1.41L10 11.41l-2.83 2.83-1.41-1.41L8.59 10 5.76 7.17l1.41-1.41L10 8.59l2.83-2.83 1.41 1.41z"
+                                }
+                              })
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  ])
                 })
               ],
               2
@@ -2756,9 +2657,7 @@ exports.push([module.i, "\n.p-8[data-v-a757d92c]{ padding: 2rem;\n}\n.bg-gray-10
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phpunserialize__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_phpunserialize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_phpunserialize__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__templates_JobsCard__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__templates_JobsCard__ = __webpack_require__(5);
 //
 //
 //
@@ -2881,12 +2780,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    extends: __WEBPACK_IMPORTED_MODULE_1__templates_JobsCard__["a" /* default */],
+    extends: __WEBPACK_IMPORTED_MODULE_0__templates_JobsCard__["a" /* default */],
 
     /**
      * The component's data.
@@ -2897,16 +2795,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             searchTimeout: null,
             retryingJobs: []
         };
-    },
-
-
-    /**
-     * Prepare the component.
-     */
-    mounted: function mounted() {
-        this.loadJobs();
-
-        this.refreshJobsPeriodically();
     },
 
 
@@ -2959,12 +2847,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.ready = true;
             });
         },
+
+
+        /**
+         * Load new entries.
+         */
         loadNewEntries: function loadNewEntries() {
             this.jobs = [];
 
-            this.loadJobs(0, false);
+            this.loadJobs(-1, false);
 
             this.hasNewEntries = false;
+        },
+
+
+        /**
+         * Refresh the jobs every period of time.
+         */
+        refreshJobsPeriodically: function refreshJobsPeriodically() {
+            var _this3 = this;
+
+            this.interval = setInterval(function () {
+                _this3.loadJobs((_this3.page - 1) * _this3.perPage, true);
+            }, 3000);
         },
 
 
@@ -2972,7 +2877,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
          * Retry the given failed job.
          */
         retry: function retry(id) {
-            var _this3 = this;
+            var _this4 = this;
 
             if (this.isRetrying(id)) {
                 return;
@@ -2982,7 +2887,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             Nova.request().post(NovaHorizon.basePath + '/api/jobs/retry/' + id).then(function (response) {
                 setTimeout(function () {
-                    _this3.retryingJobs = _.reject(_this3.retryingJobs, function (job) {
+                    _this4.retryingJobs = _.reject(_this4.retryingJobs, function (job) {
                         return job == id;
                     });
                 }, 10000);
@@ -3005,57 +2910,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return _.find(job.retried_by, function (retry) {
                 return retry.status == 'completed';
             });
-        },
-
-
-        /**
-         * Refresh the jobs every period of time.
-         */
-        refreshJobsPeriodically: function refreshJobsPeriodically() {
-            var _this4 = this;
-
-            this.interval = setInterval(function () {
-                _this4.loadJobs((_this4.page - 1) * _this4.perPage, true);
-            }, 3000);
-        },
-
-
-        /**
-         * Extract the job base name.
-         */
-        jobBaseName: function jobBaseName(name) {
-            if (!name.includes('\\')) return name;
-
-            var parts = name.split('\\');
-
-            return parts[parts.length - 1];
-        },
-
-
-        /**
-         * Format the given date with respect to timezone.
-         */
-        formatDate: function formatDate(unixTime) {
-            return moment(unixTime * 1000).add(new Date().getTimezoneOffset() / 60);
-        },
-
-
-        /**
-         * Convert to human readable timestamp.
-         */
-        readableTimestamp: function readableTimestamp(timestamp) {
-            return this.formatDate(timestamp).format('YYYY-MM-DD HH:mm:ss');
-        },
-
-
-        /**
-         * Pretty print serialized job.
-         *
-         * @param data
-         * @returns {string}
-         */
-        prettyPrintJob: function prettyPrintJob(data) {
-            return data.command && !data.command.includes('CallQueuedClosure') ? __WEBPACK_IMPORTED_MODULE_0_phpunserialize___default()(data.command) : data;
         }
     }
 });
@@ -3632,12 +3486,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */],
 
-    methods: {
-        determinePeriod: function determinePeriod(minutes) {
-            return moment.duration(moment().diff(moment().subtract(minutes, "minutes"))).humanize().replace(/^An?/i, '');
-        }
-    },
-
     computed: {
         recentJobsPeriod: function recentJobsPeriod() {
             return this.ready && this.stats.periods ? 'Past ' + this.determinePeriod(this.stats.periods.recentJobs) : 'Past hour';
@@ -3755,12 +3603,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */],
-
-    methods: {
-        determinePeriod: function determinePeriod(minutes) {
-            return moment.duration(moment().diff(moment().subtract(minutes, "minutes"))).humanize().replace(/^An?/i, '');
-        }
-    },
 
     computed: {
         failedJobsPeriod: function failedJobsPeriod() {
@@ -4167,15 +4009,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */],
-
-    methods: {
-        humanTime: function humanTime(time) {
-            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
-                return $1.toUpperCase();
-            });
-        }
-    }
+    extends: __WEBPACK_IMPORTED_MODULE_0__templates_StatsCard__["a" /* default */]
 });
 
 /***/ }),

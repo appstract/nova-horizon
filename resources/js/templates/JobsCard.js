@@ -1,3 +1,5 @@
+import phpunserialize from 'phpunserialize';
+
 export default {
     /**
      * Data.
@@ -19,7 +21,9 @@ export default {
      * Mounted.
      */
     mounted() {
-        //
+        this.loadJobs();
+
+        this.refreshJobsPeriodically();
     },
 
     /**
@@ -30,6 +34,29 @@ export default {
     },
 
     methods: {
+        /**
+         * Extract the job base name.
+         */
+        jobBaseName(name) {
+            if (! name.includes('\\')) return name;
+
+            var parts = name.split('\\');
+
+            return parts[parts.length - 1];
+        },
+
+        /**
+         * Pretty print serialized job.
+         *
+         * @param data
+         * @returns {string}
+         */
+        prettyPrintJob(data) {
+            return data.command && ! data.command.includes('CallQueuedClosure')
+                ? phpunserialize(data.command)
+                : data;
+        },
+
         /**
          * Load the jobs for the previous page.
          */
@@ -75,6 +102,20 @@ export default {
          */
         closeModal() {
             this.modal = null;
+        },
+
+        /**
+         * Format the given date with respect to timezone.
+         */
+        formatDate(unixTime) {
+            return moment(unixTime * 1000).add(new Date().getTimezoneOffset() / 60);
+        },
+
+        /**
+         * Convert to human readable timestamp.
+         */
+        readableTimestamp(timestamp) {
+            return this.formatDate(timestamp).format('YYYY-MM-DD HH:mm:ss');
         },
     },
 }

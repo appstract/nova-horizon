@@ -56,5 +56,23 @@ export default {
                 }, 10000);
             });
         },
+
+        /**
+         * Determine the unit for the given timeframe.
+         */
+        determinePeriod(minutes) {
+            return moment.duration(
+                moment().diff(moment().subtract(minutes, "minutes"))
+            ).humanize().replace(/^An?/i, '');
+        },
+
+        /**
+         * @returns {string}
+         */
+        humanTime(time) {
+            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
+                return $1.toUpperCase();
+            });
+        },
     },
 }

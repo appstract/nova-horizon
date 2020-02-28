@@ -56,12 +56,6 @@ export default {
     },
 
     methods: {
-        humanTime(time) {
-            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
-                return $1.toUpperCase();
-            });
-        },
-
         /**
          * Fetch stats from horizon.
          */
@@ -83,6 +77,15 @@ export default {
                 this.timeout = setTimeout(() => {
                     this.fetchWorkloadPeriodically();
                 }, 10000);
+            });
+        },
+
+        /**
+         * @returns {string}
+         */
+        humanTime(time) {
+            return moment.duration(time, "seconds").humanize().replace(/^(.)|\s+(.)/g, function ($1) {
+                return $1.toUpperCase();
             });
         },
     },

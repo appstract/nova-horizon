@@ -121,7 +121,6 @@
 </template>
 
 <script>
-import phpunserialize from 'phpunserialize';
 import JobsCard from '../../templates/JobsCard';
 
 export default {
@@ -136,15 +135,6 @@ export default {
             searchTimeout: null,
             retryingJobs: [],
         };
-    },
-
-    /**
-     * Prepare the component.
-     */
-    mounted() {
-        this.loadJobs();
-
-        this.refreshJobsPeriodically();
     },
 
     /**
@@ -179,7 +169,6 @@ export default {
                         return;
                     }
 
-
                     if (! this.$root.autoLoadsNewEntries && refreshing && this.jobs.length && _.first(response.data.jobs).id !== _.first(this.jobs).id) {
                         this.hasNewEntries = true;
                     } else {
@@ -192,12 +181,24 @@ export default {
                 });
         },
 
+        /**
+         * Load new entries.
+         */
         loadNewEntries() {
             this.jobs = [];
 
-            this.loadJobs(0, false);
+            this.loadJobs(-1, false);
 
             this.hasNewEntries = false;
+        },
+
+        /**
+         * Refresh the jobs every period of time.
+         */
+        refreshJobsPeriodically() {
+            this.interval = setInterval(() => {
+                this.loadJobs((this.page - 1) * this.perPage, true);
+            }, 3000);
         },
 
         /**
@@ -231,52 +232,6 @@ export default {
         hasCompleted(job) {
             return _.find(job.retried_by, retry => retry.status == 'completed');
         },
-
-        /**
-         * Refresh the jobs every period of time.
-         */
-        refreshJobsPeriodically() {
-            this.interval = setInterval(() => {
-                this.loadJobs((this.page - 1) * this.perPage, true);
-            }, 3000);
-        },
-
-        /**
-         * Extract the job base name.
-         */
-        jobBaseName(name) {
-            if (! name.includes('\\')) return name;
-
-            var parts = name.split('\\');
-
-            return parts[parts.length - 1];
-        },
-
-        /**
-         * Format the given date with respect to timezone.
-         */
-        formatDate(unixTime) {
-            return moment(unixTime * 1000).add(new Date().getTimezoneOffset() / 60);
-        },
-
-        /**
-         * Convert to human readable timestamp.
-         */
-        readableTimestamp(timestamp) {
-            return this.formatDate(timestamp).format('YYYY-MM-DD HH:mm:ss');
-        },
-
-        /**
-         * Pretty print serialized job.
-         *
-         * @param data
-         * @returns {string}
-         */
-        prettyPrintJob(data) {
-            return data.command && ! data.command.includes('CallQueuedClosure')
-                ? phpunserialize(data.command)
-                : data;
-        }
     }
 }
 </script>
