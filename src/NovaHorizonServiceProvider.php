@@ -23,6 +23,12 @@ class NovaHorizonServiceProvider extends ServiceProvider
         });
 
         Nova::serving(function (ServingNova $event) {
+            Nova::provideToScript([
+                'novaHorizon' => [
+                    'basePath' => config('horizon.path'),
+                ]
+            ]);
+
             Nova::script('nova-horizon-cards', __DIR__.'/../dist/js/cards.js');
             Nova::style('nova-horizon-cards', __DIR__.'/../dist/css/cards.css');
         });
