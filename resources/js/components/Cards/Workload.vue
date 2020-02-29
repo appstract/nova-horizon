@@ -60,7 +60,7 @@ export default {
          * Fetch stats from horizon.
          */
         fetchWorkload() {
-            Nova.request().get('/horizon/api/workload').then(response => {
+            Nova.request().get(config.novaHorizon.basePath + '/api/workload').then(response => {
                 this.workload = response.data;
             });
         },

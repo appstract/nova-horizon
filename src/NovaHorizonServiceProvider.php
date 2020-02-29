@@ -4,6 +4,7 @@ namespace Appstract\NovaHorizon;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
 
@@ -25,7 +26,7 @@ class NovaHorizonServiceProvider extends ServiceProvider
         Nova::serving(function (ServingNova $event) {
             Nova::provideToScript([
                 'novaHorizon' => [
-                    'basePath' => config('horizon.path'),
+                    'basePath' => Str::start(config('horizon.path'), '/'),
                 ]
             ]);
 

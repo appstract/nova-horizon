@@ -163,7 +163,7 @@ export default {
 
             var tagQuery = this.searchQuery ? 'tag=' + this.searchQuery + '&' : '';
 
-            Nova.request().get(NovaHorizon.basePath + '/api/jobs/failed?' + tagQuery + 'starting_at=' + starting)
+            Nova.request().get(config.novaHorizon.basePath + '/api/jobs/failed?' + tagQuery + 'starting_at=' + starting)
                 .then(response => {
                     if (! this.$root.autoLoadsNewEntries && refreshing && ! response.data.jobs.length) {
                         return;
@@ -211,7 +211,7 @@ export default {
 
             this.retryingJobs.push(id);
 
-            Nova.request().post(NovaHorizon.basePath + '/api/jobs/retry/' + id)
+            Nova.request().post(config.novaHorizon.basePath + '/api/jobs/retry/' + id)
                 .then((response) => {
                     setTimeout(() => {
                         this.retryingJobs = _.reject(this.retryingJobs, job => job == id);

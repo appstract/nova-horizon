@@ -147,7 +147,7 @@ export default {
                 this.ready = false;
             }
 
-            Nova.request().get(NovaHorizon.basePath + '/api/jobs/recent?starting_at=' + starting + '&limit=' + this.perPage)
+            Nova.request().get(config.novaHorizon.basePath + '/api/jobs/recent?starting_at=' + starting + '&limit=' + this.perPage)
                 .then(response => {
                     if (! this.$root.autoLoadsNewEntries && refreshing && this.jobs.length && _.first(response.data.jobs).id !== _.first(this.jobs).id) {
                         this.hasNewEntries = true;

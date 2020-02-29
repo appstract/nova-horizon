@@ -214,7 +214,7 @@ module.exports = function normalizeComponent (
         fetchStats: function fetchStats() {
             var _this = this;
 
-            Nova.request().get('/horizon/api/stats').then(function (response) {
+            Nova.request().get(config.novaHorizon.basePath + '/api/stats').then(function (response) {
                 _this.stats = response.data;
 
                 if (_.values(response.data.wait)[0]) {
@@ -1392,7 +1392,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         fetchWorkload: function fetchWorkload() {
             var _this = this;
 
-            Nova.request().get('/horizon/api/workload').then(function (response) {
+            Nova.request().get(config.novaHorizon.basePath + '/api/workload').then(function (response) {
                 _this.workload = response.data;
             });
         },
@@ -1779,7 +1779,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.ready = false;
             }
 
-            Nova.request().get(NovaHorizon.basePath + '/api/jobs/recent?starting_at=' + starting + '&limit=' + this.perPage).then(function (response) {
+            Nova.request().get(config.novaHorizon.basePath + '/api/jobs/recent?starting_at=' + starting + '&limit=' + this.perPage).then(function (response) {
                 if (!_this.$root.autoLoadsNewEntries && refreshing && _this.jobs.length && _.first(response.data.jobs).id !== _.first(_this.jobs).id) {
                     _this.hasNewEntries = true;
                 } else {
@@ -2828,7 +2828,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var tagQuery = this.searchQuery ? 'tag=' + this.searchQuery + '&' : '';
 
-            Nova.request().get(NovaHorizon.basePath + '/api/jobs/failed?' + tagQuery + 'starting_at=' + starting).then(function (response) {
+            Nova.request().get(config.novaHorizon.basePath + '/api/jobs/failed?' + tagQuery + 'starting_at=' + starting).then(function (response) {
                 if (!_this2.$root.autoLoadsNewEntries && refreshing && !response.data.jobs.length) {
                     return;
                 }
@@ -2882,7 +2882,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.retryingJobs.push(id);
 
-            Nova.request().post(NovaHorizon.basePath + '/api/jobs/retry/' + id).then(function (response) {
+            Nova.request().post(config.novaHorizon.basePath + '/api/jobs/retry/' + id).then(function (response) {
                 setTimeout(function () {
                     _this4.retryingJobs = _.reject(_this4.retryingJobs, function (job) {
                         return job == id;

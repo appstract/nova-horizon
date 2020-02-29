@@ -32,7 +32,7 @@ export default {
          * Fetch stats from horizon.
          */
         fetchStats() {
-            Nova.request().get('/horizon/api/stats').then(response => {
+            Nova.request().get(config.novaHorizon.basePath + '/api/stats').then(response => {
                 this.stats = response.data;
 
                 if (_.values(response.data.wait)[0]) {
