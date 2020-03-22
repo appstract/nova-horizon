@@ -6,7 +6,7 @@
 
 Add Horizon statistics to your Nova dashboard.
 
-![screenshot]( https://appstract.github.io/nova-horizon/docs/dashboard.png)
+![dashboard](https://appstract.github.io/nova-horizon/docs/dashboard.png)
 
 ## Installation
 
