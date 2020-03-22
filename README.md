@@ -1,4 +1,4 @@
-# Laravel Stock
+# Nova Horizon
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/appstract/nova-horizon.svg?style=flat-square)](https://packagist.org/packages/appstract/nova-horizon)
 [![Total Downloads](https://img.shields.io/packagist/dt/appstract/nova-horizon.svg?style=flat-square)](https://packagist.org/packages/appstract/nova-horizon)
