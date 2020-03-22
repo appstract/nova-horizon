@@ -18,7 +18,47 @@ composer require appstract/nova-horizon
 
 ## Usage
 
-//
+There are two ways to use this package. One is to enable the Horizon dashboard in your application's `NovaServiceProvider`. This will add a new dashboard to Nova, shown in the screenshot above.
+
+```php
+class NovaServiceProvider extends NovaApplicationServiceProvider
+{
+    protected function dashboards()
+    {
+        return [
+            new \Appstract\NovaHorizon\Dashboard,
+        ];
+    }
+}
+```
+
+Second way is by adding cards to your own dashboard(s).
+
+```php
+class NovaServiceProvider extends NovaApplicationServiceProvider
+{
+    protected function dashboards()
+    {
+        return [
+            // Like the dashboard
+            new \Appstract\NovaHorizon\Cards\Stats,
+            new \Appstract\NovaHorizon\Cards\RecentJobs,
+            new \Appstract\NovaHorizon\Cards\Workload,
+            new \Appstract\NovaHorizon\Cards\FailedJobs,
+
+            // Stats as seperate cards
+            new \Appstract\NovaHorizon\Cards\JobsPerMinute,
+            new \Appstract\NovaHorizon\Cards\RecentJobsCount,
+            new \Appstract\NovaHorizon\Cards\FailedJobsCount,
+            new \Appstract\NovaHorizon\Cards\Status,
+            new \Appstract\NovaHorizon\Cards\TotalProcesses,
+            new \Appstract\NovaHorizon\Cards\MaxWaitTime,
+            new \Appstract\NovaHorizon\Cards\MaxRuntime,
+            new \Appstract\NovaHorizon\Cards\MaxThroughput,
+        ];
+    }
+}
+```
 
 ## Contributing
 
