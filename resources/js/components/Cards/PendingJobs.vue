@@ -1,7 +1,7 @@
 <template>
     <card>
         <div class="flex items-center justify-between p-3">
-            <h5 class="text-base text-80 font-bold">Recent Jobs</h5>
+            <h5 class="text-base text-80 font-bold">Pending Jobs</h5>
         </div>
 
         <div v-if="! ready" class="p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100 flex items-center justify-center">
@@ -13,7 +13,7 @@
         </div>
 
         <div v-if="ready && jobs.length == 0" class="p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100">
-            <span>No recent jobs found.</span>
+            <span>No pending jobs found.</span>
         </div>
 
         <div class="overflow-hidden overflow-x-auto relative" v-if="ready && jobs.length > 0">
@@ -78,14 +78,6 @@
 
                             (#{{ job.id }})
 
-                            <small
-                                class="p-2 fill-info"
-                                v-tooltip:top="`Delayed for ${delayed}`"
-                                v-if="delayed && (job.status == 'reserved' || job.status == 'pending')"
-                            >
-                                Delayed
-                            </small>
-
                             <br>
 
                             <small class="text-muted">
@@ -126,8 +118,8 @@
         </div>
 
         <div v-if="ready && jobs.length" class="p-3 flex justify-between">
-            <button @click="previous" class="btn btn-secondary btn-md" :disabled="page==1">Previous</button>
-            <button @click="next" class="btn btn-secondary btn-md" :disabled="page>=totalPages">Next</button>
+            <button @click="previous" class="btn btn-secondary btn-md" :disabled="page == 1">Previous</button>
+            <button @click="next" class="btn btn-secondary btn-md" :disabled="page >= totalPages">Next</button>
         </div>
     </card>
 </template>
@@ -147,18 +139,19 @@ export default {
                 this.ready = false;
             }
 
-            Nova.request().get(config.novaHorizon.basePath + '/api/jobs/recent?starting_at=' + starting + '&limit=' + this.perPage)
+            Nova.request().get(config.novaHorizon.basePath + '/api/jobs/pending?starting_at=' + starting + '&limit=' + this.perPage)
                 .then(response => {
                     if (
                         refreshing &&
                         this.jobs.length &&
+                        _.first(response.data.jobs) !== undefined &&
                         _.first(response.data.jobs).id !== _.first(this.jobs).id
                     ) {
                         this.hasNewEntries = true;
                     } else {
                         this.jobs = response.data.jobs;
 
-                        this.totalPages = Math.ceil(response.data.total / this.perPage);
+                        this.totalPages = Math.ceil(response.data.jobs.length / this.perPage);
                     }
 
                     this.ready = true;

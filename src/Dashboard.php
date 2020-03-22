@@ -2,8 +2,9 @@
 
 namespace Appstract\NovaHorizon;
 
+use Appstract\NovaHorizon\Cards\CompletedJobs;
 use Appstract\NovaHorizon\Cards\FailedJobs;
-use Appstract\NovaHorizon\Cards\RecentJobs;
+use Appstract\NovaHorizon\Cards\PendingJobs;
 use Appstract\NovaHorizon\Cards\Stats;
 use Appstract\NovaHorizon\Cards\Workload;
 use Laravel\Nova\Dashboard as NovaDashboard;
@@ -20,8 +21,9 @@ class Dashboard extends NovaDashboard
         return [
             new Stats,
             new Workload,
-            new RecentJobs,
+            new PendingJobs,
             new FailedJobs,
+            new CompletedJobs,
         ];
     }
 

@@ -42,9 +42,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         return [
             // Like the dashboard
             new \Appstract\NovaHorizon\Cards\Stats,
-            new \Appstract\NovaHorizon\Cards\RecentJobs,
             new \Appstract\NovaHorizon\Cards\Workload,
+            new \Appstract\NovaHorizon\Cards\PendingJobs,
             new \Appstract\NovaHorizon\Cards\FailedJobs,
+            new \Appstract\NovaHorizon\Cards\CompletedJobs,
 
             // Stats as seperate cards
             new \Appstract\NovaHorizon\Cards\JobsPerMinute,

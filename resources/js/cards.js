@@ -7,7 +7,8 @@ window.NovaHorizon = {
 Nova.booting((Vue, router, store) => {
     Vue.component('nova-horizon-card-stats', require('./components/Cards/Stats'));
     Vue.component('nova-horizon-card-workload', require('./components/Cards/Workload'));
-    Vue.component('nova-horizon-card-recent-jobs', require('./components/Cards/RecentJobs'));
+    Vue.component('nova-horizon-card-pending-jobs', require('./components/Cards/PendingJobs'));
+    Vue.component('nova-horizon-card-completed-jobs', require('./components/Cards/CompletedJobs'));
     Vue.component('nova-horizon-card-failed-jobs', require('./components/Cards/FailedJobs'));
 
     Vue.component('nova-horizon-card-jobs-per-minute', require('./components/Cards/JobsPerMinute'));

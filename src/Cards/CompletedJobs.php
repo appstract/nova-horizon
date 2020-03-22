@@ -2,7 +2,7 @@
 
 namespace Appstract\NovaHorizon\Cards;
 
-class RecentJobs extends Card
+class CompletedJobs extends Card
 {
     /**
      * The width of the card (1/3, 1/2, or full).
@@ -18,6 +18,6 @@ class RecentJobs extends Card
      */
     public function component()
     {
-        return 'nova-horizon-card-recent-jobs';
+        return 'nova-horizon-card-completed-jobs';
     }
 }
