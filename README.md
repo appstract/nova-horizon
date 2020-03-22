@@ -32,12 +32,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 }
 ```
 
-Second way is by adding cards to your own dashboard(s).
+Second way is by adding cards to the main dashboard or your own dashboard(s).
 
 ```php
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
-    protected function dashboards()
+    protected function cards()
     {
         return [
             // Like the dashboard
