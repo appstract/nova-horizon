@@ -27,7 +27,7 @@ class NovaHorizonServiceProvider extends ServiceProvider
             Nova::provideToScript([
                 'novaHorizon' => [
                     'basePath' => Str::start(config('horizon.path'), '/'),
-                ]
+                ],
             ]);
 
             Nova::script('nova-horizon-cards', __DIR__.'/../dist/js/cards.js');

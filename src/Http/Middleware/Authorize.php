@@ -2,8 +2,8 @@
 
 namespace Appstract\NovaHorizon\Http\Middleware;
 
-use Laravel\Nova\Nova;
 use Appstract\NovaHorizonTool\NovaHorizonTool;
+use Laravel\Nova\Nova;
 
 class Authorize
 {
