@@ -46,6 +46,13 @@ class NovaHorizonServiceProvider extends ServiceProvider
             return;
         }
 
+        Nova::router()
+            ->group(function ($router) {
+                $router->get('sidebar-tool', function ($request) {
+                    return inertia('NovaHorizonDashboard');
+                });
+            });
+
         // Cards
         Route::middleware(['nova'])
             ->prefix('nova-vendor/nova-horizon')
