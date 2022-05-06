@@ -2,6 +2,8 @@
 
 namespace Appstract\NovaHorizon;
 
+use Illuminate\Http\Request;
+use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool as NovaTool;
 
@@ -19,12 +21,15 @@ class Tool extends NovaTool
     }
 
     /**
-     * Build the view that renders the navigation links for the tool.
+     * Build the menu that renders the navigation links for the tool.
      *
-     * @return \Illuminate\View\View
+     * @param  \Illuminate\Http\Request $request
+     * @return mixed
      */
-    public function renderNavigation()
+    public function menu(Request $request)
     {
-        return view('nova-horizon::navigation');
+        return MenuSection::make('Horizon')
+            ->path('/horizon')
+            ->icon('server');
     }
 }
