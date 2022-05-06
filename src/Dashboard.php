@@ -9,7 +9,7 @@ use Appstract\NovaHorizon\Cards\Stats;
 use Appstract\NovaHorizon\Cards\Workload;
 use Laravel\Nova\Dashboard as NovaDashboard;
 
-class NovaHorizonDashboard extends NovaDashboard
+class Dashboard extends NovaDashboard
 {
     /**
      * Get the cards for the dashboard.
