@@ -9,7 +9,7 @@ use Appstract\NovaHorizon\Cards\Stats;
 use Appstract\NovaHorizon\Cards\Workload;
 use Laravel\Nova\Dashboard as NovaDashboard;
 
-class Dashboard extends NovaDashboard
+class NovaHorizonDashboard extends NovaDashboard
 {
     /**
      * Get the cards for the dashboard.
@@ -27,7 +27,7 @@ class Dashboard extends NovaDashboard
         ];
     }
 
-    public static function label()
+    public function label()
     {
         return 'Horizon';
     }
@@ -37,7 +37,7 @@ class Dashboard extends NovaDashboard
      *
      * @return string
      */
-    public static function uriKey()
+    public function uriKey()
     {
         return 'horizon';
     }

@@ -1,15 +1,12 @@
 let mix = require('laravel-mix')
 
-// Cards
-
-mix
-  .setPublicPath('dist')
-  .js('resources/js/cards.js', 'js')
-  .sass('resources/sass/cards.scss', 'css');
-
-// Tool
+require('./mix')
 
 mix
   .setPublicPath('dist')
   .js('resources/js/tool.js', 'js')
-  .sass('resources/sass/tool.scss', 'css');
+  .js('resources/js/cards.js', 'js')
+  .vue({ version: 3 })
+  .sass('resources/sass/tool.scss', 'css/tool.css')
+  .sass('resources/sass/cards.scss', 'css/cards.css')
+  .nova('appstract/nova-horizon')
