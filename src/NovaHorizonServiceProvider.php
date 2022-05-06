@@ -2,7 +2,6 @@
 
 namespace Appstract\NovaHorizon;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Nova\Events\ServingNova;
