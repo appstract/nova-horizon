@@ -25,6 +25,6 @@ class Tool extends NovaTool
      */
     public function renderNavigation()
     {
-        return view('nova-horizon-tool::navigation');
+        return view('nova-horizon::navigation');
     }
 }

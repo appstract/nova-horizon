@@ -16,7 +16,7 @@ class NovaHorizonServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'nova-horizon-tool');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'nova-horizon');
 
         $this->app->booted(function () {
             $this->routes();
@@ -45,12 +45,11 @@ class NovaHorizonServiceProvider extends ServiceProvider
             return;
         }
 
-        Nova::router()
-            ->group(function ($router) {
-                $router->get('sidebar-tool', function ($request) {
-                    return inertia('NovaHorizonDashboard');
-                });
+        Nova::router()->group(function ($router) {
+            $router->get('nova-horizon', function ($request) {
+                return inertia('NovaHorizonDashboard');
             });
+        });
     }
 
     /**
