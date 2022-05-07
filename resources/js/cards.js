@@ -1,10 +1,10 @@
 import VueJsonPretty from 'vue-json-pretty';
 
+window.moment = require('moment')
+
 window.NovaHorizon = {
     basePath: '/horizon',
 }
-
-window.moment = require('moment')
 
 Nova.booting((Vue, router, store) => {
     Vue.component('nova-horizon-card-stats', require('./components/Cards/Stats').default);

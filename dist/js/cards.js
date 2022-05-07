@@ -26663,10 +26663,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_json_pretty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-json-pretty */ "./node_modules/vue-json-pretty/lib/vue-json-pretty.js");
 /* harmony import */ var vue_json_pretty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_json_pretty__WEBPACK_IMPORTED_MODULE_0__);
 
+window.moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 window.NovaHorizon = {
   basePath: '/horizon'
 };
-window.moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 Nova.booting(function (Vue, router, store) {
   Vue.component('nova-horizon-card-stats', (__webpack_require__(/*! ./components/Cards/Stats */ "./resources/js/components/Cards/Stats.vue")["default"]));
   Vue.component('nova-horizon-card-workload', (__webpack_require__(/*! ./components/Cards/Workload */ "./resources/js/components/Cards/Workload.vue")["default"]));

@@ -1,5 +1,5 @@
 module.exports = {
-    prefix: 'anh-',
+    important: '.nova-horizon',
 
     content: [
         "./resources/js/**/*.vue",
