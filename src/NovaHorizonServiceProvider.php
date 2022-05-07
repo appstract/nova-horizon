@@ -2,11 +2,11 @@
 
 namespace Appstract\NovaHorizon;
 
+use Appstract\NovaHorizon\Http\Middleware\Authorize;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
-use Appstract\NovaHorizon\Http\Middleware\Authorize;
 
 class NovaHorizonServiceProvider extends ServiceProvider
 {
@@ -47,7 +47,7 @@ class NovaHorizonServiceProvider extends ServiceProvider
         }
 
         Nova::router(['nova', Authorize::class], 'nova-horizon')
-            ->group(__DIR__ . '/../routes/inertia.php');
+            ->group(__DIR__.'/../routes/inertia.php');
     }
 
     /**
