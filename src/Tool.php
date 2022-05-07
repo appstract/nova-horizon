@@ -29,7 +29,7 @@ class Tool extends NovaTool
     public function menu(Request $request)
     {
         return MenuSection::make('Horizon')
-            ->path('/horizon')
+            ->path('/nova-horizon')
             ->icon('server');
     }
 }

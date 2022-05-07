@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
+use Appstract\NovaHorizon\Http\Middleware\Authorize;
 
 class NovaHorizonServiceProvider extends ServiceProvider
 {
@@ -45,11 +46,8 @@ class NovaHorizonServiceProvider extends ServiceProvider
             return;
         }
 
-        Nova::router()->group(function ($router) {
-            $router->get('nova-horizon', function ($request) {
-                return inertia('NovaHorizonDashboard');
-            });
-        });
+        Nova::router(['nova', Authorize::class], 'nova-horizon')
+            ->group(__DIR__ . '/../routes/inertia.php');
     }
 
     /**

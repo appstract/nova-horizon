@@ -1,7 +1,5 @@
-window.NovaHorizon = {
-    basePath: '/horizon',
-}
+import Tool from './pages/Tool'
 
-Nova.booting((Vue) => {
-    Nova.inertia('NovaHorizonDashboard', require('./components/Tool').default)
+Nova.booting((app, store) => {
+    Nova.inertia('NovaHorizon', Tool)
 })

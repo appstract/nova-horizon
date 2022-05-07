@@ -1,7 +1,7 @@
 <template>
-    <card class="p-8 text-center bg-gray-100">
-        Coming soon.
-    </card>
+    <div>
+        Horizon
+    </div>
 </template>
 
 <script>
@@ -13,5 +13,5 @@ export default {
 </script>
 
 <style>
-    /* Scoped Styles */
+/* Scoped Styles */
 </style>

@@ -4,7 +4,7 @@ const path = require('path')
 
 class NovaExtension {
   name() {
-    return 'NovaHorizonDashboard'
+    return 'nova-horizon'
   }
 
   register(name) {

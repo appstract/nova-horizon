@@ -2,7 +2,7 @@
 
 namespace Appstract\NovaHorizon\Http\Middleware;
 
-use Appstract\NovaHorizonTool\NovaHorizonTool;
+use Appstract\NovaHorizon\Tool;
 use Laravel\Nova\Nova;
 
 class Authorize
@@ -11,7 +11,7 @@ class Authorize
      * Handle the incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Closure(\Illuminate\Http\Request):mixed  $next
      * @return \Illuminate\Http\Response
      */
     public function handle($request, $next)
@@ -29,6 +29,6 @@ class Authorize
      */
     public function matchesTool($tool)
     {
-        return $tool instanceof NovaHorizonTool;
+        return $tool instanceof Tool;
     }
 }
