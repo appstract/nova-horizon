@@ -1,31 +1,31 @@
 <template>
-    <card>
-        <div class="p-3 text-base text-80 font-bold">
+    <card class="nova-horizon flex flex-col">
+        <div class="p-3 text-base font-bold border-b border-gray-200">
             Current Workload
         </div>
 
-        <div class="overflow-hidden overflow-x-auto relative" v-if="workload.length">
-            <table cellpadding="0" cellspacing="0" class="table w-full">
-                <thead>
+        <div class="flex-1 overflow-hidden overflow-x-auto relative" v-if="workload.length">
+            <table cellpadding="0" cellspacing="0" class="w-full table-default">
+                <thead class="bg-gray-50 dark:bg-gray-800">
                     <tr>
-                        <th class="text-left">Queue</th>
-                        <th class="text-left">Processes</th>
-                        <th class="text-left">Jobs</th>
-                        <th class="text-right">Wait</th>
+                        <th class="text-left p-2 whitespace-nowrap uppercase text-gray-500 text-xxs">Queue</th>
+                        <th class="text-left p-2 whitespace-nowrap uppercase text-gray-500 text-xxs">Processes</th>
+                        <th class="text-left p-2 whitespace-nowrap uppercase text-gray-500 text-xxs">Jobs</th>
+                        <th class="text-right p-2 whitespace-nowrap uppercase text-gray-500 text-xxs">Wait</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="queue in workload">
-                        <td class="w-25">
+                    <tr v-for="queue in workload" class="group">
+                        <td class="p-2 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap cursor-pointer dark:bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
                             {{ queue.name.replace(/,/g, ', ') }}
                         </td>
-                        <td class="w-25">
+                        <td class="p-2 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap cursor-pointer dark:bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
                             {{ queue.processes ? queue.processes.toLocaleString() : 0 }}
                         </td>
-                        <td class="w-25">
+                        <td class="p-2 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap cursor-pointer dark:bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
                             {{ queue.length ? queue.length.toLocaleString() : 0 }}
                         </td>
-                        <td class="w-25 text-right">
+                        <td class="text-right p-2 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap cursor-pointer dark:bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
                             {{ humanTime(queue.wait) }}
                         </td>
                     </tr>
@@ -33,7 +33,7 @@
             </table>
         </div>
 
-        <div class="p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100" v-else>
+        <div class="flex-1 flex items-center justify-center p-8 rounded-b-lg bg-gray-50" v-else>
             Horizon is not active.
         </div>
     </card>

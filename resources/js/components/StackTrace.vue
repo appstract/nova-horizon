@@ -1,19 +1,21 @@
 <template>
-    <table class="table mb-0">
-        <tbody>
-            <tr v-for="line in lines">
-                <td>
-                    {{ line }}
-                </td>
-            </tr>
+    <div class="nova-horizon">
+        <table class="table mb-0">
+            <tbody>
+                <tr v-for="line in lines">
+                    <td>
+                        {{ line }}
+                    </td>
+                </tr>
 
-            <tr v-if="! showAll">
-                <td>
-                    <a href="*" v-on:click.prevent="showAll = true" class="no-underline dim text-primary font-bold">Show All</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                <tr v-if="! showAll">
+                    <td>
+                        <a href="*" v-on:click.prevent="showAll = true" class="no-underline dim text-primary font-bold">Show All</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>

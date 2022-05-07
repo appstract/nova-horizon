@@ -1,5 +1,5 @@
 <template>
-    <card>
+    <card class="nova-horizon">
         <div class="flex items-center justify-between p-3">
             <h5 class="text-base text-80 font-bold">Pending Jobs</h5>
         </div>
