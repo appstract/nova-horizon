@@ -14,6 +14,7 @@
         "laravel-mix": "^6.0.41",
         "moment": "^2.29.2",
         "postcss": "^8.3.11",
+        "tailwindcss": "^3.0.23",
         "vue-json-pretty": "^1.6.3",
         "vue-loader": "^16.8.3"
     },

@@ -18,7 +18,7 @@ composer require appstract/nova-horizon
 
 ## Usage
 
-There are two ways to use this package. One is to enable the Horizon dashboard in your application's `NovaServiceProvider`. This will add a new dashboard to Nova, shown in the screenshot above.
+There are two ways to use this package. One is to enable the Horizon dashboard or tool in your application's `NovaServiceProvider`. This will add a new dashboard to Nova, shown in the screenshot above.
 
 ```php
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -29,15 +29,22 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             new \Appstract\NovaHorizon\Dashboard,
         ];
     }
+
+    protected function tools()
+    {
+        return [
+            new \Appstract\NovaHorizon\Tool,
+        ];
+    }
 }
 ```
 
 Second way is by adding cards to the main dashboard or your own dashboard(s).
 
 ```php
-class NovaServiceProvider extends NovaApplicationServiceProvider
+class Main extends Dashboard
 {
-    protected function cards()
+    public function cards()
     {
         return [
             // Like the dashboard
@@ -67,7 +74,7 @@ Contributions are welcome, [thanks to y'all](https://github.com/appstract/nova-h
 
 ## About Appstract
 
-Appstract is a small team from The Netherlands. We create (open source) tools for Web Developers and write about related subjects on [Medium](https://medium.com/appstract). You can [follow us on Twitter](https://twitter.com/appstractnl), [buy us a beer](https://www.paypal.me/appstract/10) or [support us on Patreon](https://www.patreon.com/appstract).
+Appstract is a small team from The Netherlands. We create (open source) tools for Web Developers and write about related subjects on [Medium](https://medium.com/appstract). You can [follow us on Twitter](https://twitter.com/appstractnl).
 
 ## License
 

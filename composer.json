@@ -7,7 +7,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": ">=7.1.0",
+        "php": "^7.4|^8.0",
         "laravel/horizon": "^5.0"
     },
     "autoload": {
