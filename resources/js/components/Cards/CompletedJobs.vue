@@ -34,38 +34,9 @@
 
             <tr v-for="job in jobs" :key="job.id" :job="job">
                 <td :class="cellClass('pl-3')">
-                    <modal :show="visibleModal(job)">
-                        <div class="bg-white rounded-lg shadow-lg overflow-hidden" style="width: 900px">
-                            <div class="bg-30 p-4 flex items-center justify-between">
-                                <div class="font-bold">
-                                    {{ modal.name }} (#{{ modal.id }})
-                                </div>
-
-                                <button
-                                    @click.prevent="closeModal"
-                                    class="btn btn-default btn-danger"
-                                >
-                                    Close
-                                </button>
-                            </div>
-
-                            <div class="p-4" v-if="modal.status == 'failed'">
-                                <nova-horizon-stack-trace :trace="modal.exception.split('\n')"></nova-horizon-stack-trace>
-                            </div>
-
-                            <div class="bg-30 p-4 flex items-center justify-between" v-if="modal.status == 'failed'">
-                                <span class="font-bold">Data</span>
-                            </div>
-
-                            <div class="p-4 bg-black text-white">
-                                <nova-horizon-json-pretty :data="prettyPrintJob(modal.payload.data)"></nova-horizon-json-pretty>
-                            </div>
-                        </div>
-                    </modal>
-
-                    <a class="no-underline dim text-primary font-bold" :title="job.name" href="#" @click.prevent="openModal(job)">
+                    <div class="no-underline dim text-primary font-bold" :title="job.name">
                         {{ jobBaseName(job.name) }}
-                    </a>
+                    </div>
 
                     <p class="text-xxs">#{{ job.id }}</p>
 
