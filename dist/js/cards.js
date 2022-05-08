@@ -1796,7 +1796,7 @@ var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 );
 
 var _hoisted_16 = {
-  "class": "flex items-center mt-4"
+  "class": "flex items-center"
 };
 var _hoisted_17 = {
   key: 0,
@@ -1977,7 +1977,7 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 );
 
 var _hoisted_3 = {
-  "class": "flex items-center mt-4"
+  "class": "flex items-center"
 };
 var _hoisted_4 = {
   key: 0,
