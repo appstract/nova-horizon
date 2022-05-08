@@ -41,7 +41,7 @@
 
             <tr v-for="job in jobs" :key="job.id">
                 <td :class="cellClass('pl-3')">
-                    <modal v-if="visibleModal(job)">
+                    <modal :show="visibleModal(job)">
                         <div class="bg-white rounded-lg shadow-lg overflow-hidden" style="width: 900px">
                             <div class="bg-30 p-4 flex items-center justify-between">
                                 <div class="font-bold">

@@ -813,8 +813,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               job: job
             }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
               "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(_ctx.cellClass('pl-3'))
-            }, [_ctx.visibleModal(job) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal, {
-              key: 0
+            }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_modal, {
+              show: _ctx.visibleModal(job)
             }, {
               "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
                 return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.modal.name) + " (#" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.modal.id) + ") ", 1
@@ -834,10 +834,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 /* PROPS */
                 , ["data"])])])];
               }),
-              _: 1
-              /* STABLE */
+              _: 2
+              /* DYNAMIC */
 
-            })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+            }, 1032
+            /* PROPS, DYNAMIC_SLOTS */
+            , ["show"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
               "class": "no-underline dim text-primary font-bold",
               title: job.name,
               href: "#",
@@ -1078,8 +1080,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               key: job.id
             }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
               "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(_ctx.cellClass('pl-3'))
-            }, [_ctx.visibleModal(job) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal, {
-              key: 0
+            }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_modal, {
+              show: _ctx.visibleModal(job)
             }, {
               "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
                 return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.modal.name) + " (#" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.modal.id) + ") ", 1
@@ -1099,10 +1101,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 /* PROPS */
                 , ["data"])])])];
               }),
-              _: 1
-              /* STABLE */
+              _: 2
+              /* DYNAMIC */
 
-            })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+            }, 1032
+            /* PROPS, DYNAMIC_SLOTS */
+            , ["show"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
               "class": "no-underline dim text-primary font-bold",
               title: job.name,
               href: "#",
@@ -1574,8 +1578,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
               job: job
             }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
               "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(_ctx.cellClass('pl-3'))
-            }, [_ctx.visibleModal(job) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal, {
-              key: 0
+            }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_modal, {
+              show: _ctx.visibleModal(job)
             }, {
               "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
                 return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.modal.name) + " (#" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.modal.id) + ") ", 1
@@ -1595,10 +1599,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                 /* PROPS */
                 , ["data"])])])];
               }),
-              _: 1
-              /* STABLE */
+              _: 2
+              /* DYNAMIC */
 
-            })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+            }, 1032
+            /* PROPS, DYNAMIC_SLOTS */
+            , ["show"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
               "class": "font-bold",
               title: job.name,
               href: "#",
