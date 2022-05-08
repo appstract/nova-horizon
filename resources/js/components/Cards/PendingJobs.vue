@@ -1,40 +1,34 @@
 <template>
-    <card class="nova-horizon">
-        <div class="flex items-center justify-between p-3">
-            <h5 class="text-base text-80 font-bold">Pending Jobs</h5>
+    <card class="nova-horizon flex flex-col">
+        <div class="p-3 border-b border-gray-200 tracking-wide text-sm font-bold">
+            Pending Jobs
         </div>
 
-        <div v-if="! ready" class="p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="spin mr-2 w-8 fill-primary">
-                <path d="M12 10a2 2 0 0 1-3.41 1.41A2 2 0 0 1 10 8V0a9.97 9.97 0 0 1 10 10h-8zm7.9 1.41A10 10 0 1 1 8.59.1v2.03a8 8 0 1 0 9.29 9.29h2.02zm-4.07 0a6 6 0 1 1-7.25-7.25v2.1a3.99 3.99 0 0 0-1.4 6.57 4 4 0 0 0 6.56-1.42h2.1z"></path>
-            </svg>
+        <nova-horizon-loading v-if="! ready"></nova-horizon-loading>
 
-            <span>Loading...</span>
-        </div>
-
-        <div v-if="ready && jobs.length == 0" class="p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100">
-            <span>No pending jobs found.</span>
-        </div>
+        <nova-horizon-no-results v-if="ready && jobs.length == 0">
+            No pending jobs found.
+        </nova-horizon-no-results>
 
         <div class="overflow-hidden overflow-x-auto relative" v-if="ready && jobs.length > 0">
-            <table class="table w-full">
-                <thead>
+            <table class="w-full table-default">
+                <thead class="bg-gray-50 dark:bg-gray-800">
                     <tr>
-                        <th class="text-left">Job</th>
-                        <th class="text-left">Queued At</th>
-                        <th class="text-left">Runtime</th>
-                        <th class="text-right">Status</th>
+                        <th class="text-left p-2 pl-3 whitespace-nowrap uppercase text-gray-500 text-xxs">Job</th>
+                        <th class="text-left p-2 pl-3 whitespace-nowrap uppercase text-gray-500 text-xxs">Queued At</th>
+                        <th class="text-left p-2 pl-3 whitespace-nowrap uppercase text-gray-500 text-xxs">Runtime</th>
+                        <th class="text-left p-2 pr-3 whitespace-nowrap uppercase text-gray-500 text-xxs">Status</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr v-if="hasNewEntries" key="newEntries">
-                        <td colspan="100" class="text-center bg-gray-100 p-8">
+                        <td colspan="100" class="text-center bg-gray-50 border-y border-gray-200">
                             <a
                                 href="#"
                                 v-on:click.prevent="loadNewEntries"
                                 v-if="! loadingNewEntries"
-                                class="no-underline dim text-primary font-bold"
+                                class="block p-8 text-sm font-bold border-gray"
                             >Load New Entries</a>
 
                             <small v-if="loadingNewEntries">Loading...</small>
@@ -42,7 +36,7 @@
                     </tr>
 
                     <tr v-for="job in jobs" :key="job.id" :job="job">
-                        <td>
+                        <td class="p-2 pl-3 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">
                             <modal v-if="visibleModal(job)">
                                 <div class="bg-white rounded-lg shadow-lg overflow-hidden" style="width: 900px">
                                     <div class="bg-30 p-4 flex items-center justify-between">
@@ -72,43 +66,41 @@
                                 </div>
                             </modal>
 
-                            <a class="no-underline dim text-primary font-bold" :title="job.name" href="#" @click.prevent="openModal(job)">
+                            <a class="font-bold" :title="job.name" href="#" @click.prevent="openModal(job)">
                                 {{ jobBaseName(job.name) }}
                             </a>
 
-                            (#{{ job.id }})
+                            <p class="text-xxs">#{{ job.id }}</p>
 
-                            <br>
-
-                            <small class="text-muted">
+                            <p class="text-xxs">
                                 Queue: {{job.queue}}
 
                                 <span v-if="job.payload.tags.length">
                                     | Tags: {{ job.payload.tags && job.payload.tags.length ? job.payload.tags.slice(0,3).join(', ') : '' }}<span v-if="job.payload.tags.length > 3"> ({{ job.payload.tags.length - 3 }} more)</span>
                                 </span>
-                            </small>
+                            </p>
                         </td>
 
-                        <td>
+                        <td class="p-2 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">
                             {{ readableTimestamp(job.payload.pushedAt) }}
                         </td>
 
-                        <td>
+                        <td class="p-2 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">
                             <span>
                                 {{ job.completed_at ? (job.completed_at - job.reserved_at).toFixed(2)+'s' : '-' }}
                             </span>
                         </td>
 
-                        <td class="text-right">
-                            <svg v-if="job.status == 'completed'" class="fill-success" viewBox="0 0 20 20" style="width: 1.5rem; height: 1.5rem;">
+                        <td class="p-2 pr-3 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800 text-right">
+                            <svg v-if="job.status == 'completed'" class="w-6 fill-green-500" viewBox="0 0 20 20">
                                 <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM6.7 9.29L9 11.6l4.3-4.3 1.4 1.42L9 14.4l-3.7-3.7 1.4-1.42z"></path>
                             </svg>
 
-                            <svg v-if="job.status == 'reserved' || job.status == 'pending'" class="fill-warning" viewBox="0 0 20 20" style="width: 1.5rem; height: 1.5rem;">
+                            <svg v-if="job.status == 'reserved' || job.status == 'pending'" class="w-6 fill-yellow-500" viewBox="0 0 20 20">
                                 <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM7 6h2v8H7V6zm4 0h2v8h-2V6z"/>
                             </svg>
 
-                            <svg v-if="job.status == 'failed'" class="fill-danger" viewBox="0 0 20 20" style="width: 1.5rem; height: 1.5rem;">
+                            <svg v-if="job.status == 'failed'" class="w-6 fill-red-500" viewBox="0 0 20 20">
                                 <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm1.41-1.41A8 8 0 1 0 15.66 4.34 8 8 0 0 0 4.34 15.66zm9.9-8.49L11.41 10l2.83 2.83-1.41 1.41L10 11.41l-2.83 2.83-1.41-1.41L8.59 10 5.76 7.17l1.41-1.41L10 8.59l2.83-2.83 1.41 1.41z"/>
                             </svg>
                         </td>
@@ -117,7 +109,7 @@
             </table>
         </div>
 
-        <div v-if="ready && jobs.length" class="p-3 flex justify-between">
+        <div v-if="ready && jobs.length" class="p-3 border-t border-gray-200 flex justify-between">
             <button @click="previous" class="btn btn-secondary btn-md" :disabled="page == 1">Previous</button>
             <button @click="next" class="btn btn-secondary btn-md" :disabled="page >= totalPages">Next</button>
         </div>

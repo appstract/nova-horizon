@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "laravel-mix-tailwind": "^0.1.2",
+        "lodash": "^4.17.21",
         "phpunserialize": "^1.1.0",
         "vue": "^2.5.0"
     }

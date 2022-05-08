@@ -1,20 +1,14 @@
 <template>
-    <card class="nova-horizon">
-        <div class="flex items-center justify-between p-3">
-            <h5 class="text-base text-80 font-bold">Completed Jobs</h5>
+    <card class="nova-horizon flex flex-col">
+        <div class="p-3 border-b border-gray-200 tracking-wide text-sm font-bold">
+            Completed Jobs
         </div>
 
-        <div v-if="! ready" class="p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="spin mr-2 w-8 fill-primary">
-                <path d="M12 10a2 2 0 0 1-3.41 1.41A2 2 0 0 1 10 8V0a9.97 9.97 0 0 1 10 10h-8zm7.9 1.41A10 10 0 1 1 8.59.1v2.03a8 8 0 1 0 9.29 9.29h2.02zm-4.07 0a6 6 0 1 1-7.25-7.25v2.1a3.99 3.99 0 0 0-1.4 6.57 4 4 0 0 0 6.56-1.42h2.1z"></path>
-            </svg>
+        <nova-horizon-loading v-if="! ready"></nova-horizon-loading>
 
-            <span>Loading...</span>
-        </div>
-
-        <div v-if="ready && jobs.length == 0" class="p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100">
-            <span>No completed jobs found.</span>
-        </div>
+        <nova-horizon-no-results v-if="ready && jobs.length == 0">
+            No completed jobs found.
+        </nova-horizon-no-results>
 
         <div class="overflow-hidden overflow-x-auto relative" v-if="ready && jobs.length > 0">
             <table class="table w-full">

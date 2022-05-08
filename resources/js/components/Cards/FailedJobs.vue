@@ -1,36 +1,30 @@
 <template>
     <card class="nova-horizon">
-        <div class="flex items-center justify-between p-3">
-            <h5 class="text-base text-80 font-bold">Failed Jobs</h5>
+        <div class="flex justify-between border-b border-gray-200 tracking-wide text-sm font-bold">
+            <h5 class="p-3">Failed Jobs</h5>
             <input
                 type="text"
                 v-model="searchQuery"
                 placeholder="Search Tags"
                 style="width: 200px"
-                class="form-control form-input form-input-bordered"
+                class="border-none !border-l border-gray-200 rounded-tl"
             >
         </div>
 
-        <div v-if="! ready" class="p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="spin mr-2 w-8 fill-primary">
-                <path d="M12 10a2 2 0 0 1-3.41 1.41A2 2 0 0 1 10 8V0a9.97 9.97 0 0 1 10 10h-8zm7.9 1.41A10 10 0 1 1 8.59.1v2.03a8 8 0 1 0 9.29 9.29h2.02zm-4.07 0a6 6 0 1 1-7.25-7.25v2.1a3.99 3.99 0 0 0-1.4 6.57 4 4 0 0 0 6.56-1.42h2.1z"></path>
-            </svg>
+        <nova-horizon-loading v-if="! ready"></nova-horizon-loading>
 
-            <span>Loading...</span>
-        </div>
-
-        <div v-if="ready && jobs.length == 0" class="p-8 border-t-2 rounded-b-lg border-gray-300 text-center bg-gray-100">
-            <span>No failed jobs found.</span>
-        </div>
+        <nova-horizon-no-results v-if="ready && jobs.length == 0">
+            No failed jobs found.
+        </nova-horizon-no-results>
 
         <div class="overflow-hidden overflow-x-auto relative" v-if="jobs.length">
-            <table class="table w-full">
-                <thead>
+            <table class="w-full table-default">
+                <thead class="bg-gray-50 dark:bg-gray-800">
                     <tr>
-                        <th class="text-left">Job</th>
-                        <th class="text-left">Runtime</th>
-                        <th class="text-left">Failed At</th>
-                        <th class="text-right">Retry</th>
+                        <th class="text-left p-2 pl-3 whitespace-nowrap uppercase text-gray-500 text-xxs">Job</th>
+                        <th class="text-left p-2 pl-3 whitespace-nowrap uppercase text-gray-500 text-xxs">Runtime</th>
+                        <th class="text-left p-2 pl-3 whitespace-nowrap uppercase text-gray-500 text-xxs">Failed At</th>
+                        <th class="text-left p-2 pr-3 whitespace-nowrap uppercase text-gray-500 text-xxs">Retry</th>
                     </tr>
                 </thead>
 
@@ -49,7 +43,7 @@
                     </tr>
 
                     <tr v-for="job in jobs" :key="job.id">
-                        <td>
+                        <td class="p-2 pl-3 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">
                             <modal v-if="visibleModal(job)">
                                 <div class="bg-white rounded-lg shadow-lg overflow-hidden" style="width: 900px">
                                     <div class="bg-30 p-4 flex items-center justify-between">
@@ -83,27 +77,26 @@
                                 {{ jobBaseName(job.name) }}
                             </a>
 
-                            <br>
-
-                            <small>
+                            <p class="text-xxs">
                                 Queue: {{job.queue}}
+
                                 <span v-if="job.payload && job.payload.tags.length">
                                     | Tags: {{ job.payload.tags && job.payload.tags.length ? job.payload.tags.join(', ') : '' }}
                                 </span>
-                            </small>
+                            </p>
                         </td>
 
-                        <td>
+                        <td class="p-2 pl-3 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">
                             <span>{{ job.failed_at ? String((job.failed_at - job.reserved_at).toFixed(2))+'s' : '-' }}</span>
                         </td>
 
-                        <td>
+                        <td class="p-2 pl-3 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">
                             {{ readableTimestamp(job.failed_at) }}
                         </td>
 
-                        <td class="text-right">
+                        <td class="p-2 pl-3 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800 text-right">
                             <a href="#" @click.prevent="retry(job.id)" v-if="! hasCompleted(job)">
-                                <svg class="fill-primary" viewBox="0 0 20 20" style="width: 1.5rem; height: 1.5rem;" :class="{spin: isRetrying(job.id)}">
+                                <svg class="fill-primary w-6" viewBox="0 0 20 20" :class="{spin: isRetrying(job.id)}">
                                     <path d="M10 3v2a5 5 0 0 0-3.54 8.54l-1.41 1.41A7 7 0 0 1 10 3zm4.95 2.05A7 7 0 0 1 10 17v-2a5 5 0 0 0 3.54-8.54l1.41-1.41zM10 20l-4-4 4-4v8zm0-12V0l4 4-4 4z"/>
                                 </svg>
                             </a>
@@ -113,7 +106,7 @@
             </table>
         </div>
 
-        <div v-if="ready && jobs.length" class="flex justify-between p-3">
+        <div v-if="ready && jobs.length" class="flex justify-between p-3 border-t border-gray-200">
             <button @click="previous" class="btn btn-secondary btn-md" :disabled="page==1">Previous</button>
             <button @click="next" class="btn btn-secondary btn-md" :disabled="page>=totalPages">Next</button>
         </div>
@@ -122,6 +115,7 @@
 
 <script>
 import JobsCard from '../../templates/JobsCard';
+import { first, reject, includes, find } from 'lodash';
 
 export default {
     extends: JobsCard,
@@ -169,7 +163,7 @@ export default {
                         return;
                     }
 
-                    if (! this.$root.autoLoadsNewEntries && refreshing && this.jobs.length && _.first(response.data.jobs).id !== _.first(this.jobs).id) {
+                    if (! this.$root.autoLoadsNewEntries && refreshing && this.jobs.length && first(response.data.jobs).id !== first(this.jobs).id) {
                         this.hasNewEntries = true;
                     } else {
                         this.jobs = response.data.jobs;
@@ -214,7 +208,7 @@ export default {
             Nova.request().post(config.novaHorizon.basePath + '/api/jobs/retry/' + id)
                 .then((response) => {
                     setTimeout(() => {
-                        this.retryingJobs = _.reject(this.retryingJobs, job => job == id);
+                        this.retryingJobs = reject(this.retryingJobs, job => job == id);
                     }, 10000);
                 });
         },
@@ -223,7 +217,7 @@ export default {
          * Determine if the given job is currently retrying.
          */
         isRetrying(id) {
-            return _.includes(this.retryingJobs, id);
+            return includes(this.retryingJobs, id);
         },
 
         /**
