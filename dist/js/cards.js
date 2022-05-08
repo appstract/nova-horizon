@@ -1088,6 +1088,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.stats.failedJobs ? _ctx.stats.failedJobs.toLocaleString() : 0), 1
       /* TEXT */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+        "class": "text-sm",
         textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.failedJobsPeriod)
       }, null, 8
       /* PROPS */
@@ -1129,7 +1130,9 @@ var _hoisted_3 = {
   "class": "text-4xl mb-3"
 };
 
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, " Per Minute ", -1
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "text-sm"
+}, "Per Minute", -1
 /* HOISTED */
 );
 
@@ -1508,7 +1511,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.stats.recentJobs ? _ctx.stats.recentJobs.toLocaleString() : 0), 1
       /* TEXT */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-        "class": "text-80",
+        "class": "text-sm",
         textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.recentJobsPeriod)
       }, null, 8
       /* PROPS */
@@ -1553,7 +1556,9 @@ var _hoisted_4 = {
   "class": "text-4xl mb-3"
 };
 
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "Per Minute", -1
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "text-sm"
+}, "Per Minute", -1
 /* HOISTED */
 );
 
@@ -1719,12 +1724,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       ), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.stats.recentJobs ? _ctx.stats.recentJobs.toLocaleString() : 0), 1
       /* TEXT */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+        "class": "text-sm",
         textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.recentJobsPeriod)
       }, null, 8
       /* PROPS */
       , _hoisted_9)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.stats.failedJobs ? _ctx.stats.failedJobs.toLocaleString() : 0), 1
       /* TEXT */
       ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+        "class": "text-sm",
         textContent: (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.failedJobsPeriod)
       }, null, 8
       /* PROPS */

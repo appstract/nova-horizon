@@ -7,7 +7,7 @@
                 {{ stats.recentJobs ? stats.recentJobs.toLocaleString() : 0 }}
             </p>
 
-            <div class="text-80" v-text="recentJobsPeriod"></div>
+            <div class="text-sm" v-text="recentJobsPeriod"></div>
         </div>
     </card>
 </template>

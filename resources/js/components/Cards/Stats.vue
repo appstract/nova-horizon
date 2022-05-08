@@ -10,7 +10,7 @@
                     {{ stats.jobsPerMinute ? stats.jobsPerMinute.toLocaleString() : 0 }}
                 </p>
 
-                <p>Per Minute</p>
+                <p class="text-sm">Per Minute</p>
             </div>
             <div class="align-top border-r border-b border-gray-200 p-6">
                 <h3 class="text-sm font-bold mb-3">
@@ -21,7 +21,7 @@
                     {{ stats.recentJobs ? stats.recentJobs.toLocaleString() : 0 }}
                 </p>
 
-                <p v-text="recentJobsPeriod"></p>
+                <p class="text-sm" v-text="recentJobsPeriod"></p>
             </div>
             <div class="align-top border-r border-b border-gray-200 p-6">
                 <h3 class="text-sm font-bold mb-3">
@@ -32,7 +32,7 @@
                     {{ stats.failedJobs ? stats.failedJobs.toLocaleString() : 0 }}
                 </p>
 
-                <p v-text="failedJobsPeriod"></p>
+                <p class="text-sm" v-text="failedJobsPeriod"></p>
             </div>
             <div class="align-top border-r border-b border-gray-200 p-6">
                 <h3 class="text-sm font-bold mb-3">

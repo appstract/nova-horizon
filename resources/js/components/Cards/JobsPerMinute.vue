@@ -7,9 +7,7 @@
                 {{ stats.jobsPerMinute ? stats.jobsPerMinute.toLocaleString() : 0 }}
             </p>
 
-            <div>
-                Per Minute
-            </div>
+            <p class="text-sm">Per Minute</p>
         </div>
     </card>
 </template>

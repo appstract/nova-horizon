@@ -7,7 +7,7 @@
                 {{ stats.failedJobs ? stats.failedJobs.toLocaleString() : 0 }}
             </p>
 
-            <div v-text="failedJobsPeriod"></div>
+            <div class="text-sm" v-text="failedJobsPeriod"></div>
         </div>
     </card>
 </template>
