@@ -27,12 +27,12 @@
             ]"
         >
             <tr v-if="hasNewEntries" key="newEntries">
-                <td colspan="100" class="text-center bg-gray-100 p-8">
+                <td colspan="100" class="text-center bg-gray-50 border-y border-gray-200 hover:text-sky-500">
                     <a
                         href="#"
                         v-on:click.prevent="loadNewEntries"
                         v-if="! loadingNewEntries"
-                        class="no-underline dim text-primary font-bold"
+                        class="block p-8 text-sm font-bold"
                     >Load New Entries</a>
 
                     <small v-if="loadingNewEntries">Loading...</small>
@@ -40,7 +40,7 @@
             </tr>
 
             <tr v-for="job in jobs" :key="job.id">
-                <td class="p-2 pl-3 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">
+                <td :class="cellClass('pl-3')">
                     <modal v-if="visibleModal(job)">
                         <div class="bg-white rounded-lg shadow-lg overflow-hidden" style="width: 900px">
                             <div class="bg-30 p-4 flex items-center justify-between">
@@ -83,17 +83,17 @@
                     </p>
                 </td>
 
-                <td class="p-2 pl-3 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">
+                <td :class="cellClass()">
                     <span>{{ job.failed_at ? String((job.failed_at - job.reserved_at).toFixed(2))+'s' : '-' }}</span>
                 </td>
 
-                <td class="p-2 pl-3 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">
+                <td :class="cellClass()">
                     {{ readableTimestamp(job.failed_at) }}
                 </td>
 
-                <td class="p-2 pl-3 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800 text-right">
+                <td :class="cellClass('pr-3 text-right')">
                     <a href="#" @click.prevent="retry(job.id)" v-if="! hasCompleted(job)">
-                        <svg class="fill-primary w-6" viewBox="0 0 20 20" :class="{spin: isRetrying(job.id)}">
+                        <svg class="w-6" viewBox="0 0 20 20" :class="{spin: isRetrying(job.id)}">
                             <path d="M10 3v2a5 5 0 0 0-3.54 8.54l-1.41 1.41A7 7 0 0 1 10 3zm4.95 2.05A7 7 0 0 1 10 17v-2a5 5 0 0 0 3.54-8.54l1.41-1.41zM10 20l-4-4 4-4v8zm0-12V0l4 4-4 4z"/>
                         </svg>
                     </a>

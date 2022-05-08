@@ -25,7 +25,7 @@
                         href="#"
                         v-on:click.prevent="loadNewEntries"
                         v-if="! loadingNewEntries"
-                        class="block p-8 text-sm font-bold border-gray"
+                        class="block p-8 text-sm font-bold"
                     >Load New Entries</a>
 
                     <small v-if="loadingNewEntries">Loading...</small>

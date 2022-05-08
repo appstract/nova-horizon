@@ -105,6 +105,9 @@
 .nova-horizon .justify-between {
     justify-content: space-between
 }
+.nova-horizon .gap-6 {
+    gap: 1.5rem
+}
 .nova-horizon .overflow-hidden {
     overflow: hidden
 }
@@ -395,8 +398,14 @@
     }
 }
 @media (min-width: 768px) {
+    .nova-horizon .md\:col-span-12 {
+        grid-column: span 12 / span 12
+    }
     .nova-horizon .md\:grid-cols-4 {
         grid-template-columns: repeat(4, minmax(0, 1fr))
+    }
+    .nova-horizon .md\:grid-cols-12 {
+        grid-template-columns: repeat(12, minmax(0, 1fr))
     }
     .nova-horizon .md\:border-b-0 {
         border-bottom-width: 0px
