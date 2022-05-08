@@ -22,6 +22,8 @@ Nova.booting((Vue, router, store) => {
     Vue.component('nova-horizon-card-max-runtime', require('./components/Cards/maxRuntime').default);
     Vue.component('nova-horizon-card-max-throughput', require('./components/Cards/MaxThroughput').default);
 
+    Vue.component('nova-horizon-card-header', require('./components/CardHeader').default);
+    Vue.component('nova-horizon-table', require('./components/Table').default);
     Vue.component('nova-horizon-loading', require('./components/Loading').default);
     Vue.component('nova-horizon-no-results', require('./components/NoResults').default);
     Vue.component('nova-horizon-not-active', require('./components/NotActive').default);

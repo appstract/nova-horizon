@@ -1,3 +1,5 @@
+import { values, keys } from 'lodash';
+
 export default {
     props: [
         'card',
@@ -35,9 +37,9 @@ export default {
             Nova.request().get(config.novaHorizon.basePath + '/api/stats').then(response => {
                 this.stats = response.data;
 
-                if (_.values(response.data.wait)[0]) {
-                    this.stats.max_wait_time = _.values(response.data.wait)[0];
-                    this.stats.max_wait_queue = _.keys(response.data.wait)[0].split(':')[1];
+                if (values(response.data.wait)[0]) {
+                    this.stats.max_wait_time = values(response.data.wait)[0];
+                    this.stats.max_wait_queue = keys(response.data.wait)[0].split(':')[1];
                 }
             });
         },

@@ -1,44 +1,44 @@
 <template>
     <card class="nova-horizon flex flex-col">
-        <div class="p-3 border-b border-gray-200 tracking-wide text-sm font-bold">
+        <nova-horizon-card-header class="p-3">
             Current Workload
-        </div>
+        </nova-horizon-card-header>
 
-        <div class="flex-1 overflow-hidden overflow-x-auto relative" v-if="workload.length">
-            <table cellpadding="0" cellspacing="0" class="w-full table-default">
-                <thead class="bg-gray-50 dark:bg-gray-800">
-                    <tr>
-                        <th class="text-left p-2 pl-3 whitespace-nowrap uppercase text-gray-500 text-xxs">Queue</th>
-                        <th class="text-left p-2 whitespace-nowrap uppercase text-gray-500 text-xxs">Processes</th>
-                        <th class="text-left p-2 whitespace-nowrap uppercase text-gray-500 text-xxs">Jobs</th>
-                        <th class="text-right p-2 pr-3 whitespace-nowrap uppercase text-gray-500 text-xxs">Wait</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="queue in workload">
-                        <td class="p-2 pl-3 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">
-                            {{ queue.name.replace(/,/g, ', ') }}
-                        </td>
-                        <td class="p-2 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">
-                            {{ queue.processes ? queue.processes.toLocaleString() : 0 }}
-                        </td>
-                        <td class="p-2 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">
-                            {{ queue.length ? queue.length.toLocaleString() : 0 }}
-                        </td>
-                        <td class="text-right p-2 pr-3 border-t border-gray-100 dark:border-gray-700 whitespace-nowrap dark:bg-gray-800">
-                            {{ humanTime(queue.wait) }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <nova-horizon-table
+            v-if="workload.length"
+            :header="[
+                { label: 'Queue', class: 'pl-3' },
+                { label: 'Processes' },
+                { label: 'Jobs' },
+                { label: 'Wait', class: 'pr-3 text-right' },
+            ]"
+        >
+            <tr v-for="queue in workload">
+                <td :class="cellClass('pl-3')">
+                    {{ queue.name.replace(/,/g, ', ') }}
+                </td>
+                <td :class="cellClass()">
+                    {{ queue.processes ? queue.processes.toLocaleString() : 0 }}
+                </td>
+                <td :class="cellClass()">
+                    {{ queue.length ? queue.length.toLocaleString() : 0 }}
+                </td>
+                <td :class="cellClass('pr-3 text-right')">
+                    {{ humanTime(queue.wait) }}
+                </td>
+            </tr>
+        </nova-horizon-table>
 
         <nova-horizon-not-active v-else></nova-horizon-not-active>
     </card>
 </template>
 
 <script>
+import Card from '../../templates/Card';
+
 export default {
+    extends: Card,
+
     data() {
         return {
             ready: false,
