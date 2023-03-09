@@ -20,7 +20,7 @@
             ]"
         >
             <tr v-if="hasNewEntries" key="newEntries">
-                <td colspan="100" class="text-center bg-gray-50 border-y border-gray-200 hover:text-sky-500">
+                <td colspan="100" class="text-center bg-gray-50 dark:bg-gray-900 border-y border-gray-200 dark:border-gray-700 hover:text-sky-500">
                     <a
                         href="#"
                         v-on:click.prevent="loadNewEntries"
@@ -75,7 +75,7 @@
             </tr>
         </nova-horizon-table>
 
-        <div v-if="ready && jobs.length" class="p-3 border-t border-gray-200 flex justify-between">
+        <div v-if="ready && jobs.length" class="p-3 border-t border-gray-200 dark:border-gray-700 flex justify-between">
             <button @click="previous" class="btn btn-secondary btn-md" :disabled="page == 1">Previous</button>
             <button @click="next" class="btn btn-secondary btn-md" :disabled="page >= totalPages">Next</button>
         </div>
@@ -143,11 +143,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-    .p-8{ padding: 2rem; }
-
-    .bg-gray-100{ background: #f7fafc; }
-
-    .border-gray-300{ border-color: #e2e8f0; }
-</style>
