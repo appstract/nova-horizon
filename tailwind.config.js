@@ -1,5 +1,5 @@
 module.exports = {
-    important: '.nova-horizon',
+    darkMode: 'class',
 
     content: [
         "./resources/js/**/*.vue",

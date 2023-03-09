@@ -20,7 +20,7 @@
             ]"
         >
             <tr v-if="hasNewEntries" key="newEntries">
-                <td colspan="100" class="text-center bg-gray-50 border-y border-gray-200 dark:border-gray-700 hover:text-sky-500">
+                <td colspan="100" class="text-center bg-gray-50 dark:bg-gray-900 border-y border-gray-200 dark:border-gray-700 hover:text-sky-500">
                     <a
                         href="#"
                         v-on:click.prevent="loadNewEntries"
