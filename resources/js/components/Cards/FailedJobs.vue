@@ -7,7 +7,7 @@
                 v-model="searchQuery"
                 placeholder="Search Tags"
                 style="width: 200px"
-                class="border-none !border-l border-gray-200 dark:border-gray-700 rounded-tl"
+                class="border-none !border-l border-gray-200 dark:border-gray-700 dark:bg-gray-900 rounded-tl"
             >
         </nova-horizon-card-header>
 
