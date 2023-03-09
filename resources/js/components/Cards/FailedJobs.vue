@@ -195,11 +195,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-    .p-8{ padding: 2rem; }
-
-    .bg-gray-100{ background: #f7fafc; }
-
-    .border-gray-300{ border-color: #e2e8f0; }
-</style>
