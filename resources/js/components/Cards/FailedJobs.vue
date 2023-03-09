@@ -6,8 +6,7 @@
                 type="text"
                 v-model="searchQuery"
                 placeholder="Search Tags"
-                style="width: 200px"
-                class="border-none !border-l border-gray-200 dark:border-gray-700 dark:bg-gray-900 rounded-tl"
+                class="border-none !border-l border-gray-200 dark:border-gray-700 dark:bg-gray-900 rounded-full h-8 py-2 px-4 m-2 w-52"
             >
         </nova-horizon-card-header>
 
