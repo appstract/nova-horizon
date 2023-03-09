@@ -1,7 +1,7 @@
 <template>
     <card class="nova-horizon">
         <div class="grid grid-cols-2 md:grid-cols-4">
-            <div class="align-top border-r border-b border-gray-200 p-6">
+            <div class="align-top border-r border-b border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-sm font-bold mb-3">
                     Jobs
                 </h3>
@@ -12,7 +12,7 @@
 
                 <p class="text-sm">Per Minute</p>
             </div>
-            <div class="align-top border-r border-b border-gray-200 p-6">
+            <div class="align-top border-r border-b border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-sm font-bold mb-3">
                     Recent Jobs
                 </h3>
@@ -23,7 +23,7 @@
 
                 <p class="text-sm" v-text="recentJobsPeriod"></p>
             </div>
-            <div class="align-top border-r border-b border-gray-200 p-6">
+            <div class="align-top border-r border-b border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-sm font-bold mb-3">
                     Failed Jobs
                 </h3>
@@ -34,7 +34,7 @@
 
                 <p class="text-sm" v-text="failedJobsPeriod"></p>
             </div>
-            <div class="align-top border-r border-b border-gray-200 p-6">
+            <div class="align-top border-r border-b border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-sm font-bold mb-3">
                     Status
                 </h3>
@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4">
-            <div class="align-top border-r border-gray-200 border-b md:border-b-0 p-6">
+            <div class="align-top border-r border-gray-200 dark:border-gray-700 border-b md:border-b-0 p-6">
                 <h3 class="text-sm font-bold mb-3">
                     Total Processes
                 </h3>
@@ -72,7 +72,7 @@
                     {{ stats.processes ? stats.processes.toLocaleString() : 0 }}
                 </p>
             </div>
-            <div class="align-top border-r border-gray-200 border-b md:border-b-0 p-6">
+            <div class="align-top border-r border-gray-200 dark:border-gray-700 border-b md:border-b-0 p-6">
                 <h3 class="text-sm font-bold mb-3">
                     Max Wait Time
                 </h3>
@@ -81,7 +81,7 @@
                     {{ stats.max_wait_time ? humanTime(stats.max_wait_time) : '-' }}
                 </p>
             </div>
-            <div class="align-top border-r border-gray-200 p-6">
+            <div class="align-top border-r border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-sm font-bold mb-3">
                     Max Runtime
                 </h3>
@@ -90,7 +90,7 @@
                     {{ stats.queueWithMaxRuntime ? stats.queueWithMaxRuntime : '-' }}
                 </p>
             </div>
-            <div class="align-top border-r border-gray-200 p-6">
+            <div class="align-top border-r border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-sm font-bold mb-3">
                     Max Throughput
                 </h3>

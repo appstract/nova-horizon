@@ -7,7 +7,7 @@
                 v-model="searchQuery"
                 placeholder="Search Tags"
                 style="width: 200px"
-                class="border-none !border-l border-gray-200 rounded-tl"
+                class="border-none !border-l border-gray-200 dark:border-gray-700 rounded-tl"
             >
         </nova-horizon-card-header>
 
@@ -27,7 +27,7 @@
             ]"
         >
             <tr v-if="hasNewEntries" key="newEntries">
-                <td colspan="100" class="text-center bg-gray-50 border-y border-gray-200 hover:text-sky-500">
+                <td colspan="100" class="text-center bg-gray-50 border-y border-gray-200 dark:border-gray-700 hover:text-sky-500">
                     <a
                         href="#"
                         v-on:click.prevent="loadNewEntries"
@@ -72,7 +72,7 @@
             </tr>
         </nova-horizon-table>
 
-        <div v-if="ready && jobs.length" class="flex justify-between p-3 border-t border-gray-200">
+        <div v-if="ready && jobs.length" class="flex justify-between p-3 border-t border-gray-200 dark:border-gray-700">
             <button @click="previous" class="btn btn-secondary btn-md" :disabled="page==1">Previous</button>
             <button @click="next" class="btn btn-secondary btn-md" :disabled="page>=totalPages">Next</button>
         </div>
