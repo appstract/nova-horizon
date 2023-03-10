@@ -1,5 +1,6 @@
 <template>
     <card class="nova-horizon">
+        <div :class="darkMode()">
         <div class="px-6 py-6">
             <h3 class="mb-3 text-sm font-bold">Status</h3>
 
@@ -24,6 +25,7 @@
                     }[stats.status] }}
                 </p>
             </div>
+        </div>
         </div>
     </card>
 </template>

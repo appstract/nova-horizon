@@ -1,5 +1,6 @@
 <template>
     <card class="nova-horizon">
+        <div :class="darkMode()">
         <div class="grid grid-cols-2 md:grid-cols-4 grid-rows-4 md:grid-rows-2">
             <div class="align-top p-6">
                 <h3 class="text-sm font-bold mb-3">
@@ -99,6 +100,7 @@
                 </p>
             </div>
         </div>
+            </div>
     </card>
 </template>
 
