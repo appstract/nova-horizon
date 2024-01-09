@@ -1,5 +1,6 @@
 <template>
     <card class="nova-horizon">
+        <div :class="darkMode()">
         <nova-horizon-card-header class="flex justify-between">
             <h5 class="p-3">Failed Jobs</h5>
             <input
@@ -74,6 +75,7 @@
         <div v-if="ready && jobs.length" class="flex justify-between p-3 border-t border-gray-200 dark:border-gray-700">
             <button @click="previous" class="btn btn-secondary btn-md" :disabled="page==1">Previous</button>
             <button @click="next" class="btn btn-secondary btn-md" :disabled="page>=totalPages">Next</button>
+        </div>
         </div>
     </card>
 </template>

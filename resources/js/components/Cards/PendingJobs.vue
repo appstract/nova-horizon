@@ -1,5 +1,6 @@
 <template>
     <card class="nova-horizon flex flex-col">
+        <div :class="darkMode()">
         <nova-horizon-card-header class="p-3">
             Pending Jobs
         </nova-horizon-card-header>
@@ -78,6 +79,7 @@
         <div v-if="ready && jobs.length" class="p-3 border-t border-gray-200 dark:border-gray-700 flex justify-between">
             <button @click="previous" class="btn btn-secondary btn-md" :disabled="page == 1">Previous</button>
             <button @click="next" class="btn btn-secondary btn-md" :disabled="page >= totalPages">Next</button>
+        </div>
         </div>
     </card>
 </template>

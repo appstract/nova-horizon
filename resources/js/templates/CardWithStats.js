@@ -31,6 +31,15 @@ export default {
 
     methods: {
         /**
+         * Manual dark mode.
+         */
+        darkMode() {
+            return (localStorage.novaTheme === 'dark' || (!('novaTheme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches))
+                ? 'dark'
+                : '';
+        },
+
+        /**
          * Fetch stats from horizon.
          */
         fetchStats() {

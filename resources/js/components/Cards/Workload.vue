@@ -1,5 +1,6 @@
 <template>
     <card class="nova-horizon flex flex-col">
+        <div :class="darkMode()">
         <nova-horizon-card-header class="p-3">
             Current Workload
         </nova-horizon-card-header>
@@ -30,6 +31,7 @@
         </nova-horizon-table>
 
         <nova-horizon-not-active v-else></nova-horizon-not-active>
+        </div>
     </card>
 </template>
 

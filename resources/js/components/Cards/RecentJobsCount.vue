@@ -1,5 +1,6 @@
 <template>
     <card class="nova-horizon">
+        <div :class="darkMode()">
         <div class="px-6 py-6">
             <h3 class="mb-3 text-sm font-bold">Recent Jobs</h3>
 
@@ -8,6 +9,7 @@
             </p>
 
             <div class="text-sm" v-text="recentJobsPeriod"></div>
+        </div>
         </div>
     </card>
 </template>
