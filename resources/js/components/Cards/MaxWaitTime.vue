@@ -1,13 +1,11 @@
 <template>
     <card class="nova-horizon">
-        <div :class="darkMode()">
-        <div class="px-6 py-6">
+        <div class="px-6 py-6" :class="darkModeClass()">
             <h3 class="mb-3 text-sm font-bold">Max Wait Time</h3>
 
             <p class="text-4xl">
                 {{ stats.max_wait_time ? humanTime(stats.max_wait_time) : '-' }}
             </p>
-        </div>
         </div>
     </card>
 </template>

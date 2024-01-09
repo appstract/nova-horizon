@@ -1,81 +1,81 @@
 <template>
     <card class="nova-horizon">
-        <div :class="darkMode()">
-        <nova-horizon-card-header class="flex justify-between">
-            <h5 class="p-3">Failed Jobs</h5>
-            <input
-                type="text"
-                v-model="searchQuery"
-                placeholder="Search Tags"
-                class="border-none !border-l border-gray-200 dark:border-gray-700 dark:bg-gray-900 rounded-full h-8 py-2 px-4 m-2 w-52"
+        <div :class="darkModeClass()">
+            <nova-horizon-card-header class="flex justify-between">
+                <h5 class="p-3">Failed Jobs</h5>
+                <input
+                    type="text"
+                    v-model="searchQuery"
+                    placeholder="Search Tags"
+                    class="border-none !border-l border-gray-200 dark:border-gray-700 dark:bg-gray-900 rounded-full h-8 py-2 px-4 m-2 w-52"
+                >
+            </nova-horizon-card-header>
+
+            <nova-horizon-loading v-if="! ready"></nova-horizon-loading>
+
+            <nova-horizon-no-results v-if="ready && jobs.length == 0">
+                No failed jobs found.
+            </nova-horizon-no-results>
+
+            <nova-horizon-table
+                v-if="ready && jobs.length > 0"
+                :header="[
+                    { label: 'Job', class: 'pl-3' },
+                    { label: 'Runtime' },
+                    { label: 'Failed At' },
+                    { label: 'Retry', class: 'pr-3' },
+                ]"
             >
-        </nova-horizon-card-header>
+                <tr v-if="hasNewEntries" key="newEntries">
+                    <td colspan="100" class="text-center bg-gray-50 dark:bg-gray-900 border-y border-gray-200 dark:border-gray-700 hover:text-sky-500">
+                        <a
+                            href="#"
+                            v-on:click.prevent="loadNewEntries"
+                            v-if="! loadingNewEntries"
+                            class="block p-8 text-sm font-bold"
+                        >Load New Entries</a>
 
-        <nova-horizon-loading v-if="! ready"></nova-horizon-loading>
+                        <small v-if="loadingNewEntries">Loading...</small>
+                    </td>
+                </tr>
 
-        <nova-horizon-no-results v-if="ready && jobs.length == 0">
-            No failed jobs found.
-        </nova-horizon-no-results>
+                <tr v-for="job in jobs" :key="job.id">
+                    <td :class="cellClass('pl-3')">
+                        <div class="no-underline dim text-primary font-bold" :title="job.name">
+                            {{ jobBaseName(job.name) }}
+                        </div>
 
-        <nova-horizon-table
-            v-if="ready && jobs.length > 0"
-            :header="[
-                { label: 'Job', class: 'pl-3' },
-                { label: 'Runtime' },
-                { label: 'Failed At' },
-                { label: 'Retry', class: 'pr-3' },
-            ]"
-        >
-            <tr v-if="hasNewEntries" key="newEntries">
-                <td colspan="100" class="text-center bg-gray-50 dark:bg-gray-900 border-y border-gray-200 dark:border-gray-700 hover:text-sky-500">
-                    <a
-                        href="#"
-                        v-on:click.prevent="loadNewEntries"
-                        v-if="! loadingNewEntries"
-                        class="block p-8 text-sm font-bold"
-                    >Load New Entries</a>
+                        <p class="text-xxs">
+                            Queue: {{job.queue}}
 
-                    <small v-if="loadingNewEntries">Loading...</small>
-                </td>
-            </tr>
+                            <span v-if="job.payload && job.payload.tags.length">
+                                | Tags: {{ job.payload.tags && job.payload.tags.length ? job.payload.tags.join(', ') : '' }}
+                            </span>
+                        </p>
+                    </td>
 
-            <tr v-for="job in jobs" :key="job.id">
-                <td :class="cellClass('pl-3')">
-                    <div class="no-underline dim text-primary font-bold" :title="job.name">
-                        {{ jobBaseName(job.name) }}
-                    </div>
+                    <td :class="cellClass()">
+                        <span>{{ job.failed_at ? String((job.failed_at - job.reserved_at).toFixed(2))+'s' : '-' }}</span>
+                    </td>
 
-                    <p class="text-xxs">
-                        Queue: {{job.queue}}
+                    <td :class="cellClass()">
+                        {{ readableTimestamp(job.failed_at) }}
+                    </td>
 
-                        <span v-if="job.payload && job.payload.tags.length">
-                            | Tags: {{ job.payload.tags && job.payload.tags.length ? job.payload.tags.join(', ') : '' }}
-                        </span>
-                    </p>
-                </td>
+                    <td :class="cellClass('pr-3 text-right')">
+                        <a href="#" @click.prevent="retry(job.id)" v-if="! hasCompleted(job)">
+                            <svg class="w-6 fill-sky-500" viewBox="0 0 20 20" :class="{'animate-spin': isRetrying(job.id)}">
+                                <path d="M10 3v2a5 5 0 0 0-3.54 8.54l-1.41 1.41A7 7 0 0 1 10 3zm4.95 2.05A7 7 0 0 1 10 17v-2a5 5 0 0 0 3.54-8.54l1.41-1.41zM10 20l-4-4 4-4v8zm0-12V0l4 4-4 4z"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+            </nova-horizon-table>
 
-                <td :class="cellClass()">
-                    <span>{{ job.failed_at ? String((job.failed_at - job.reserved_at).toFixed(2))+'s' : '-' }}</span>
-                </td>
-
-                <td :class="cellClass()">
-                    {{ readableTimestamp(job.failed_at) }}
-                </td>
-
-                <td :class="cellClass('pr-3 text-right')">
-                    <a href="#" @click.prevent="retry(job.id)" v-if="! hasCompleted(job)">
-                        <svg class="w-6 fill-sky-500" viewBox="0 0 20 20" :class="{'animate-spin': isRetrying(job.id)}">
-                            <path d="M10 3v2a5 5 0 0 0-3.54 8.54l-1.41 1.41A7 7 0 0 1 10 3zm4.95 2.05A7 7 0 0 1 10 17v-2a5 5 0 0 0 3.54-8.54l1.41-1.41zM10 20l-4-4 4-4v8zm0-12V0l4 4-4 4z"/>
-                        </svg>
-                    </a>
-                </td>
-            </tr>
-        </nova-horizon-table>
-
-        <div v-if="ready && jobs.length" class="flex justify-between p-3 border-t border-gray-200 dark:border-gray-700">
-            <button @click="previous" class="btn btn-secondary btn-md" :disabled="page==1">Previous</button>
-            <button @click="next" class="btn btn-secondary btn-md" :disabled="page>=totalPages">Next</button>
-        </div>
+            <div v-if="ready && jobs.length" class="flex justify-between p-3 border-t border-gray-200 dark:border-gray-700">
+                <button @click="previous" class="btn btn-secondary btn-md" :disabled="page==1">Previous</button>
+                <button @click="next" class="btn btn-secondary btn-md" :disabled="page>=totalPages">Next</button>
+            </div>
         </div>
     </card>
 </template>

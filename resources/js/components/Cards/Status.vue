@@ -1,7 +1,6 @@
 <template>
     <card class="nova-horizon">
-        <div :class="darkMode()">
-        <div class="px-6 py-6">
+        <div class="px-6 py-6" :class="darkModeClass()">
             <h3 class="mb-3 text-sm font-bold">Status</h3>
 
             <div class="flex items-center">
@@ -25,7 +24,6 @@
                     }[stats.status] }}
                 </p>
             </div>
-        </div>
         </div>
     </card>
 </template>

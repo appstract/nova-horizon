@@ -44,10 +44,12 @@ export default {
         /**
          * Manual dark mode.
          */
-        darkMode() {
-            return (localStorage.novaTheme === 'dark' || (!('novaTheme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches))
-                ? 'dark'
-                : '';
+        darkModeClass() {
+            let activeDarkMode = localStorage.novaTheme === 'dark';
+
+            let prefersDarkMode = (! ('novaTheme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+            return (activeDarkMode ||  prefersDarkMode) ? 'dark' : '';
         },
 
         /**

@@ -1,36 +1,36 @@
 <template>
     <card class="nova-horizon flex flex-col">
-        <div :class="darkMode()">
-        <nova-horizon-card-header class="p-3">
-            Current Workload
-        </nova-horizon-card-header>
+        <div :class="darkModeClass()">
+            <nova-horizon-card-header class="p-3">
+                Current Workload
+            </nova-horizon-card-header>
 
-        <nova-horizon-table
-            v-if="workload.length"
-            :header="[
-                { label: 'Queue', class: 'pl-3' },
-                { label: 'Processes' },
-                { label: 'Jobs' },
-                { label: 'Wait', class: 'pr-3 text-right' },
-            ]"
-        >
-            <tr v-for="queue in workload">
-                <td :class="cellClass('pl-3')">
-                    {{ queue.name.replace(/,/g, ', ') }}
-                </td>
-                <td :class="cellClass()">
-                    {{ queue.processes ? queue.processes.toLocaleString() : 0 }}
-                </td>
-                <td :class="cellClass()">
-                    {{ queue.length ? queue.length.toLocaleString() : 0 }}
-                </td>
-                <td :class="cellClass('pr-3 text-right')">
-                    {{ humanTime(queue.wait) }}
-                </td>
-            </tr>
-        </nova-horizon-table>
+            <nova-horizon-table
+                v-if="workload.length"
+                :header="[
+                    { label: 'Queue', class: 'pl-3' },
+                    { label: 'Processes' },
+                    { label: 'Jobs' },
+                    { label: 'Wait', class: 'pr-3 text-right' },
+                ]"
+            >
+                <tr v-for="queue in workload">
+                    <td :class="cellClass('pl-3')">
+                        {{ queue.name.replace(/,/g, ', ') }}
+                    </td>
+                    <td :class="cellClass()">
+                        {{ queue.processes ? queue.processes.toLocaleString() : 0 }}
+                    </td>
+                    <td :class="cellClass()">
+                        {{ queue.length ? queue.length.toLocaleString() : 0 }}
+                    </td>
+                    <td :class="cellClass('pr-3 text-right')">
+                        {{ humanTime(queue.wait) }}
+                    </td>
+                </tr>
+            </nova-horizon-table>
 
-        <nova-horizon-not-active v-else></nova-horizon-not-active>
+            <nova-horizon-not-active v-else></nova-horizon-not-active>
         </div>
     </card>
 </template>
